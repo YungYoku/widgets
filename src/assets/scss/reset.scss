@@ -1,0 +1,14 @@
+*:where(:not(img, svg):not(svg *, symbol *)) {
+  all: unset;
+
+  display: revert;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}

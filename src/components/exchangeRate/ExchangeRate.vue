@@ -116,7 +116,13 @@ export default {
       const currencyFrom = this.currencies.find(currency => currency.code === this.from);
       const currencyTo = this.currencies.find(currency => currency.code === this.to);
 
-      if (this.to === "RUB") {
+      if (this.from === "RUB") {
+        if (this.to === "RUB") {
+          return 1;
+        } else {
+          return (1 / currencyTo.value).toFixed(2);
+        }
+      } else if (this.to === "RUB") {
         if (currencyFrom) {
           return currencyFrom.value;
         }

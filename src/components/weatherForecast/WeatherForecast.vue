@@ -1,6 +1,11 @@
 <template>
   <div
-    :class="['widget', 'weather-forecast', cityErrorClassName, uniqueClassName]"
+    :class="[
+      'widget',
+      'weather-forecast',
+      cityErrorClassName,
+      uniqueClassName
+    ]"
     :style="{
       'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
     }"

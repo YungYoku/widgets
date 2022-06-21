@@ -1,5 +1,5 @@
 <template>
-  <div class="week withContext">
+  <div class="week with-context">
     <widget-loading v-if="loading" />
 
     <div

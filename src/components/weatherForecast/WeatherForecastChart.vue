@@ -1,5 +1,5 @@
 <template>
-  <div class="chart">
+  <div class="chart without-context">
     <vue-apex-charts
       :options="chartOptions"
       :series="series"

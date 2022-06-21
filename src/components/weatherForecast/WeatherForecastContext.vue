@@ -96,24 +96,60 @@ export default {
       this.showing = false;
     },
 
+    getMouseX(e) {
+      const pageX = e.pageX;
+      const clientX = e.clientX;
+
+      if (pageX) {
+        return pageX;
+      } else if (clientX) {
+        return (
+          clientX
+          + (
+            document.documentElement.scrollLeft
+            || document.body.scrollLeft
+          )
+          - document.documentElement.clientLeft
+        );
+      }
+
+      return 0;
+    },
+
+    getMouseY(e) {
+      const pageY = e.pageY;
+      const clientY = e.clientY;
+
+      if (pageY) {
+        return pageY;
+      } else if (clientY) {
+        return (
+          clientY
+          + (
+            document.documentElement.scrollTop
+            || document.body.scrollTop
+          )
+          - document.documentElement.clientTop
+        );
+      }
+
+      return 0;
+    },
+
     setMenuCoords(e) {
       const weatherForecast = document.querySelector(this.uniqueClassName);
       const weatherForecastWidth = weatherForecast.clientWidth;
       const weatherForecastHeight = weatherForecast.clientHeight;
 
-      const x = e.layerX;
-      const y = e.y;
+      const clickX = this.x = this.getMouseX(e) - 35;
+      const clickY = this.y = this.getMouseY(e) - 35;
 
-      if (x + 170 > weatherForecastWidth) {
-        this.x = x - 150;
-      } else {
-        this.x = x - 5;
+      if (clickX + 155 > weatherForecastWidth) {
+        this.x = clickX - 155;
       }
 
-      if (y + 80 > weatherForecastHeight) {
-        this.y = y - 100;
-      } else {
-        this.y = y - 35;
+      if (clickY + 70 > weatherForecastHeight) {
+        this.y = clickY - 70;
       }
     },
 
@@ -126,14 +162,14 @@ export default {
       while (domEl) {
         if (
           domEl.nodeName.toLowerCase() === "body"
-          || domEl.classList.contains("chart")
+          || domEl.classList.contains("without-context")
           || domEl.classList.contains("loading")
         ) {
           this.showing = false;
           break;
         }
 
-        if (domEl.classList.contains("withContext")) {
+        if (domEl.classList.contains("with-context")) {
           this.setMenuCoords(e);
           this.showing = true;
           break;

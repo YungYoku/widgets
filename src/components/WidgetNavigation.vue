@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation">
+  <div class="navigation without-context">
     <button
       v-for="button in navigation"
       :key="button.img"

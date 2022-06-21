@@ -4,7 +4,7 @@
       backgroundImage,
       'color': 'green'
     }"
-    class="loading"
+    class="loading without-context"
   >
   </div>
 </template>

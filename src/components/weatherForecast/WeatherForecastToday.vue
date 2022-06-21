@@ -1,5 +1,5 @@
 <template>
-  <div class="today withContext">
+  <div class="today with-context">
     <widget-loading v-if="loading" />
 
     <div v-else>

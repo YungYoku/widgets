@@ -95,7 +95,7 @@ export default {
     handleClick() {
       this.showing = false;
     },
-  
+
     getMouseX(e) {
       const pageX = e.pageX;
       const clientX = e.clientX;
@@ -141,9 +141,9 @@ export default {
       const weatherForecastWidth = weatherForecast.clientWidth;
       const weatherForecastHeight = weatherForecast.clientHeight;
 
-      const clickX = this.x = this.getMouseX(e) - 35;
-      const clickY = this.y = this.getMouseY(e) - 35;
-
+      const clickX = this.x = this.getMouseX(e) - weatherForecast.offsetLeft;
+      const clickY = this.y = this.getMouseY(e) - weatherForecast.offsetTop;
+      
       if (clickX + 155 > weatherForecastWidth) {
         this.x = clickX - 155;
       }

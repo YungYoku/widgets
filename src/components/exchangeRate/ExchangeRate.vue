@@ -177,7 +177,7 @@ export default {
 
 <style lang="scss" scoped>
 .exchange-rate {
-  max-width: 600px;
+  max-width: 400px;
 
   background-color: #ffffff;
 

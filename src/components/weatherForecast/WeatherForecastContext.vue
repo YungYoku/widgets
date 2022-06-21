@@ -77,7 +77,7 @@ export default {
 
   mounted() {
     document.addEventListener("click", this.handleClick);
-    document.querySelector(".weatherForecast").oncontextmenu = this.handleContext;
+    document.querySelector(".weather-forecast").oncontextmenu = this.handleContext;
   },
 
   destroyed() {
@@ -90,7 +90,7 @@ export default {
     },
 
     setMenuCoords(e) {
-      const weatherForecast = document.querySelector(".weatherForecast");
+      const weatherForecast = document.querySelector(".weather-forecast");
       const weatherForecastWidth = weatherForecast.clientWidth;
       const weatherForecastHeight = weatherForecast.clientHeight;
 

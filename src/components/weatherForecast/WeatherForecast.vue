@@ -7,7 +7,7 @@
     :style="{
       'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
     }"
-    class="widget weatherForecast"
+    class="widget weather-forecast"
   >
     <weather-forecast-error
       v-if="errorShowing && !geoAccessShowing"
@@ -550,7 +550,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.weatherForecast {
+.weather-forecast {
   grid-template: repeat(2, auto) / 2fr 3fr;
   grid-template-areas:
       'today week'

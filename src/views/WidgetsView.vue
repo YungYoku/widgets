@@ -1,8 +1,14 @@
 <template>
   <div class="widgetsView">
-    <weather-forecast v-if="true" />
-    <exact-time v-if="true" />
-    <exchange-rate v-if="true" />
+    <component
+      :is="widget"
+      v-for="(widget, i) in widgets"
+      :key="widget + i"
+    />
+
+    <add-widget
+      @addWidget="addWidget"
+    />
   </div>
 </template>
 
@@ -10,11 +16,24 @@
 import ExactTime from "@/components/exactTime/ExactTime";
 import ExchangeRate from "@/components/exchangeRate/ExchangeRate";
 import WeatherForecast from "@/components/weatherForecast/WeatherForecast.vue";
+import AddWidget from "@/components/addWidget/AddWidget";
 
 export default {
   name: "WidgetsView",
 
-  components: { ExchangeRate, ExactTime, WeatherForecast }
+  components: { AddWidget, ExchangeRate, ExactTime, WeatherForecast },
+
+  data() {
+    return {
+      widgets: []
+    };
+  },
+
+  methods: {
+    addWidget(id) {
+      this.widgets.push(id);
+    }
+  }
 };
 </script>
 
@@ -23,9 +42,9 @@ export default {
   position: relative;
 
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
   justify-content: flex-start;
+  align-content: flex-start;
 
   box-sizing: border-box;
 

@@ -1,6 +1,13 @@
 @import "reset";
 @import "font";
 
+* {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 100%;
+  line-height: 1.5;
+  vertical-align: baseline;
+}
+
 html {
   --main-background-color: rgb(255, 255, 255);
 }
@@ -8,20 +15,16 @@ html {
 .widget {
   position: relative;
 
-  display: grid;
+  display: inline-grid;
 
   grid-gap: 10px;
   box-sizing: border-box;
 
   width: 100%;
   max-width: 400px;
-  margin: 0 auto;
+  margin: 0 0 auto 0;
   padding: 30px 20px 20px 20px;
 
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 100%;
-  line-height: 1.5;
-  vertical-align: baseline;
   color: #333;
 
   background-color: #ffffff;

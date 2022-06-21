@@ -11,6 +11,7 @@
     <add-widget-context
       v-if="contextShowing"
       :widgets="widgets"
+      :x="contextX"
       @addWidget="addWidget"
       @hide="hideContext"
     />
@@ -41,12 +42,22 @@ export default {
           is: "exchange-rate"
         }
       ],
-      contextShowing: false
+      contextShowing: false,
+      contextX: 0
     };
   },
 
   methods: {
     showContext() {
+      const windowWidth = window.innerWidth;
+      const buttonX = document.querySelector(".add-widget").offsetLeft + 45;
+
+      if (buttonX + 150 > windowWidth) {
+        this.contextX = -150;
+      } else {
+        this.contextX = 0;
+      }
+      
       this.contextShowing = true;
     },
 

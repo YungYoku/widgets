@@ -1,5 +1,10 @@
 <template>
-  <div class="add-widget-context">
+  <div
+    :style="{
+      left: styleLeft
+    }"
+    class="add-widget-context"
+  >
     <button
       v-for="widget in widgets"
       :key="widget.is"
@@ -20,6 +25,26 @@ export default {
       type: Array,
       required: true,
       default: () => []
+    },
+
+    x: {
+      type: Number,
+      required: true,
+      default: 0
+    }
+  },
+
+  computed: {
+    styleLeft() {
+      const x = this.x;
+
+      if (x > 0) {
+        return `calc(50% + ${x})`;
+      } else if (x < 0) {
+        return `calc(50% - ${Math.abs(x)})`;
+      } else {
+        return `50%`;
+      }
     }
   },
 

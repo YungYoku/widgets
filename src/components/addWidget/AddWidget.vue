@@ -1,6 +1,7 @@
 <template>
   <div class="add-widget">
     <button
+      class="add-widget__button"
       type="button"
       @click="showContext"
     >
@@ -11,6 +12,7 @@
       v-if="contextShowing"
       :widgets="widgets"
       @addWidget="addWidget"
+      @hide="hideContext"
     />
   </div>
 </template>
@@ -48,8 +50,12 @@ export default {
       this.contextShowing = true;
     },
 
-    addWidget(widget) {
+    hideContext() {
       this.contextShowing = false;
+    },
+
+    addWidget(widget) {
+      this.hideContext();
       this.$emit("addWidget", widget);
     }
   }

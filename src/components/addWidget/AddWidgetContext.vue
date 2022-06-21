@@ -21,6 +21,28 @@ export default {
       required: true,
       default: () => []
     }
+  },
+
+  mounted() {
+    document.addEventListener("click", this.handleClick);
+  },
+
+  destroyed() {
+    document.removeEventListener("click", this.handleClick);
+  },
+
+  methods: {
+    handleClick(e) {
+      const className = e.target.className;
+
+      if (
+        className
+        && className !== "add-widget__button"
+        && className !== "add-widget-context"
+      ) {
+        this.$emit("hide");
+      }
+    }
   }
 };
 </script>

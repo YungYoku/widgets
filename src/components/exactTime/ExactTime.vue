@@ -10,13 +10,23 @@
       Точное время
     </h2>
 
-    <div class="exact-time__region">
+    <div class="exact-time__timezone">
       <h4>Выберите регион: </h4>
+
       <select
-        id=""
+        id="timezone"
         v-model="timezone"
-        name=""
+        name="timezone"
       >
+        <option
+          disabled
+          hidden
+          selected
+          value="Не выбран"
+        >
+          Не выбран
+        </option>
+
         <option
           v-for="timezone in timezones"
           :key="timezone"
@@ -59,7 +69,7 @@ export default {
       baseURL: "https://worldtimeapi.org/api/",
       loading: true,
       interval: null,
-      timezone: "",
+      timezone: "Не выбран",
       hours: 0,
       minutes: 0,
       seconds: 0
@@ -193,7 +203,7 @@ export default {
 
   background-color: #ffffff;
 
-  &__region {
+  &__timezone {
     display: flex;
     justify-content: space-between;
     align-items: center;

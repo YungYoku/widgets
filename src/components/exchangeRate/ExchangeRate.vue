@@ -22,6 +22,7 @@
         v-model="from"
         class="exchange-rate__from"
         name="from"
+        title="Сконвертировать из"
       >
         <option
           v-for="currency in currenciesList"
@@ -39,6 +40,7 @@
         v-model="to"
         class="exchange-rate__to"
         name="to"
+        title="Сконвертировать в"
       >
         <option
           v-for="currency in currenciesList"
@@ -53,7 +55,10 @@
 
     <widget-loading v-if="loading" />
 
-    <div v-else>
+    <div
+      v-else
+      class="text"
+    >
       {{ exchangedCurrencies }}
     </div>
   </div>

@@ -17,6 +17,7 @@
         :placeholder="placeholder"
         class="inputCity"
         name="inputCity"
+        title="Название города"
         type="text"
       />
 

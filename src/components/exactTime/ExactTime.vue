@@ -11,12 +11,15 @@
     </h2>
 
     <div class="exact-time__timezone">
-      <h4>Выберите регион: </h4>
+      <h4 class="text">
+        Выберите регион:
+      </h4>
 
       <select
         id="timezone"
         v-model="timezone"
         name="timezone"
+        title="Регион"
       >
         <option
           disabled
@@ -40,7 +43,10 @@
 
     <widget-loading v-if="loading" />
 
-    <h3 v-else>
+    <h3
+      v-else
+      class="text"
+    >
       {{ time }}
     </h3>
   </div>

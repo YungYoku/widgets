@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "WeatherForecastLoading",
+  name: "WidgetLoading",
 
   computed: {
     backgroundImage() {

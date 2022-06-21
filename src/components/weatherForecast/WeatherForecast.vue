@@ -1,86 +1,83 @@
 <template>
   <div
-    :class="theme"
+    :class="{
+      theme,
+      'cityError': errorShowing || geoAccessShowing,
+    }"
     :style="{
       'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
     }"
-    class="widget weatherForecast"
+    class="widget weatherForecast info"
   >
-    <div
-      :class="{
-        'cityError': errorShowing || geoAccessShowing,
-      }"
-      class="info"
-    >
-      <weather-forecast-error
-        v-if="errorShowing && !geoAccessShowing"
-        :geo-access-error="geoAccessError"
-        :geo-exist-error="geoExistError"
-        :searches-amount="searchesAmount"
-        class="error"
-      />
 
-      <weather-forecast-context
-        :city-name="cityName"
-        :copy-weather-forecast="copyWeatherForecast"
-      />
+    <weather-forecast-error
+      v-if="errorShowing && !geoAccessShowing"
+      :geo-access-error="geoAccessError"
+      :geo-exist-error="geoExistError"
+      :searches-amount="searchesAmount"
+      class="error"
+    />
 
-      <weather-forecast-navigation
-        :weather-showing="weatherShowing"
-        @openMap="openMap"
-        @openSaved="openSaved"
-        @openSettings="openSettings"
-      />
+    <weather-forecast-context
+      :city-name="cityName"
+      :copy-weather-forecast="copyWeatherForecast"
+    />
 
-      <weather-forecast-geo-access
-        v-if="geoAccessShowing"
-        @allow="loadByCoords"
-        @forbid="blockGeoAccess"
-      />
+    <weather-forecast-navigation
+      :weather-showing="weatherShowing"
+      @openMap="openMap"
+      @openSaved="openSaved"
+      @openSettings="openSettings"
+    />
 
-      <weather-forecast-settings
-        v-if="settingsShowing"
-        @close="closeSettings"
-        @giveGeoAccess="handleGeoAccess"
-        @switchTheme="switchTheme"
-      />
+    <weather-forecast-geo-access
+      v-if="geoAccessShowing"
+      @allow="loadByCoords"
+      @forbid="blockGeoAccess"
+    />
 
-      <weather-forecast-saved
-        v-if="savedShowing"
-        :current-city="cityName"
-        @close="closeSaved"
-        @loadFromSaved="loadFromSaved"
-      />
+    <weather-forecast-settings
+      v-if="settingsShowing"
+      @close="closeSettings"
+      @giveGeoAccess="handleGeoAccess"
+      @switchTheme="switchTheme"
+    />
 
-      <weather-forecast-maps
-        v-if="mapsShowing"
-        :coords="[lat, lon]"
-        @close="closeMaps"
-      />
+    <weather-forecast-saved
+      v-if="savedShowing"
+      :current-city="cityName"
+      @close="closeSaved"
+      @loadFromSaved="loadFromSaved"
+    />
 
-      <weather-forecast-today
-        v-if="weatherShowing"
-        :city-name="cityName"
-        :loading="loading"
-        :weather="current"
-        class="today"
-      />
+    <weather-forecast-maps
+      v-if="mapsShowing"
+      :coords="[lat, lon]"
+      @close="closeMaps"
+    />
 
-      <weather-forecast-week
-        v-if="weatherShowing"
-        :loading="loading"
-        :weather="daily"
-        class="week"
-      />
+    <weather-forecast-today
+      v-if="weatherShowing"
+      :city-name="cityName"
+      :loading="loading"
+      :weather="current"
+      class="today"
+    />
 
-      <weather-forecast-load-form
-        :city-exist-error="cityExistError"
-        :loading="loading"
-        :searches-amount="searchesAmount"
-        class="form"
-        @formSubmit="loadByCityName"
-      />
-    </div>
+    <weather-forecast-week
+      v-if="weatherShowing"
+      :loading="loading"
+      :weather="daily"
+      class="week"
+    />
+
+    <weather-forecast-load-form
+      :city-exist-error="cityExistError"
+      :loading="loading"
+      :searches-amount="searchesAmount"
+      class="form"
+      @formSubmit="loadByCityName"
+    />
   </div>
 </template>
 
@@ -131,7 +128,7 @@ export default {
   data() {
     return {
       baseURL: "https://api.openweathermap.org/",
-      apiKey: "appid=fd6937390675df3a1ff8b601d0c97123",
+      apiKey: "d4dd6edd6e1ad7f6d3da53ec3252f610",
       loading: true,
       lang: window.navigator.language.slice(0, 2),
       lat: 0,
@@ -315,7 +312,7 @@ export default {
     async loadWeatherForecast(lat, lon) {
       await this.$http
         .get(
-          `${this.baseURL}data/2.5/onecall?${this.apiKey}`,
+          `${this.baseURL}data/2.5/onecall?appid=${this.apiKey}`,
           {
             params: {
               lat,
@@ -340,7 +337,7 @@ export default {
 
     async loadCityName(lat, lon) {
       await this.$http
-        .get(`${this.baseURL}geo/1.0/reverse?${this.apiKey}`, {
+        .get(`${this.baseURL}geo/1.0/reverse?appid=${this.apiKey}`, {
           params: {
             lat,
             lon
@@ -408,7 +405,7 @@ export default {
         this.loading = true;
 
         await this.$http
-          .get(`${this.baseURL}geo/1.0/direct?${this.apiKey}`, {
+          .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`, {
             params: {
               q: city
             }
@@ -555,74 +552,69 @@ export default {
 
 <style lang="scss" scoped>
 .weatherForecast {
-  max-width: 1150px;
-
-  background-color: var(--main-background-color);
-
-  .info {
-    display: grid;
-
-    grid-gap: 10px;
-    grid-template: repeat(2, auto) / 2fr 3fr;
-    grid-template-areas:
+  grid-template: repeat(2, auto) / 2fr 3fr;
+  grid-template-areas:
       'today week'
       'form form';
 
-    height: 100%;
+  max-width: 1150px;
+  height: 100%;
 
-    @media (max-width: 1000px) {
-      grid-template: repeat(3, auto) / 1fr;
-      grid-template-areas:
+  background-color: var(--main-background-color);
+
+
+  @media (max-width: 1000px) {
+    grid-template: repeat(3, auto) / 1fr;
+    grid-template-areas:
       'today'
       'week'
       'form';
-    }
+  }
 
-    @media (max-width: 300px) {
-      grid-template: repeat(2, auto) / 1fr;
-      grid-template-areas:
+  @media (max-width: 300px) {
+    grid-template: repeat(2, auto) / 1fr;
+    grid-template-areas:
       'today'
       'form';
 
-      .week {
-        display: none;
-      }
+    .week {
+      display: none;
     }
+  }
 
-    @media (max-width: 240px) {
-      grid-template: repeat(1, auto) / 1fr;
-      grid-template-areas:
+  @media (max-width: 240px) {
+    grid-template: repeat(1, auto) / 1fr;
+    grid-template-areas:
       'today';
 
-      .form {
-        display: none;
-      }
-    }
-
-    .error {
-      grid-area: error;
-    }
-
-    .today {
-      grid-area: today;
-    }
-
-    .week {
-      grid-area: week;
-    }
-
     .form {
-      grid-area: form;
+      display: none;
     }
   }
 
-  .cityError {
-    display: grid;
+  .error {
+    grid-area: error;
+  }
 
-    grid-template: auto / 1fr;
-    grid-template-areas:
+  .today {
+    grid-area: today;
+  }
+
+  .week {
+    grid-area: week;
+  }
+
+  .form {
+    grid-area: form;
+  }
+}
+
+.cityError {
+  display: grid;
+
+  grid-template: auto / 1fr;
+  grid-template-areas:
       'error'
       'form';
-  }
 }
 </style>

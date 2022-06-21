@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import cities from "@/assets/json/cities.json";
+import cities from "@/assets/js/cities.js";
 
 export default {
   name: "WeatherForecastLoadForm",

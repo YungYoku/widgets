@@ -1,8 +1,25 @@
 <template>
-  <div class="widget exactTime">
+  <div class="widget exact-time">
     <h2 class="title">
       Точное время
     </h2>
+
+    <div class="exact-time__region">
+      <h4>Выберите регион: </h4>
+      <select
+        id=""
+        v-model="timezone"
+        name=""
+      >
+        <option
+          v-for="timezone in timezones"
+          :key="timezone"
+          :value="timezone"
+        >
+          {{ timezone }}
+        </option>
+      </select>
+    </div>
 
     <h3>
       {{ time }}
@@ -11,11 +28,14 @@
 </template>
 
 <script>
+import timezones from "@/assets/js/timezones";
+
 export default {
   name: "ExactTime",
 
   data() {
     return {
+      timezone: "",
       hours: 0,
       minutes: 0,
       seconds: 0
@@ -23,6 +43,13 @@ export default {
   },
 
   computed: {
+    timezones() {
+      if (timezones) {
+        return timezones;
+      }
+      return [];
+    },
+
     time() {
       const hours = this.hours < 10 ? "0" + this.hours : this.hours;
       const minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;
@@ -32,8 +59,14 @@ export default {
     }
   },
 
+  watch: {
+    timezone() {
+      this.loadTimeByTimezone();
+    }
+  },
+
   mounted() {
-    this.loadTime();
+    this.loadTimeByIp();
   },
 
   methods: {
@@ -46,13 +79,24 @@ export default {
       return time.map(dig => parseInt(dig));
     },
 
-    loadTime() {
+    loadTimeByIp() {
       this.$http.get("https://worldtimeapi.org/api/ip")
         .then(response => {
           const time = response.data.datetime;
 
           if (time) {
             this.startClocks(this.formatTime(time));
+          }
+        });
+    },
+
+    loadTimeByTimezone() {
+      this.$http.get(`https://worldtimeapi.org/api/timezone/${this.timezone}`)
+        .then(response => {
+          const time = response.data.datetime;
+
+          if (time) {
+            this.setResponseTime(this.formatTime(time));
           }
         });
     },
@@ -85,11 +129,14 @@ export default {
       }
     },
 
-    startClocks(time) {
+    setResponseTime(time) {
       this.hours = time[0];
       this.minutes = time[1];
       this.seconds = time[2];
+    },
 
+    startClocks(time) {
+      this.setResponseTime(time);
       setInterval(this.increaseSeconds, 1000);
     }
   }
@@ -97,9 +144,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.exactTime {
-  max-width: 400px;
+.exact-time {
+  max-width: 350px;
 
   background-color: #ffffff;
+
+  &__region {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    select {
+      max-width: 150px;
+      padding: 10px;
+
+      border: 1px solid #999999;
+      border-radius: 15px;
+    }
+  }
 }
 </style>

@@ -14,11 +14,13 @@
         <option
           v-for="currency in currenciesList"
           :key="currency"
-          value="currency"
+          :value="currency"
         >
           {{ currency }}
         </option>
       </select>
+
+      ->
 
       <select
         id="to"
@@ -29,18 +31,15 @@
         <option
           v-for="currency in currenciesList"
           :key="currency"
-          value="currency"
+          :value="currency"
         >
           {{ currency }}
         </option>
       </select>
+    </div>
 
-      <div
-        v-for="currency in currencies"
-        :key="currency.name"
-      >
-        {{ formatCurrencyOutput(currency) }}
-      </div>
+    <div>
+      {{ exchangedCurrencies }}
     </div>
   </div>
 </template>
@@ -55,8 +54,17 @@ export default {
       currencies: [],
       currenciesList: [],
       from: "USD",
-      to: "USD"
+      to: "RUB"
     };
+  },
+
+  computed: {
+    exchangedCurrencies() {
+      const result = this.exchangeCurrencies();
+      return `
+        1 ${this.from} = ${result} ${this.to}
+      `;
+    }
   },
 
   mounted() {
@@ -65,6 +73,16 @@ export default {
   },
 
   methods: {
+    exchangeCurrencies() {
+      const currency = this.currencies.find(currency => currency.code === this.from);
+
+      if (currency) {
+        return currency.value;
+      }
+
+      return 0;
+    },
+
     normalizeNumber(num) {
       if (num < 10) {
         return "0" + num;
@@ -123,6 +141,8 @@ export default {
     },
 
     formatCurrencies(currencies) {
+      this.currenciesList.push("RUB");
+
       return currencies.map(currency => {
         const code = currency.CharCode["#text"];
         const nominal = parseInt(currency.Nominal["#text"]);
@@ -139,16 +159,6 @@ export default {
           attributes: currency.attributes
         };
       });
-    },
-
-    formatCurrencyOutput(currency) {
-      return `
-        ${currency.nominal}
-        ${currency.code}
-        =
-        ${currency.value}
-        RUB
-      `;
     },
 
     loadExchangeRate() {
@@ -173,17 +183,24 @@ export default {
 
   &__currencies {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 10px;
 
     .exchange-rate__from,
     .exchange-rate__to {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       min-width: 10px;
       min-height: 10px;
+      padding: 10px;
+
+      text-align: center;
 
       border: 1px solid #999999;
+      border-radius: 10px;
     }
   }
 }

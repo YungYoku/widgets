@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import WeatherForecastLoading from "@/components/weatherForecast/WeatherForecastLoading.vue";
+import WeatherForecastLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastChart from "@/components/weatherForecast/WeatherForecastChart.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import WeatherForecastLoading from "@/components/weatherForecast/WeatherForecastLoading.vue";
+import WeatherForecastLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 
 export default {

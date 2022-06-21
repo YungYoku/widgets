@@ -10,7 +10,13 @@
       Курс валют
     </h2>
 
-    <div class="exchange-rate__currencies">
+
+    <widget-loading v-if="loading" />
+
+    <div
+      v-else
+      class="exchange-rate__currencies"
+    >
       <select
         id="from"
         v-model="from"
@@ -44,7 +50,10 @@
       </select>
     </div>
 
-    <div>
+
+    <widget-loading v-if="loading" />
+
+    <div v-else>
       {{ exchangedCurrencies }}
     </div>
   </div>
@@ -52,11 +61,12 @@
 
 <script>
 import WidgetNavigation from "@/components/WidgetNavigation";
+import WidgetLoading from "@/components/WidgetLoading";
 
 export default {
   name: "ExchangeRate",
-  
-  components: { WidgetNavigation },
+
+  components: { WidgetLoading, WidgetNavigation },
 
   props: {
     id: {
@@ -68,6 +78,8 @@ export default {
 
   data() {
     return {
+      baseURL: "https://www.cbr.ru/",
+      loading: true,
       date: "01.01.2022",
       currencies: [],
       currenciesList: [],
@@ -184,8 +196,12 @@ export default {
     },
 
     loadExchangeRate() {
-      this.$http.get("https://www.cbr.ru/scripts/XML_daily.asp")
+      this.loading = true;
+
+      this.$http.get(`${this.baseURL}scripts/XML_daily.asp`)
         .then(response => {
+          this.loading = false;
+
           const xml = this.stringToXML(response.data);
           const json = this.xmlToJson(xml).ValCurs;
 

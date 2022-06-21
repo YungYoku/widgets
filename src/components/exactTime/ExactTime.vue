@@ -27,7 +27,10 @@
       </select>
     </div>
 
-    <h3>
+
+    <widget-loading v-if="loading" />
+
+    <h3 v-else>
       {{ time }}
     </h3>
   </div>
@@ -36,10 +39,13 @@
 <script>
 import timezones from "@/assets/js/timezones";
 import WidgetNavigation from "@/components/WidgetNavigation";
+import WidgetLoading from "@/components/WidgetLoading";
 
 export default {
   name: "ExactTime",
-  components: { WidgetNavigation },
+
+  components: { WidgetLoading, WidgetNavigation },
+
   props: {
     id: {
       type: Number,
@@ -50,6 +56,8 @@ export default {
 
   data() {
     return {
+      baseURL: "https://worldtimeapi.org/api/",
+      loading: true,
       timezone: "",
       hours: 0,
       minutes: 0,
@@ -99,8 +107,12 @@ export default {
     },
 
     loadTimeByIp() {
-      this.$http.get("https://worldtimeapi.org/api/ip")
+      this.loading = true;
+
+      this.$http.get(`${this.baseURL}ip`)
         .then(response => {
+          this.loading = false;
+
           const time = response.data.datetime;
 
           if (time) {
@@ -110,8 +122,12 @@ export default {
     },
 
     loadTimeByTimezone() {
-      this.$http.get(`https://worldtimeapi.org/api/timezone/${this.timezone}`)
+      this.loading = true;
+
+      this.$http.get(`${this.baseURL}timezone/${this.timezone}`)
         .then(response => {
+          this.loading = false;
+
           const time = response.data.datetime;
 
           if (time) {

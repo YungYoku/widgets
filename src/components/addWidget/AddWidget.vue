@@ -64,8 +64,6 @@ export default {
   justify-content: center;
   align-items: center;
 
-  padding: 10px;
-
   border-radius: 20px;
 
   button {

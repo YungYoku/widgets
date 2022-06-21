@@ -581,6 +581,7 @@ export default {
       'today week'
       'form form';
 
+  width: 100%;
   max-width: 1150px;
   height: 100%;
 

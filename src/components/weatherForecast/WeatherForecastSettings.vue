@@ -1,10 +1,12 @@
 <template>
   <div class="settings">
+    <weather-forecast-close-button
+      @close="$emit('close')"
+    />
+
     <h2 class="settingsTitle">
       Настройки
     </h2>
-
-    <weather-forecast-close-button @close="$emit('close')" />
 
     <div class="settingsList">
       <div
@@ -157,7 +159,7 @@ export default {
 
   width: 100%;
   height: 100%;
-  padding: 60px 20px 20px 20px;
+  padding: 30px 20px 20px 20px;
 
   background-color: var(--main-background-color);
   @supports (backdrop-filter: blur(20px)) {

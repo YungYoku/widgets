@@ -41,6 +41,7 @@ export default {
 
   data() {
     return {
+      widgetClassName: ".weather-forecast",
       x: 0,
       y: 0,
       showing: false,
@@ -51,6 +52,7 @@ export default {
             navigator.clipboard.writeText(this.copyWeatherForecast());
           }
         },
+
         {
           text: "Сохранить",
           action: () => {
@@ -77,7 +79,7 @@ export default {
 
   mounted() {
     document.addEventListener("click", this.handleClick);
-    document.querySelector(".weather-forecast").oncontextmenu = this.handleContext;
+    document.querySelector(this.widgetClassName).oncontextmenu = this.handleContext;
   },
 
   destroyed() {
@@ -90,7 +92,7 @@ export default {
     },
 
     setMenuCoords(e) {
-      const weatherForecast = document.querySelector(".weather-forecast");
+      const weatherForecast = document.querySelector(this.widgetClassName);
       const weatherForecastWidth = weatherForecast.clientWidth;
       const weatherForecastHeight = weatherForecast.clientHeight;
 

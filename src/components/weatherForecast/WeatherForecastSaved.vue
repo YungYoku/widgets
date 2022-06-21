@@ -1,10 +1,12 @@
 <template>
   <div class="saved">
+    <weather-forecast-close-button
+      @close="$emit('close')"
+    />
+
     <h2 class="savedTitle">
       Сохранённое
     </h2>
-
-    <weather-forecast-close-button @close="$emit('close')" />
 
     <div class="savedList">
       <button
@@ -87,7 +89,7 @@ export default {
 
   width: 100%;
   height: 100%;
-  padding: 60px 20px 20px 20px;
+  padding: 30px 20px 20px 20px;
 
   background-color: var(--main-background-color);
 

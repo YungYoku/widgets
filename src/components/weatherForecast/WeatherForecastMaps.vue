@@ -1,6 +1,9 @@
 <template>
   <div class="maps">
-    <weather-forecast-close-button @close="$emit('close')" />
+    <weather-forecast-close-button
+      class="maps__close-button"
+      @close="$emit('close')"
+    />
 
     <div class="map">
       <l-map
@@ -74,6 +77,12 @@ export default {
 
   background-color: #ffffff;
   border-radius: 25px;
+
+  &__close-button {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+  }
 
   .map {
     width: 100%;

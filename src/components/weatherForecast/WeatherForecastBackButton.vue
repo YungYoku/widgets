@@ -1,6 +1,7 @@
 <template>
   <button
     class="close"
+    type="button"
     @click="$emit('close')"
   >
     <img
@@ -19,9 +20,6 @@ export default {
 
 <style lang="scss" scoped>
 .close {
-  position: absolute;
-  top: 20px;
-  left: 20px;
   z-index: 10000;
 
   display: flex;
@@ -30,6 +28,7 @@ export default {
 
   box-sizing: border-box;
 
+  margin: 0 auto 0 0;
   padding: 0;
 
   background: transparent;

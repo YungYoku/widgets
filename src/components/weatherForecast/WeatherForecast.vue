@@ -1,13 +1,9 @@
 <template>
   <div
-    :class="{
-      theme,
-      'cityError': errorShowing || geoAccessShowing,
-    }"
+    :class="['widget', 'weather-forecast', cityErrorClassName, uniqueClassName]"
     :style="{
       'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
     }"
-    class="widget weather-forecast"
   >
     <weather-forecast-error
       v-if="errorShowing && !geoAccessShowing"
@@ -20,6 +16,7 @@
     <weather-forecast-context
       :city-name="cityName"
       :copy-weather-forecast="copyWeatherForecast"
+      :unique-class-name="'.' + uniqueClassName"
     />
 
     <widget-navigation
@@ -225,6 +222,14 @@ export default {
   },
 
   computed: {
+    uniqueClassName() {
+      return `weather-forecast${this.id}`;
+    },
+
+    cityErrorClassName() {
+      return this.errorShowing || this.geoAccessShowing ? "cityError" : "";
+    },
+
     daysInMonth() {
       const secondsInDay = 86400;
 

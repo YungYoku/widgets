@@ -25,6 +25,12 @@ export default {
   name: "WeatherForecastSettings",
 
   props: {
+    uniqueClassName: {
+      type: String,
+      required: true,
+      default: ""
+    },
+
     copyWeatherForecast: {
       type: Function,
       required: true,
@@ -41,7 +47,6 @@ export default {
 
   data() {
     return {
-      widgetClassName: ".weather-forecast",
       x: 0,
       y: 0,
       showing: false,
@@ -79,7 +84,7 @@ export default {
 
   mounted() {
     document.addEventListener("click", this.handleClick);
-    document.querySelector(this.widgetClassName).oncontextmenu = this.handleContext;
+    document.querySelector(this.uniqueClassName).oncontextmenu = this.handleContext;
   },
 
   destroyed() {
@@ -92,7 +97,7 @@ export default {
     },
 
     setMenuCoords(e) {
-      const weatherForecast = document.querySelector(this.widgetClassName);
+      const weatherForecast = document.querySelector(this.uniqueClassName);
       const weatherForecastWidth = weatherForecast.clientWidth;
       const weatherForecastHeight = weatherForecast.clientHeight;
 

@@ -68,7 +68,7 @@ export default {
 
   background-color: #222222;
 
-  gap: 30px;
+  gap: 20px;
 
   @media (max-width: 1000px), (max-height: 900px) {
     padding: 10px;

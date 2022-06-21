@@ -7,9 +7,8 @@
     :style="{
       'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
     }"
-    class="widget weatherForecast info"
+    class="widget weatherForecast"
   >
-
     <weather-forecast-error
       v-if="errorShowing && !geoAccessShowing"
       :geo-access-error="geoAccessError"

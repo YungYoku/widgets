@@ -15,7 +15,6 @@ module.exports = {
     "vue/html-indent": ["error", 2],
     "vue/padding-line-between-blocks": ["error", "always"],
     "vue/component-definition-name-casing": ["error", "PascalCase"],
-    "vue/name-property-casing": ["error", "PascalCase"],
     "vue/html-self-closing": [
       "error",
       {

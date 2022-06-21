@@ -95,7 +95,7 @@ export default {
     handleClick() {
       this.showing = false;
     },
-
+  
     getMouseX(e) {
       const pageX = e.pageX;
       const clientX = e.clientX;

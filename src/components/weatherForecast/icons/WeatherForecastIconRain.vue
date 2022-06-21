@@ -81,7 +81,7 @@ export default {
   .drop1 {
     left: 25%;
 
-    animation: .5s drop .7s infinite;
+    animation: .5s drop .5s infinite;
   }
 
   .drop2 {

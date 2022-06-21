@@ -58,6 +58,7 @@ export default {
     return {
       baseURL: "https://worldtimeapi.org/api/",
       loading: true,
+      interval: null,
       timezone: "",
       hours: 0,
       minutes: 0,
@@ -94,6 +95,10 @@ export default {
 
   mounted() {
     this.loadTimeByIp();
+  },
+
+  destroyed() {
+    clearInterval(this.interval);
   },
 
   methods: {
@@ -172,7 +177,7 @@ export default {
 
     startClocks(time) {
       this.setResponseTime(time);
-      setInterval(this.increaseSeconds, 1000);
+      this.interval = setInterval(this.increaseSeconds, 1000);
     },
 
     closeWidget() {

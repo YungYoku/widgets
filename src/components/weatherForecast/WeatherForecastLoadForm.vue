@@ -124,11 +124,11 @@ export default {
   },
 
   mounted() {
-    document.addEventListener("click", e => this.handleClick(e.target.className));
+    document.addEventListener("click", this.handleClick);
   },
 
   destroyed() {
-    document.addEventListener("click", e => this.handleClick(e.target.className));
+    document.addEventListener("click", this.handleClick);
   },
 
   methods: {
@@ -145,7 +145,9 @@ export default {
       }
     },
 
-    handleClick(className) {
+    handleClick(e) {
+      const className = e.target.className;
+
       if (className && typeof className === "string") {
         const isInputClicked = className.includes("inputCity");
         const isOptionClicked = className.includes("citySelect") || className.includes("citySelectItem");

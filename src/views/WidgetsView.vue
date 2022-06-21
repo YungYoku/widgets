@@ -27,6 +27,7 @@ export default {
 
   data() {
     return {
+      newId: 0,
       widgets: []
     };
   },
@@ -39,8 +40,9 @@ export default {
     addWidget(type) {
       this.widgets.push({
         type,
-        id: this.widgets.length
+        id: this.newId
       });
+      this.newId++;
     }
   }
 };

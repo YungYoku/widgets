@@ -44,8 +44,14 @@ export default {
   },
 
   mounted() {
-    document.querySelector(".leaflet-control-zoom").remove();
-    document.querySelector(".leaflet-control-attribution").remove();
+    this.removeLeafletUiTrash();
+  },
+
+  methods: {
+    removeLeafletUiTrash() {
+      document.querySelector(".leaflet-control-zoom").remove();
+      document.querySelector(".leaflet-control-attribution").remove();
+    }
   }
 };
 </script>

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastCloseButton";
+import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
 
 export default {
   name: "WeatherForecastSaved",

@@ -1,6 +1,6 @@
 <template>
   <div class="today withContext">
-    <weather-forecast-loading v-if="loading" />
+    <widget-loading v-if="loading" />
 
     <div v-else>
       <div class="temperatureWrap">
@@ -36,14 +36,14 @@
 </template>
 
 <script>
-import WeatherForecastLoading from "@/components/WidgetLoading.vue";
+import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 
 export default {
   name: "WeatherForecastToday",
 
   components: {
-    WeatherForecastLoading,
+    WidgetLoading,
     WeatherForecastIcon
   },
 
@@ -79,8 +79,6 @@ export default {
 
 <style lang="scss" scoped>
 .today {
-  padding: 30px 0 0 0;
-
   .temperatureWrap {
     display: grid;
     align-items: center;

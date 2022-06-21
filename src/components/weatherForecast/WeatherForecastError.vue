@@ -47,7 +47,6 @@ export default {
 .error {
   width: 100%;
   margin-bottom: 20px;
-  padding: 30px 0 0 0;
 
   &Text {
     margin: 0;

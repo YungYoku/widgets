@@ -48,7 +48,7 @@
 <script>
 import vk from "@/assets/img/vk.svg";
 import telegram from "@/assets/img/telegram.svg";
-import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastCloseButton";
+import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
 
 export default {
   name: "WeatherForecastSettings",

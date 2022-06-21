@@ -1,5 +1,11 @@
 <template>
   <div class="widget exchange-rate">
+    <widget-navigation
+      :rules="navigationRules"
+      class="navigation"
+      @closeWidget="closeWidget"
+    />
+
     <h2 class="title">
       Курс валют
     </h2>
@@ -45,8 +51,20 @@
 </template>
 
 <script>
+import WidgetNavigation from "@/components/WidgetNavigation";
+
 export default {
   name: "ExchangeRate",
+  
+  components: { WidgetNavigation },
+
+  props: {
+    id: {
+      type: Number,
+      required: true,
+      default: 0
+    }
+  },
 
   data() {
     return {
@@ -64,6 +82,10 @@ export default {
       return `
         1 ${this.from} = ${result} ${this.to}
       `;
+    },
+
+    navigationRules() {
+      return ["Выход"];
     }
   },
 
@@ -170,6 +192,10 @@ export default {
           this.date = json.attributes.Date;
           this.currencies = this.formatCurrencies(json.Valute);
         });
+    },
+
+    closeWidget() {
+      this.$emit("closeWidget", this.id);
     }
   }
 };

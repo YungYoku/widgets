@@ -1,9 +1,11 @@
 <template>
   <div class="widgetsView">
     <component
-      :is="widget"
+      :is="widget.type"
       v-for="(widget, i) in widgets"
+      :id="widget.id"
       :key="widget + i"
+      @closeWidget="closeWidget"
     />
 
     <add-widget
@@ -30,8 +32,15 @@ export default {
   },
 
   methods: {
-    addWidget(id) {
-      this.widgets.push(id);
+    closeWidget(id) {
+      this.widgets = this.widgets.filter(widget => widget.id !== id);
+    },
+
+    addWidget(type) {
+      this.widgets.push({
+        type,
+        id: this.widgets.length
+      });
     }
   }
 };

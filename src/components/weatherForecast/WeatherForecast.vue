@@ -22,8 +22,10 @@
       :copy-weather-forecast="copyWeatherForecast"
     />
 
-    <weather-forecast-navigation
-      :weather-showing="weatherShowing"
+    <widget-navigation
+      :rules="navigationRules"
+      class="navigation"
+      @closeWidget="closeWidget"
       @openMap="openMap"
       @openSaved="openSaved"
       @openSettings="openSettings"
@@ -89,8 +91,8 @@ import WeatherForecastContext from "@/components/weatherForecast/WeatherForecast
 import WeatherForecastSettings from "@/components/weatherForecast/WeatherForecastSettings.vue";
 import WeatherForecastGeoAccess from "@/components/weatherForecast/WeatherForecastGeoAccess.vue";
 import WeatherForecastSaved from "@/components/weatherForecast/WeatherForecastSaved.vue";
-import WeatherForecastNavigation from "@/components/weatherForecast/WeatherForecastNavigation.vue";
 import WeatherForecastMaps from "@/components/weatherForecast/WeatherForecastMaps.vue";
+import WidgetNavigation from "@/components/WidgetNavigation";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -112,8 +114,8 @@ export default {
   name: "WeatherForecast",
 
   components: {
+    WidgetNavigation,
     WeatherForecastMaps,
-    WeatherForecastNavigation,
     WeatherForecastSaved,
     WeatherForecastGeoAccess,
     WeatherForecastSettings,
@@ -122,6 +124,14 @@ export default {
     WeatherForecastLoadForm,
     WeatherForecastWeek,
     WeatherForecastToday
+  },
+
+  props: {
+    id: {
+      type: Number,
+      required: true,
+      default: 0
+    }
   },
 
   data() {
@@ -234,6 +244,14 @@ export default {
 
     weatherShowing() {
       return !this.errorShowing && !this.geoAccessShowing;
+    },
+
+    navigationRules() {
+      if (this.weatherShowing) {
+        return ["Выход", "Настройки", "Сохранённое", "На карте"];
+      }
+
+      return ["Выход", "Настройки", "Сохранённое"];
     }
   },
 
@@ -544,6 +562,10 @@ export default {
 
     closeMaps() {
       this.mapsShowing = false;
+    },
+
+    closeWidget() {
+      this.$emit("closeWidget", this.id);
     }
   }
 };
@@ -551,8 +573,11 @@ export default {
 
 <style lang="scss" scoped>
 .weather-forecast {
-  grid-template: repeat(2, auto) / 2fr 3fr;
+  align-items: flex-start;
+
+  grid-template: repeat(3, auto) / 2fr 3fr;
   grid-template-areas:
+      'nav week'
       'today week'
       'form form';
 
@@ -563,16 +588,18 @@ export default {
 
 
   @media (max-width: 1000px) {
-    grid-template: repeat(3, auto) / 1fr;
+    grid-template: repeat(4, auto) / 1fr;
     grid-template-areas:
+      'nav'
       'today'
       'week'
       'form';
   }
 
   @media (max-width: 300px) {
-    grid-template: repeat(2, auto) / 1fr;
+    grid-template: repeat(3, auto) / 1fr;
     grid-template-areas:
+      'nav'
       'today'
       'form';
 
@@ -589,6 +616,10 @@ export default {
     .form {
       display: none;
     }
+  }
+
+  .navigation {
+    grid-area: nav;
   }
 
   .error {
@@ -613,6 +644,7 @@ export default {
 
   grid-template: auto / 1fr;
   grid-template-areas:
+      'nav'
       'error'
       'form';
 }

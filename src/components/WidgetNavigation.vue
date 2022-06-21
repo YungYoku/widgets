@@ -17,18 +17,19 @@
 </template>
 
 <script>
+import close from "@/assets/img/close.svg";
 import settings from "@/assets/img/settings.svg";
 import saved from "@/assets/img/saved.svg";
 import map from "@/assets/img/map.svg";
 
 export default {
-  name: "WeatherForecastNavigation",
+  name: "WidgetNavigation",
 
   props: {
-    weatherShowing: {
-      type: Boolean,
+    rules: {
+      type: Array,
       required: true,
-      default: false
+      default: () => []
     }
   },
 
@@ -36,9 +37,15 @@ export default {
     return {
       navigationStore: [
         {
+          img: close,
+          alt: "Выход",
+          action: () => {
+            this.$emit("closeWidget");
+          }
+        },
+        {
           img: settings,
           alt: "Настройки",
-          weatherShowing: false,
           action: () => {
             this.$emit("openSettings");
           }
@@ -46,7 +53,6 @@ export default {
         {
           img: saved,
           alt: "Сохранённое",
-          weatherShowing: false,
           action: () => {
             this.$emit("openSaved");
           }
@@ -54,7 +60,6 @@ export default {
         {
           img: map,
           alt: "На карте",
-          weatherShowing: true,
           action: () => {
             this.$emit("openMap");
           }
@@ -68,7 +73,7 @@ export default {
       let navigationStore = this.navigationStore;
 
       navigationStore = navigationStore.filter(nav => {
-        return (nav.weatherShowing && this.weatherShowing) || !nav.weatherShowing;
+        return this.rules.includes(nav.alt);
       });
 
       return navigationStore;
@@ -79,12 +84,8 @@ export default {
 
 <style lang="scss" scoped>
 .navigation {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   &Button {

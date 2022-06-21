@@ -1,6 +1,6 @@
 <template>
   <div class="week withContext">
-    <weather-forecast-loading v-if="loading" />
+    <widget-loading v-if="loading" />
 
     <div
       v-else
@@ -27,7 +27,7 @@
     </div>
 
 
-    <weather-forecast-loading v-if="loading" />
+    <widget-loading v-if="loading" />
 
     <div
       v-else
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import WeatherForecastLoading from "@/components/WidgetLoading.vue";
+import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastChart from "@/components/weatherForecast/WeatherForecastChart.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 
@@ -76,7 +76,7 @@ export default {
   name: "WeatherForecastWeek",
 
   components: {
-    WeatherForecastLoading,
+    WidgetLoading,
     WeatherForecastChart,
     WeatherForecastIcon
   },

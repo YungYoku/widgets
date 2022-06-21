@@ -1,5 +1,11 @@
 <template>
   <div class="widget exact-time">
+    <widget-navigation
+      :rules="navigationRules"
+      class="navigation"
+      @closeWidget="closeWidget"
+    />
+
     <h2 class="title">
       Точное время
     </h2>
@@ -29,9 +35,18 @@
 
 <script>
 import timezones from "@/assets/js/timezones";
+import WidgetNavigation from "@/components/WidgetNavigation";
 
 export default {
   name: "ExactTime",
+  components: { WidgetNavigation },
+  props: {
+    id: {
+      type: Number,
+      required: true,
+      default: 0
+    }
+  },
 
   data() {
     return {
@@ -56,6 +71,10 @@ export default {
       const seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
 
       return `${hours}:${minutes}:${seconds}`;
+    },
+
+    navigationRules() {
+      return ["Выход"];
     }
   },
 
@@ -138,6 +157,10 @@ export default {
     startClocks(time) {
       this.setResponseTime(time);
       setInterval(this.increaseSeconds, 1000);
+    },
+
+    closeWidget() {
+      this.$emit("closeWidget", this.id);
     }
   }
 };

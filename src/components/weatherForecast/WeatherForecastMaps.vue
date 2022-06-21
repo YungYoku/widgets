@@ -15,7 +15,7 @@
 
 <script>
 import { LMap, LTileLayer } from "vue2-leaflet";
-import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastCloseButton";
+import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
 
 export default {
   name: "WeatherForecastMaps",

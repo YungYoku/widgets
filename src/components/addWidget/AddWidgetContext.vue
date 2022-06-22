@@ -37,14 +37,13 @@ export default {
   computed: {
     styleLeft() {
       const x = this.x;
-
+      
       if (x > 0) {
-        return `calc(50% + ${x})`;
+        return `calc(50% + ${x}px)`;
       } else if (x < 0) {
-        return `calc(50% - ${Math.abs(x)})`;
-      } else {
-        return `50%`;
+        return `calc(50% - ${Math.abs(x)}px)`;
       }
+      return `50%`;
     }
   },
 

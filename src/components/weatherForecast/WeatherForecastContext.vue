@@ -143,7 +143,7 @@ export default {
 
       const clickX = this.x = this.getMouseX(e) - weatherForecast.offsetLeft;
       const clickY = this.y = this.getMouseY(e) - weatherForecast.offsetTop;
-      
+
       if (clickX + 155 > weatherForecastWidth) {
         this.x = clickX - 155;
       }
@@ -154,6 +154,8 @@ export default {
     },
 
     handleContext(e) {
+      this.showing = false;
+
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         return false;
       }

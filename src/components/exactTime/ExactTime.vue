@@ -41,6 +41,13 @@
     </div>
 
 
+    <exact-time-clocks
+      :hours="hours"
+      :minutes="minutes"
+      :seconds="seconds"
+    />
+
+
     <widget-loading v-if="loading" />
 
     <h3
@@ -56,11 +63,12 @@
 import timezones from "@/assets/js/timezones";
 import WidgetNavigation from "@/components/WidgetNavigation";
 import WidgetLoading from "@/components/WidgetLoading";
+import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks";
 
 export default {
   name: "ExactTime",
 
-  components: { WidgetLoading, WidgetNavigation },
+  components: { ExactTimeClocks, WidgetLoading, WidgetNavigation },
 
   props: {
     id: {
@@ -222,6 +230,10 @@ export default {
       border: 1px solid #999999;
       border-radius: 15px;
     }
+  }
+
+  .text {
+    text-align: center;
   }
 }
 </style>

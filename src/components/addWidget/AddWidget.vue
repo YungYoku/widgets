@@ -57,7 +57,7 @@ export default {
       } else {
         this.contextX = 0;
       }
-      
+
       this.contextShowing = true;
     },
 

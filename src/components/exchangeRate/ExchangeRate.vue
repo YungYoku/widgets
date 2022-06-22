@@ -156,55 +156,35 @@ export default {
     },
 
     xmlToJson(xml) {
-      let obj = {};
+      let currencies = [...xml.childNodes[0].childNodes] || [];
 
-      if (xml.nodeType === 1) {
-        if (xml.attributes.length > 0) {
-          obj.attributes = {};
-          for (let j = 0; j < xml.attributes.length; j++) {
-            const attribute = xml.attributes.item(j);
-            obj.attributes[attribute.nodeName] = attribute.nodeValue;
-          }
-        }
-      } else if (xml.nodeType === 3) {
-        obj = xml.nodeValue;
-      }
+      currencies = currencies.map(_currency => {
+        const attrs = [..._currency.childNodes];
 
-      if (xml.hasChildNodes()) {
-        for (let i = 0; i < xml.childNodes.length; i++) {
-          const item = xml.childNodes.item(i);
-          const nodeName = item.nodeName;
+        const currency = {};
+        attrs.forEach(attr => currency[attr.localName] = attr.textContent);
 
-          if (typeof (obj[nodeName]) === "undefined") {
-            obj[nodeName] = this.xmlToJson(item);
-          } else {
-            if (typeof (obj[nodeName].push) === "undefined") {
-              const old = obj[nodeName];
-              obj[nodeName] = [];
-              obj[nodeName].push(old);
-            }
-            obj[nodeName].push(this.xmlToJson(item));
-          }
-        }
-      }
-      return obj;
+        return currency;
+      });
+
+      return currencies;
     },
 
     formatCurrencies(currencies) {
       this.currenciesList.push("RUB");
 
       return currencies.map(currency => {
-        const code = currency.CharCode["#text"];
-        const nominal = parseInt(currency.Nominal["#text"]);
-        const value = parseInt(currency.Value["#text"]);
+        const code = currency.CharCode;
+        const nominal = parseInt(currency.Nominal);
+        const value = parseInt(currency.Value);
 
         this.currenciesList.push(code);
 
         return {
           code,
-          name: currency.Name["#text"],
+          name: currency.Name,
           nominal: nominal / nominal,
-          numCode: currency.NumCode["#text"],
+          numCode: currency.NumCode,
           value: value / nominal,
           attributes: currency.attributes
         };
@@ -219,10 +199,9 @@ export default {
           this.loading = false;
 
           const xml = this.stringToXML(response.data);
-          const json = this.xmlToJson(xml).ValCurs;
+          const json = this.xmlToJson(xml);
 
-          this.date = json.attributes.Date;
-          this.currencies = this.formatCurrencies(json.Valute);
+          this.currencies = this.formatCurrencies(json);
         });
     },
 

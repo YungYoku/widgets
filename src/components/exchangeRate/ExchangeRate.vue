@@ -1,9 +1,15 @@
 <template>
-  <div class="widget exchange-rate">
+  <div
+    :class="[
+      isCollapsed ? 'collapsed' : '',
+    ]"
+    class="widget exchange-rate"
+  >
     <widget-navigation
       :rules="navigationRules"
       class="navigation"
       @closeWidget="closeWidget"
+      @collapseWidget="collapseWidget"
     />
 
     <h2 class="title">
@@ -85,6 +91,7 @@ export default {
     return {
       baseURL: "https://www.cbr.ru/",
       loading: true,
+      isCollapsed: false,
       date: "01.01.2022",
       currencies: [],
       currenciesList: [],
@@ -102,7 +109,7 @@ export default {
     },
 
     navigationRules() {
-      return ["Выход"];
+      return ["Выход", "Сворачивание"];
     }
   },
 
@@ -112,6 +119,10 @@ export default {
   },
 
   methods: {
+    collapseWidget() {
+      this.isCollapsed = !this.isCollapsed;
+    },
+
     exchangeCurrencies() {
       const currencyFrom = this.currencies.find(currency => currency.code === this.from);
       const currencyTo = this.currencies.find(currency => currency.code === this.to);
@@ -216,7 +227,13 @@ export default {
 .exchange-rate {
   max-width: 400px;
 
-  background-color: #ffffff;
+  &.collapsed {
+    max-width: 110px;
+    max-height: 70px;
+    padding: 20px;
+
+    transition: all 0.3s;
+  }
 
   &__currencies {
     display: flex;

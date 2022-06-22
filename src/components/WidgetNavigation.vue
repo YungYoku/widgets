@@ -9,6 +9,9 @@
     >
       <img
         :alt="button.alt"
+        :class="{
+          'turn-over': button.turnOver,
+        }"
         :src="button.img"
         class="navigation__button-img"
       />
@@ -18,6 +21,7 @@
 
 <script>
 import close from "@/assets/img/close.svg";
+import arrow from "@/assets/img/arrow.svg";
 import settings from "@/assets/img/settings.svg";
 import saved from "@/assets/img/saved.svg";
 import map from "@/assets/img/map.svg";
@@ -39,27 +43,44 @@ export default {
         {
           img: close,
           alt: "Выход",
+          turnOver: false,
           action: () => {
             this.$emit("closeWidget");
           }
         },
+
+        {
+          img: arrow,
+          alt: "Сворачивание",
+          turnOver: false,
+          action: () => {
+            this.navigationStore[1].turnOver = !this.navigationStore[1].turnOver;
+            this.$emit("collapseWidget");
+          }
+        },
+
         {
           img: settings,
           alt: "Настройки",
+          turnOver: false,
           action: () => {
             this.$emit("openSettings");
           }
         },
+
         {
           img: saved,
           alt: "Сохранённое",
+          turnOver: false,
           action: () => {
             this.$emit("openSaved");
           }
         },
+
         {
           img: map,
           alt: "На карте",
+          turnOver: false,
           action: () => {
             this.$emit("openMap");
           }
@@ -122,6 +143,10 @@ export default {
 
       @supports (aspect-ratio: 1 / 1) {
         aspect-ratio: 1 / 1;
+      }
+
+      &.turn-over {
+        transform: rotate(180deg);
       }
     }
   }

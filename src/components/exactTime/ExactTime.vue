@@ -1,9 +1,15 @@
 <template>
-  <div class="widget exact-time">
+  <div
+    :class="[
+      isCollapsed ? 'collapsed' : ''
+    ]"
+    class="widget exact-time"
+  >
     <widget-navigation
       :rules="navigationRules"
       class="navigation"
       @closeWidget="closeWidget"
+      @collapseWidget="collapseWidget"
     />
 
     <h2 class="title">
@@ -82,6 +88,7 @@ export default {
     return {
       baseURL: "https://worldtimeapi.org/api/",
       loading: true,
+      isCollapsed: false,
       interval: null,
       timezone: "Не выбран",
       hours: 0,
@@ -107,7 +114,7 @@ export default {
     },
 
     navigationRules() {
-      return ["Выход"];
+      return ["Выход", "Сворачивание"];
     }
   },
 
@@ -126,6 +133,10 @@ export default {
   },
 
   methods: {
+    collapseWidget() {
+      this.isCollapsed = !this.isCollapsed;
+    },
+
     formatTime(str) {
       const time = str
         .split("T")[1]
@@ -216,6 +227,14 @@ export default {
   max-width: 350px;
 
   background-color: #ffffff;
+
+  &.collapsed {
+    max-width: 110px;
+    max-height: 70px;
+    padding: 20px;
+
+    transition: all 0.3s;
+  }
 
   &__timezone {
     display: flex;

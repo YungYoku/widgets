@@ -41,9 +41,8 @@ export default {
     addWidget(type) {
       this.widgets.push({
         type,
-        id: this.newId
+        id: this.newId++
       });
-      this.newId++;
     }
   }
 };

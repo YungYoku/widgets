@@ -94,6 +94,8 @@ export default {
     border-radius: 50%;
 
     .exact-time-clocks__arrow.seconds {
+      z-index: 3;
+
       &::after {
         top: 0;
 
@@ -105,6 +107,8 @@ export default {
     }
 
     .exact-time-clocks__arrow.minutes {
+      z-index: 2;
+
       &::after {
         top: -1px;
 
@@ -116,6 +120,8 @@ export default {
     }
 
     .exact-time-clocks__arrow.hours {
+      z-index: 1;
+
       &::after {
         top: -2px;
 
@@ -148,6 +154,7 @@ export default {
       position: absolute;
       top: calc(50% - 3px);
       left: calc(50% - 3px);
+      z-index: 4;
 
       width: 6px;
       height: 6px;

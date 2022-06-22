@@ -4,7 +4,8 @@
       'widget',
       'weather-forecast',
       cityErrorClassName,
-      uniqueClassName
+      uniqueClassName,
+      isCollapsed ? 'collapsed': ''
     ]"
     :style="{
       'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
@@ -28,6 +29,7 @@
       :rules="navigationRules"
       class="navigation"
       @closeWidget="closeWidget"
+      @collapseWidget="collapseWidget"
       @openMap="openMap"
       @openSaved="openSaved"
       @openSettings="openSettings"
@@ -142,6 +144,7 @@ export default {
       apiKey: "d4dd6edd6e1ad7f6d3da53ec3252f610",
       loading: true,
       lang: window.navigator.language.slice(0, 2),
+      isCollapsed: false,
       lat: 0,
       lon: 0,
       current: {
@@ -257,11 +260,15 @@ export default {
     },
 
     navigationRules() {
-      if (this.weatherShowing) {
-        return ["Выход", "Настройки", "Сохранённое", "На карте"];
+      if (this.isCollapsed) {
+        return ["Выход", "Сворачивание"];
       }
 
-      return ["Выход", "Настройки", "Сохранённое"];
+      if (this.weatherShowing) {
+        return ["Выход", "Сворачивание", "Настройки", "Сохранённое", "На карте"];
+      }
+
+      return ["Выход", "Сворачивание", "Настройки", "Сохранённое"];
     }
   },
 
@@ -308,6 +315,10 @@ export default {
   },
 
   methods: {
+    collapseWidget() {
+      this.isCollapsed = !this.isCollapsed;
+    },
+
     switchTheme(theme) {
       this.theme = theme;
       if (theme === "light") {
@@ -597,7 +608,6 @@ export default {
 
   background-color: var(--main-background-color);
 
-
   @media (max-width: 1000px) {
     grid-template: repeat(4, auto) / 1fr;
     grid-template-areas:
@@ -628,6 +638,14 @@ export default {
     .form {
       display: none;
     }
+  }
+
+  &.collapsed {
+    width: 110px;
+    max-height: 70px;
+    padding: 20px;
+
+    transition: all 0.3s;
   }
 
   .navigation {

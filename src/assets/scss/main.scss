@@ -21,13 +21,17 @@ html {
   box-sizing: border-box;
 
   max-width: 400px;
+  max-height: 3000px;
   margin: 0 0 auto 0;
   padding: 30px 20px 20px 20px;
+  overflow: hidden;
 
   color: #333333;
 
   background-color: #ffffff;
   border-radius: 25px;
+
+  transition: all 0.3s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 

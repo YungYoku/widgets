@@ -620,8 +620,9 @@ export default {
   }
 
   @media (max-width: 240px) {
-    grid-template: repeat(1, auto) / 1fr;
+    grid-template: repeat(2, auto) / 1fr;
     grid-template-areas:
+      'nav'
       'today';
 
     .form {

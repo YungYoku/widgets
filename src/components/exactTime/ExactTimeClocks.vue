@@ -24,6 +24,8 @@
         class="exact-time-clocks__arrow hours"
       >
       </div>
+
+      <div class="exact-time-clocks__center"></div>
     </div>
   </div>
 </template>
@@ -79,6 +81,7 @@ export default {
 
   width: 100%;
   height: 100px;
+  margin-top: 10px;
   overflow: hidden;
 
   &__circle {
@@ -87,7 +90,7 @@ export default {
     width: 100px;
     height: 100px;
 
-    border: 2px solid #222222;
+    border: 3px solid #222222;
     border-radius: 50%;
 
     .exact-time-clocks__arrow.seconds {
@@ -137,7 +140,20 @@ export default {
         position: absolute;
         left: 50%;
 
+        border-radius: 5px;
       }
+    }
+
+    .exact-time-clocks__center {
+      position: absolute;
+      top: calc(50% - 3px);
+      left: calc(50% - 3px);
+
+      width: 6px;
+      height: 6px;
+
+      background-color: #222222;
+      border-radius: 50%;
     }
   }
 }

@@ -3,14 +3,14 @@
     <button
       v-for="button in navigation"
       :key="button.img"
-      class="navigationButton"
+      class="navigation__button"
       type="button"
       @click="button.action"
     >
       <img
         :alt="button.alt"
         :src="button.img"
-        class="navigationButtonImg"
+        class="navigation__button-img"
       />
     </button>
   </div>
@@ -88,7 +88,7 @@ export default {
   justify-content: flex-start;
   align-items: center;
 
-  &Button {
+  &__button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,7 +112,7 @@ export default {
       transition: all 0.1s;
     }
 
-    &Img {
+    &-img {
       display: block;
 
       width: 32px;
@@ -129,7 +129,7 @@ export default {
   @supports (gap: 10px) {
     gap: 10px;
 
-    &Button {
+    &__button {
       margin: 0;
     }
   }

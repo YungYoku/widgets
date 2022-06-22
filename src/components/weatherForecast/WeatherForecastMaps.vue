@@ -5,7 +5,7 @@
       @close="$emit('close')"
     />
 
-    <div class="map">
+    <div class="maps__map">
       <l-map
         :center="coords"
         :zoom="zoom"
@@ -84,7 +84,7 @@ export default {
     left: 20px;
   }
 
-  .map {
+  &__map {
     width: 100%;
     height: 100%;
   }

@@ -5,7 +5,7 @@
         'searchable': city.length
       }"
       autocomplete="off"
-      class="loadForm"
+      class="load-form"
       @submit.prevent="load"
     >
       <input
@@ -15,7 +15,7 @@
           'error': inputError
         }"
         :placeholder="placeholder"
-        class="inputCity"
+        class="input-city"
         name="inputCity"
         title="Название города"
         type="text"
@@ -23,12 +23,12 @@
 
       <div
         v-if="selectShowing && city && optionCities.length >= 1"
-        class="citySelect"
+        class="city-select"
       >
         <button
           v-for="oCity in optionCities"
           :key="oCity"
-          class="citySelectItem"
+          class="city-select__button"
           type="button"
           @click="setCity(oCity)"
         >
@@ -46,7 +46,7 @@
         Поиск
         <img
           alt="Поиск"
-          class="searchImg"
+          class="search-img"
           src="@/assets/img/search.svg"
         />
       </button>
@@ -167,7 +167,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.loadForm {
+.load-form {
   position: relative;
 
   display: flex;
@@ -179,7 +179,7 @@ export default {
 
   @media (min-width: 1000px) {
     &.searchable {
-      .inputCity,
+      .input-city,
       .search {
         width: 50%;
 
@@ -194,7 +194,7 @@ export default {
     grid-template: auto auto / 1fr;
   }
 
-  .inputCity {
+  .input-city {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -231,7 +231,7 @@ export default {
     }
   }
 
-  .citySelect {
+  .city-select {
     position: absolute;
     top: 38px;
     left: 0;
@@ -250,7 +250,7 @@ export default {
     border-radius: 10px;
     outline: none;
 
-    &Item {
+    &__button {
       width: 100%;
       height: 30px;
       padding: 5px 10px;
@@ -307,7 +307,7 @@ export default {
       width: 100%;
     }
 
-    .searchImg {
+    .search-img {
       display: block;
 
       width: 16px;
@@ -330,7 +330,7 @@ export default {
       background-color: #ff4646;
       border: 1px solid #ff4646;
 
-      .searchImg {
+      .search-img {
         filter: invert(1);
       }
     }
@@ -346,7 +346,7 @@ export default {
 
       cursor: pointer;
 
-      .searchImg {
+      .search-img {
         filter: invert(0);
       }
 
@@ -362,7 +362,7 @@ export default {
 
         transition: all 0.1s;
 
-        .searchImg {
+        .search-img {
           filter: invert(100%);
           transition: all 0.1s;
         }
@@ -373,7 +373,7 @@ export default {
   @supports (gap: 10px) {
     gap: 10px;
 
-    .inputCity {
+    .input-city {
       margin-right: 0;
     }
   }

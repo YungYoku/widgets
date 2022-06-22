@@ -4,44 +4,44 @@
       @close="$emit('close')"
     />
 
-    <h2 class="settingsTitle">
+    <h2 class="settings__title">
       Настройки
     </h2>
 
-    <div class="settingsList">
+    <div class="settings__list">
       <div
         v-for="(setting, i) in settings"
         :key="setting.title"
-        class="settingsListItem"
+        class="settings__list-item"
       >
         {{ setting.title }}
         <button
           :class="{
-            'turnedOn': setting.turnedOn
+            'turned-on': setting.turnedOn
           }"
-          class="settingsListItemButton"
+          class="settings__list-item-button"
           @click="setting.action(i)"
         >
         </button>
       </div>
     </div>
 
-    <div class="settingsSocial">
+    <div class="settings__social">
       <button
         v-for="link in links"
         :key="link.href"
-        class="settingsSocialLink"
+        class="settings__social-link"
         @click="link.action"
       >
         <img
           :alt="link.alt"
           :src="link.image"
-          class="settingsSocialLinkImg"
+          class="settings__social-link-img"
         />
       </button>
     </div>
 
-    <h5 class="settingsDeveloper">
+    <h5 class="settings__developer">
       Разработчик: Максим Алейников
     </h5>
   </div>
@@ -169,7 +169,7 @@ export default {
   }
   border-radius: 25px;
 
-  &Title {
+  &__title {
     margin: 0 0 20px 0;
 
     font-size: 26px;
@@ -177,7 +177,7 @@ export default {
     overflow-wrap: break-word;
   }
 
-  &List {
+  &__list {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -186,12 +186,12 @@ export default {
     margin-bottom: auto;
     gap: 10px;
 
-    &Item {
+    &-item {
       display: flex;
       justify-content: center;
       align-items: center;
 
-      &Button {
+      &-button {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -234,7 +234,7 @@ export default {
           box-shadow: 0 1px 20px 1px #999999;
         }
 
-        &.turnedOn {
+        &.turned-on {
           padding: 2px 2px 2px 18px;
 
           background-color: #4bff46;
@@ -245,12 +245,12 @@ export default {
     }
   }
 
-  &Social {
+  &__social {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    &Link {
+    &-link {
       display: block;
 
       width: 32px;
@@ -272,7 +272,7 @@ export default {
         transition: all 0.1s;
       }
 
-      &Img {
+      &-img {
         display: block;
 
         width: 32px;
@@ -287,7 +287,7 @@ export default {
     }
   }
 
-  &Developer {
+  &__developer {
     margin: 10px 0 0 0;
 
     font-size: 16px;

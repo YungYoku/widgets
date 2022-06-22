@@ -1,5 +1,5 @@
 <template>
-  <div class="widgetsView">
+  <div class="widgets-view">
     <component
       :is="widget.type"
       v-for="(widget, i) in widgets"
@@ -28,7 +28,8 @@ export default {
   data() {
     return {
       newId: 0,
-      widgets: []
+      widgets: [],
+      drag: false
     };
   },
 
@@ -49,7 +50,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.widgetsView {
+.widgets-view {
   position: relative;
 
   display: flex;

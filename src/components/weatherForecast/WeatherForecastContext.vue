@@ -11,7 +11,7 @@
       <button
         v-for="setting in settings"
         :key="setting.text"
-        class="contextButton"
+        class="context__button"
         @click="setting.action"
       >
         {{ setting.text }}
@@ -204,7 +204,7 @@ export default {
   border: 1px solid #333333;
   border-radius: 10px;
 
-  &Button {
+  &__button {
     width: 100%;
     padding: 5px;
 

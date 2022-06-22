@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "axios": "^0.27.2",
     "babel-eslint": "^10.1.0",
     "core-js": "^3.23.2",
@@ -29,11 +30,11 @@
     "prettier": "^2.7.1",
     "sass": "^1.32.7",
     "sass-loader": "^13.0.0",
-    "stylelint-webpack-plugin": "^3.3.0",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-recommended-scss": "^6.0.0",
     "stylelint-config-recommended-vue": "^1.4.0",
     "stylelint-order": "^5.0.0",
+    "stylelint-webpack-plugin": "^3.3.0",
     "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {

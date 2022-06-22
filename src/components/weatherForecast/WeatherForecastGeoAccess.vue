@@ -1,15 +1,15 @@
 <template>
-  <div class="geoAccess">
-    <h2 class="geoAccessText">
+  <div class="geo-access">
+    <h2 class="geo-access__text">
       Разрешить доступ к геолокации?
     </h2>
 
     <form
-      class="geoAccessButtons"
+      class="geo-access__form"
       @submit.prevent
     >
       <button
-        class="geoAccessButtonsItem"
+        class="geo-access__form-button"
         type="button"
         @click="allow"
       >
@@ -17,7 +17,7 @@
       </button>
 
       <button
-        class="geoAccessButtonsItem"
+        class="geo-access__form-button"
         type="button"
         @click="forbid"
       >
@@ -44,27 +44,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.geoAccess {
+.geo-access {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  &Text {
+  &__text {
     font-size: 24px;
     font-weight: 400;
     text-align: center;
     word-wrap: break-word;
   }
 
-  &Buttons {
+  &__form {
     display: flex;
     justify-content: center;
     align-items: center;
 
     padding: 20px;
 
-    &Item {
+    &-button {
       display: flex;
       justify-content: center;
       align-items: center;

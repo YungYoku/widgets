@@ -6,7 +6,7 @@
   >
     <img
       alt="Назад"
-      class="closeImg"
+      class="close__img"
       src="@/assets/img/close.svg"
     />
   </button>
@@ -45,7 +45,7 @@ export default {
     transition: all 0.1s;
   }
 
-  &Img {
+  &__img {
     display: block;
 
     width: 32px;

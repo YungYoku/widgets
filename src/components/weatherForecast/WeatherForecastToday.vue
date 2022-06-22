@@ -3,31 +3,31 @@
     <widget-loading v-if="loading" />
 
     <div v-else>
-      <div class="temperatureWrap">
-        <h1 class="cityName">
+      <div class="temperature">
+        <h3 class="temperature__city-name">
           {{ cityName }}
-        </h1>
+        </h3>
 
         <weather-forecast-icon
           :icon="weather.icon"
-          class="icon"
+          class="temperature__icon"
         />
 
-        <h2 class="temperature">
+        <h2 class="temperature__text">
           {{ weather.temperature }}
         </h2>
 
-        <h3 class="feelsLike">
+        <h4 class="temperature__feels-like">
           {{ weather.feelsLike }}
-        </h3>
+        </h4>
       </div>
 
-      <div class="conditionsWrap">
-        <h3 class="description">
+      <div class="conditions">
+        <h3 class="conditions__description">
           {{ weather.description }}
         </h3>
 
-        <h4 class="conditions">
+        <h4 class="conditions__text">
           {{ weather.conditions }}
         </h4>
       </div>
@@ -79,7 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 .today {
-  .temperatureWrap {
+  .temperature {
     display: grid;
     align-items: center;
 
@@ -100,7 +100,7 @@ export default {
       "icon feelsLike";
     }
 
-    .cityName {
+    &__city-name {
       grid-area: cityName;
 
       margin: 0;
@@ -110,7 +110,7 @@ export default {
       overflow-wrap: break-word;
     }
 
-    .icon {
+    &__icon {
       display: block;
 
       grid-area: icon;
@@ -127,7 +127,7 @@ export default {
       }
     }
 
-    .temperature {
+    &__text {
       grid-area: temperature;
 
       margin: 0;
@@ -137,7 +137,7 @@ export default {
       overflow-wrap: break-word;
     }
 
-    .feelsLike {
+    &__feels-like {
       grid-area: feelsLike;
 
       margin: 0;
@@ -148,7 +148,7 @@ export default {
     }
   }
 
-  .conditionsWrap {
+  .conditions {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -158,7 +158,7 @@ export default {
 
     text-align: center;
 
-    .description {
+    &__description {
       margin: 0;
 
       font-size: 22px;
@@ -166,7 +166,7 @@ export default {
       overflow-wrap: break-word;
     }
 
-    .conditions {
+    &__conditions {
       margin: 0;
 
       font-size: 16px;

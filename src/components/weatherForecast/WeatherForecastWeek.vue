@@ -9,19 +9,19 @@
       <div
         v-for="(day, i) in weather.week"
         :key="i"
-        class="daysItem"
+        class="days__item"
       >
-        <h4 class="daysItemName">
+        <h4 class="days__item-name">
           {{ day.weekDayNaming }}
         </h4>
 
-        <span class="daysItemDate">
+        <span class="days__item-date">
           {{ day.date }}
         </span>
 
         <weather-forecast-icon
           :icon="day.icon"
-          class="daysItemImg"
+          class="days__item-img"
         />
       </div>
     </div>
@@ -33,11 +33,11 @@
       v-else
       class="graph"
     >
-      <div class="graphMax">
+      <div class="graph__max">
         <div
           v-for="(day, i) in weather.week"
           :key="day.max + '' + i"
-          class="graphMaxItem"
+          class="graph__max-item"
         >
           {{ day.max }}°
         </div>
@@ -48,11 +48,11 @@
         :temps="weather.week"
       />
 
-      <div class="graphMin">
+      <div class="graph__min">
         <div
           v-for="(day, i) in weather.week"
           :key="day.min + '' + i"
-          class="graphMinItem"
+          class="graph__min-item"
         >
           {{ day.min }}°
         </div>
@@ -210,13 +210,13 @@ export default {
     font-weight: 700;
     text-align: center;
 
-    &Item {
+    &__item {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
 
-      &Name {
+      &-name {
         margin: 0;
 
         font-size: 16px;
@@ -230,13 +230,13 @@ export default {
         }
       }
 
-      &Date {
+      &-date {
         @media (max-width: 420px) {
           width: 27px;
         }
       }
 
-      &Img {
+      &-img {
         display: block;
 
         width: 100%;
@@ -272,13 +272,13 @@ export default {
       padding: 30px 0 20px 0;
     }
 
-    &Max,
-    &Min {
+    &__max,
+    &__min {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
-      &Item {
+      &-item {
         width: 30px;
 
         font-size: 16px;

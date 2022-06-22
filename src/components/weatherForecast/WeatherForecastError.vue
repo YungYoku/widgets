@@ -1,6 +1,6 @@
 <template>
   <div class="error">
-    <h2 class="errorText">
+    <h2 class="error__text">
       {{ errorText }}
     </h2>
   </div>
@@ -48,7 +48,7 @@ export default {
   width: 100%;
   margin-bottom: 20px;
 
-  &Text {
+  &__text {
     margin: 0;
 
     font-size: 24px;

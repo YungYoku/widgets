@@ -4,18 +4,18 @@
       @close="$emit('close')"
     />
 
-    <h2 class="savedTitle">
+    <h2 class="saved__title">
       Сохранённое
     </h2>
 
-    <div class="savedList">
+    <div class="saved__list">
       <button
         v-for="city in saved"
         :key="city"
         :class="{
-          'savedListBlockedCity': getFormattedCityName(city) === currentCity
+          'saved__list-blocked-city': getFormattedCityName(city) === currentCity
         }"
-        class="savedListCity"
+        class="saved__list-city"
         @click="loadFromSaved(city)"
       >
         {{ city }}
@@ -23,7 +23,7 @@
 
       <h3
         v-if="!saved.length"
-        class="savedListEmpty"
+        class="saved__list-empty"
       >
         Пусто
       </h3>
@@ -100,7 +100,7 @@ export default {
   }
   border-radius: 25px;
 
-  &Title {
+  &__title {
     margin: 0 0 20px 0;
 
     font-size: 26px;
@@ -108,14 +108,14 @@ export default {
     overflow-wrap: break-word;
   }
 
-  &List {
+  &__list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 10px;
 
-    &City {
+    &-city {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -154,7 +154,7 @@ export default {
       }
     }
 
-    &BlockedCity {
+    &-blocked-city {
       cursor: not-allowed;
 
       &:focus {
@@ -171,7 +171,7 @@ export default {
       }
     }
 
-    &Empty {
+    &-empty {
       margin-bottom: 20px;
 
       font-size: 16px;
@@ -182,7 +182,7 @@ export default {
     @supports (gap: 10px) {
       gap: 10px;
 
-      &City {
+      &-city {
         margin: 0;
       }
     }

@@ -97,7 +97,7 @@ export default {
       &::after {
         top: 0;
 
-        width: 50%;
+        width: 45%;
         height: 1px;
 
         background-color: #ff6666;

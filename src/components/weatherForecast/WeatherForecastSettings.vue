@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import vk from "@/assets/img/vk.svg";
 import telegram from "@/assets/img/telegram.svg";
+import github from "@/assets/img/github.svg";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
 
 export default {
@@ -97,12 +97,14 @@ export default {
           }
         }
       ],
+
       links: [
         {
-          image: vk,
-          alt: "Вконтакте",
-          action: () => window.open("https://vk.com/yokuu", "_blank")
+          image: github,
+          alt: "GitHub",
+          action: () => window.open("https://github.com/yungyoku", "_blank")
         },
+
         {
           image: telegram,
           alt: "Телеграм",

@@ -232,6 +232,7 @@ export default {
     max-width: 110px;
     max-height: 70px;
     padding: 20px;
+    overflow: hidden;
 
     transition: all 0.3s;
   }

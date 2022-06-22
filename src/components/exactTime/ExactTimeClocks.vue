@@ -92,19 +92,34 @@ export default {
 
     .exact-time-clocks__arrow.seconds {
       &::after {
+        top: 0;
+
+        width: 50%;
         height: 1px;
+
+        background-color: #ff6666;
       }
     }
 
     .exact-time-clocks__arrow.minutes {
       &::after {
+        top: -1px;
+
+        width: 40%;
         height: 2px;
+
+        background-color: #222222;
       }
     }
 
     .exact-time-clocks__arrow.hours {
       &::after {
-        height: 3px;
+        top: -2px;
+
+        width: 25%;
+        height: 4px;
+
+        background-color: #222222;
       }
     }
 
@@ -120,12 +135,8 @@ export default {
       &::after {
         content: '';
         position: absolute;
-        top: 0;
         left: 50%;
 
-        width: 50%;
-
-        background-color: #222222;
       }
     }
   }

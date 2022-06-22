@@ -59,7 +59,7 @@ export default {
     return {
       settings: [
         {
-          title: "Использовать местоположение, если возможно",
+          title: "Использовать местоположение",
           turnedOn: true,
           action: i => {
             const turnedOn = !this.settings[i].turnedOn;
@@ -203,7 +203,7 @@ export default {
         width: 40px;
         min-width: 40px;
         height: 24px;
-        margin: 0 10px;
+        margin: 0 0 0 10px;
         padding: 2px 18px 2px 2px;
         overflow: hidden;
 

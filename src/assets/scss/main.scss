@@ -6,6 +6,21 @@
   font-size: 100%;
   line-height: 1.5;
   vertical-align: baseline;
+  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @supports (user-select: none) {
+    user-select: none
+  }
+
+  @supports (-webkit-tap-highlight-color: transparent) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @supports (scroll-behavior: smooth) {
+    scroll-behavior: smooth;
+  }
 }
 
 html {
@@ -31,20 +46,6 @@ html {
   border-radius: 25px;
 
   transition: all 0.3s;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @supports (user-select: none) {
-    user-select: none
-  }
-
-  @supports (-webkit-tap-highlight-color: transparent) {
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  @supports (scroll-behavior: smooth) {
-    scroll-behavior: smooth;
-  }
 
   ::selection {
     background-color: rgba(51, 51, 51, 0.2);

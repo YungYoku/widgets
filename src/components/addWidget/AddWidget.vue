@@ -82,6 +82,8 @@ export default {
   align-items: center;
 
   border-radius: 20px;
+  
+  transition: all 0.3s;
 
   button {
     width: 89px;

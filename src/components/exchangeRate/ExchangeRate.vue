@@ -202,17 +202,33 @@ export default {
       });
     },
 
+    // doCORSRequest(appUrl) {
+    //   const nUrl = `https://cors.bridged.cc/${appUrl}`;
+    //
+    //   this.$http.get(nUrl)
+    //     .then(response => {
+    //       const xml = this.stringToXML(response.data);
+    //       const json = this.xmlToJson(xml);
+    //
+    //       this.currencies = this.formatCurrencies(json);
+    //
+    //       this.loading = false;
+    //     });
+    // },
+
     loadExchangeRate() {
       this.loading = true;
 
+      //this.doCORSRequest(`${this.baseURL}scripts/XML_daily.asp`);
+
       this.$http.get(`${this.baseURL}scripts/XML_daily.asp`)
         .then(response => {
-          this.loading = false;
-
           const xml = this.stringToXML(response.data);
           const json = this.xmlToJson(xml);
 
           this.currencies = this.formatCurrencies(json);
+
+          this.loading = false;
         });
     },
 

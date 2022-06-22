@@ -1,5 +1,9 @@
 <template>
   <div class="widgets-view">
+    <h1 class="widgets-view__title">
+      Виджеты
+    </h1>
+
     <component
       :is="widget.type"
       v-for="(widget, i) in widgets"
@@ -80,6 +84,16 @@ export default {
 
   @media (max-width: 600px) {
     padding: 0;
+  }
+
+  &__title {
+    width: 100%;
+    margin: 0;
+
+    font-size: 60px;
+    font-weight: 700;
+    color: #ffffff;
+    overflow-wrap: break-word;
   }
 }
 </style>

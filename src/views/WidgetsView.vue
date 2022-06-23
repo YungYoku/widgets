@@ -39,7 +39,17 @@ export default {
 
   methods: {
     closeWidget(id) {
-      this.widgets = this.widgets.filter(widget => widget.id !== id);
+      this.animateDisappearance(id);
+
+      setTimeout(() => {
+        this.widgets = this.widgets.filter(widget => widget.id !== id);
+      }, 500);
+    },
+
+    animateDisappearance(id) {
+      const targetWidget = this.widgets.find(widget => widget.id === id);
+      const target = document.querySelector("." + targetWidget.type + targetWidget.id);
+      target.classList.add("closed");
     },
 
     addWidget(type) {

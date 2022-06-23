@@ -1,6 +1,7 @@
 <template>
   <div
     :class="[
+      uniqueClassName,
       isCollapsed ? 'collapsed' : ''
     ]"
     class="widget exact-time"
@@ -98,6 +99,10 @@ export default {
   },
 
   computed: {
+    uniqueClassName() {
+      return `exact-time${this.id}`;
+    },
+
     timezones() {
       if (timezones) {
         return timezones;

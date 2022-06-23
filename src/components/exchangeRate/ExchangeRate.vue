@@ -1,6 +1,7 @@
 <template>
   <div
     :class="[
+      uniqueClassName,
       isCollapsed ? 'collapsed' : '',
     ]"
     class="widget exchange-rate"
@@ -101,6 +102,10 @@ export default {
   },
 
   computed: {
+    uniqueClassName() {
+      return `exchange-rate${this.id}`;
+    },
+
     exchangedCurrencies() {
       const result = this.exchangeCurrencies();
       return `

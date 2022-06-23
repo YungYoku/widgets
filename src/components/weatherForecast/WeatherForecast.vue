@@ -8,8 +8,10 @@
       isCollapsed ? 'collapsed': ''
     ]"
     :style="{
+      order,
       'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
     }"
+    @dragstart="startDrag($event)"
   >
     <weather-forecast-error
       v-if="errorShowing && !geoAccessShowing"
@@ -132,6 +134,12 @@ export default {
 
   props: {
     id: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+
+    order: {
       type: Number,
       required: true,
       default: 0
@@ -315,6 +323,13 @@ export default {
   },
 
   methods: {
+    startDrag(e) {
+      e.dataTransfer.dropEffect = "move";
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("itemID", this.id.toString());
+    },
+
+
     collapseWidget() {
       this.isCollapsed = !this.isCollapsed;
     },

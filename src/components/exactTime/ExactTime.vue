@@ -4,7 +4,9 @@
       uniqueClassName,
       isCollapsed ? 'collapsed' : ''
     ]"
+    :style="{order}"
     class="widget exact-time"
+    @dragstart="startDrag($event)"
   >
     <widget-navigation
       :rules="navigationRules"
@@ -82,6 +84,12 @@ export default {
       type: Number,
       required: true,
       default: 0
+    },
+
+    order: {
+      type: Number,
+      required: true,
+      default: 0
     }
   },
 
@@ -138,6 +146,12 @@ export default {
   },
 
   methods: {
+    startDrag(e) {
+      e.dataTransfer.dropEffect = "move";
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("itemID", this.id.toString());
+    },
+
     collapseWidget() {
       this.isCollapsed = !this.isCollapsed;
     },

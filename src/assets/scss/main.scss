@@ -52,6 +52,8 @@ html {
     border-radius: 5px;
   }
 
+  -webkit-user-drag: element;
+
   animation: appearance 0.5s;
 
   @keyframes appearance {

@@ -80,9 +80,10 @@ export default {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  order: 10000;
 
   border-radius: 20px;
-  
+
   transition: all 0.3s;
 
   button {

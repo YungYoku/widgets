@@ -1,5 +1,10 @@
 <template>
-  <div class="widgets-view">
+  <div
+    class="widgets-view"
+    @drop="onDrop($event)"
+    @dragover.prevent
+    @dragenter.prevent
+  >
     <h1 class="widgets-view__title">
       Виджеты
     </h1>
@@ -8,7 +13,9 @@
       :is="widget.type"
       v-for="(widget, i) in widgets"
       :id="widget.id"
-      :key="widget + i"
+      :key="widget.type + widget.id + i"
+      :draggable="true"
+      :order="widget.order"
       @closeWidget="closeWidget"
     />
 
@@ -38,6 +45,14 @@ export default {
   },
 
   methods: {
+    onDrop(e) {
+      const itemID = parseInt(e.dataTransfer.getData("itemID"));
+      const item = this.widgets.find(item => item.id === itemID);
+      console.log([...e.path]);
+      //item.sequenceId = 0; // найти элемент с помощью path и записать его sId, а потом увеличить sId всех последующих элементов на 1
+      console.log(item);
+    },
+
     closeWidget(id) {
       this.animateDisappearance(id);
 
@@ -55,8 +70,11 @@ export default {
     addWidget(type) {
       this.widgets.push({
         type,
-        id: this.newId++
+        id: this.newId,
+        order: this.newId
       });
+
+      this.newId++;
     }
   }
 };

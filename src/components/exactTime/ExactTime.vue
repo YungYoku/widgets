@@ -170,13 +170,13 @@ export default {
 
       this.$http.get(`${this.baseURL}ip`)
         .then(response => {
-          this.loading = false;
-
           const time = response.data.datetime;
 
           if (time) {
             this.startClocks(this.formatTime(time));
           }
+
+          this.loading = false;
         });
     },
 

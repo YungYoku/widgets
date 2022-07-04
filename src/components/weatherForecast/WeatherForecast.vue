@@ -287,12 +287,13 @@ export default {
       settings = JSON.parse(settings);
 
       const theme = settings.find(settings => settings.title === "Фиолетовая тема");
+
       if (theme) {
         this.theme = theme.turnedOn ? "purple" : "light";
         this.switchTheme(this.theme);
       }
 
-      settingsGeoAccess = settings.find(settings => settings.title === "Использовать местоположение, если возможно").turnedOn;
+      settingsGeoAccess = settings.find(settings => settings.title === "Использовать местоположение").turnedOn;
       if (!settingsGeoAccess) {
         this.geoAccessShowing = false;
         this.geoAccessError = true;

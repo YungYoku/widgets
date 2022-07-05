@@ -15,7 +15,7 @@
     @dragstart="startDrag($event)"
   >
     <weather-forecast-error
-      v-if="errorShowing && !geoAccessShowing"
+      v-if="errorShowing && !geoAccessRequestShowing"
       :geo-access-error="geoAccessError"
       :geo-exist-error="geoExistError"
       :searches-amount="searchesAmount"
@@ -39,7 +39,7 @@
     />
 
     <weather-forecast-geo-access
-      v-if="geoAccessShowing"
+      v-if="geoAccessRequestShowing"
       @allow="loadByCoords"
       @forbid="blockGeoAccess"
     />
@@ -237,7 +237,7 @@ export default {
       cityExistError: false,
       settingsShowing: false,
       savedShowing: false,
-      geoAccessShowing: true,
+      geoAccessRequestShowing: true,
       mapsShowing: false,
       searchesAmount: 0,
       theme: "light"
@@ -250,7 +250,7 @@ export default {
     },
 
     cityErrorClassName() {
-      return this.errorShowing || this.geoAccessShowing ? "cityError" : "";
+      return this.errorShowing || this.geoAccessRequestShowing ? "cityError" : "";
     },
 
     daysInMonth() {
@@ -278,7 +278,7 @@ export default {
     },
 
     weatherShowing() {
-      return !this.errorShowing && !this.geoAccessShowing;
+      return !this.errorShowing && !this.geoAccessRequestShowing;
     },
 
     minHeight() {
@@ -314,7 +314,7 @@ export default {
 
       const settingsGeoAccess = lsSettings.find(setting => setting.name === "geo").turnedOn;
       if (!settingsGeoAccess) {
-        this.geoAccessShowing = false;
+        this.geoAccessRequestShowing = false;
         this.geoAccessError = true;
         return;
       }
@@ -339,7 +339,7 @@ export default {
           this.loadByCoords();
           break;
         case "denied":
-          this.geoAccessShowing = false;
+          this.geoAccessRequestShowing = false;
           this.geoAccessError = true;
           break;
         case "prompt":
@@ -374,7 +374,7 @@ export default {
     },
 
     blockGeoAccess() {
-      this.geoAccessShowing = false;
+      this.geoAccessRequestShowing = false;
       this.geoAccessError = true;
     },
 
@@ -382,10 +382,10 @@ export default {
       if (!this.searchesAmount) {
         if (flag) {
           this.geoAccessError = false;
-          this.geoAccessShowing = true;
+          this.geoAccessRequestShowing = true;
         } else {
           this.geoAccessError = true;
-          this.geoAccessShowing = false;
+          this.geoAccessRequestShowing = false;
         }
       }
     },
@@ -419,7 +419,7 @@ export default {
           }
         )
         .then((response) => {
-          this.geoAccessShowing = false;
+          this.geoAccessRequestShowing = false;
           this.searchesAmount++;
           this.setCurrentWeather(response.data.current);
           this.setDailyWeather(response.data.daily);
@@ -453,7 +453,7 @@ export default {
       if (navigator.geolocation) {
         await navigator.geolocation.getCurrentPosition(
           position => {
-            this.geoAccessShowing = false;
+            this.geoAccessRequestShowing = false;
 
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
@@ -471,7 +471,7 @@ export default {
             });
           },
           () => {
-            this.geoAccessShowing = false;
+            this.geoAccessRequestShowing = false;
             this.geoAccessError = true;
           },
           {
@@ -479,7 +479,7 @@ export default {
           }
         );
       } else {
-        this.geoAccessShowing = false;
+        this.geoAccessRequestShowing = false;
         this.geoExistError = true;
       }
     },

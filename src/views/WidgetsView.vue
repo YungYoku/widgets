@@ -15,6 +15,7 @@
       :id="widget.id"
       :key="widget.type + widget.id + i"
       :draggable="true"
+      :hidden="widget.hidden"
       :order="widget.order"
       @closeWidget="closeWidget"
     />
@@ -50,44 +51,75 @@ export default {
   },
 
   methods: {
+    detectWidgetType(classNames) {
+      for (const className of classNames) {
+        for (const widgetType of this.widgetsType) {
+          if (className.includes(widgetType)) {
+            return widgetType;
+          }
+        }
+      }
+
+      return "";
+    },
+
     onDrop(event) {
       const itemID = parseInt(event.dataTransfer.getData("itemID"));
-      const item = this.widgets.find(item => item.id === itemID);
-      console.log("Перетаскиваемый виджет: ", item);
 
       const path = [...event.path];
-      
+      let toWidgetId;
+      let toWidgetType;
       path.forEach(el => {
         if (el.className) {
-          const classNames = [...el.className.split(" ")];
+          let classNames = [...el.className.split(" ")];
 
           if (classNames.includes("widget")) {
-            console.log("На виджет: ", classNames);
+            toWidgetType = this.detectWidgetType(classNames);
+            classNames = classNames.filter(el => el !== "widget" && el !== toWidgetType);
+            toWidgetId = classNames[0].replace(toWidgetType, "");
           }
         }
       });
-      //item.sequenceId = 0; // найти элемент с помощью path и записать его sId, а потом увеличить sId всех последующих элементов на 1
+
+
+      if (toWidgetType) {
+        const item = this.widgets.find(item => item.id === itemID);
+
+
+        console.log("Перетаскиваемый виджет: ", item);
+        console.log("На виджет: ", {
+          id: toWidgetId,
+          type: toWidgetType
+        });
+        //item.sequenceId = 0; // найти элемент с помощью path и записать его sId, а потом увеличить sId всех последующих элементов на 1
+      }
     },
 
     closeWidget(id) {
       this.animateDisappearance(id);
 
-      setTimeout(() => {
-        this.widgets = this.widgets.filter(widget => widget.id !== id);
-      }, 500);
+      // Из-за обновления всего массива, все сиджеты на сайте обновлялись
+      // setTimeout(() => {
+      //   this.widgets = this.widgets.filter(widget => widget.id !== id);
+      // }, 500);
     },
 
     animateDisappearance(id) {
       const targetWidget = this.widgets.find(widget => widget.id === id);
       const target = document.querySelector("." + targetWidget.type + targetWidget.id);
       target.classList.add("closed");
+
+      setTimeout(() => {
+        targetWidget.hidden = true;
+      }, 500);
     },
 
     addWidget(type) {
       this.widgets.push({
         type,
         id: this.newId,
-        order: this.newId
+        order: this.newId,
+        hidden: false
       });
 
       this.newId++;

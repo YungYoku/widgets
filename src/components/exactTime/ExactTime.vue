@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!hidden"
     :class="[
       uniqueClassName,
       isCollapsed ? 'collapsed' : ''
@@ -90,6 +91,12 @@ export default {
       type: Number,
       required: true,
       default: 0
+    },
+
+    hidden: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
 

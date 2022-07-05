@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!hidden"
     :class="[
       'widget',
       'weather-forecast',
@@ -143,6 +144,12 @@ export default {
       type: Number,
       required: true,
       default: 0
+    },
+
+    hidden: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
 

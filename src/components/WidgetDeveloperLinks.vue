@@ -1,0 +1,87 @@
+<template>
+  <div class="social-links">
+    <button
+      v-for="link in links"
+      :key="link.href"
+      class="social-links__button"
+      @click="link.action"
+    >
+      <img
+        :alt="link.alt"
+        :src="link.image"
+        class="social-links__button-img"
+      />
+    </button>
+  </div>
+</template>
+
+<script>
+import github from "@/assets/img/github.svg";
+import telegram from "@/assets/img/telegram.svg";
+
+export default {
+  name: "WidgetDeveloperLinks",
+
+  data() {
+    return {
+      links: [
+        {
+          image: github,
+          alt: "GitHub",
+          action: () => window.open("https://github.com/yungyoku", "_blank")
+        },
+
+        {
+          image: telegram,
+          alt: "Телеграм",
+          action: () => window.open("https://t.me/yungyoku", "_blank")
+        }
+      ]
+    };
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__button {
+    display: block;
+
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+    padding: 0;
+
+    text-decoration: none;
+
+    background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+    transition: all 0.1s;
+
+    &:hover,
+    &:focus {
+      transform: scale(1.1);
+      transition: all 0.1s;
+    }
+
+    &-img {
+      display: block;
+
+      width: 32px;
+      height: 32px;
+
+      pointer-events: none;
+
+      @supports (aspect-ratio: 1 / 1) {
+        aspect-ratio: 1 / 1;
+      }
+    }
+  }
+}
+</style>

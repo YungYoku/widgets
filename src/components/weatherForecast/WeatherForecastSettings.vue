@@ -26,20 +26,7 @@
       </div>
     </div>
 
-    <div class="settings__social">
-      <button
-        v-for="link in links"
-        :key="link.href"
-        class="settings__social-link"
-        @click="link.action"
-      >
-        <img
-          :alt="link.alt"
-          :src="link.image"
-          class="settings__social-link-img"
-        />
-      </button>
-    </div>
+    <widget-developer-links />
 
     <h5 class="settings__developer">
       Разработчик: Максим Алейников
@@ -48,13 +35,12 @@
 </template>
 
 <script>
-import telegram from "@/assets/img/telegram.svg";
-import github from "@/assets/img/github.svg";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
+import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks";
 
 export default {
   name: "WeatherForecastSettings",
-  components: { WeatherForecastCloseButton },
+  components: { WidgetDeveloperLinks, WeatherForecastCloseButton },
   data() {
     return {
       settings: [
@@ -97,20 +83,6 @@ export default {
               this.$emit("switchTheme", "light");
             }
           }
-        }
-      ],
-
-      links: [
-        {
-          image: github,
-          alt: "GitHub",
-          action: () => window.open("https://github.com/yungyoku", "_blank")
-        },
-
-        {
-          image: telegram,
-          alt: "Телеграм",
-          action: () => window.open("https://t.me/yungyoku", "_blank")
         }
       ]
     };
@@ -255,48 +227,6 @@ export default {
           background-color: #4bff46;
 
           transition: all 0.3s;
-        }
-      }
-    }
-  }
-
-  &__social {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &-link {
-      display: block;
-
-      width: 32px;
-      height: 32px;
-      margin: 0 5px;
-      padding: 0;
-
-      text-decoration: none;
-
-      background-color: transparent;
-      border: none;
-
-      cursor: pointer;
-      transition: all 0.1s;
-
-      &:hover,
-      &:focus {
-        transform: scale(1.1);
-        transition: all 0.1s;
-      }
-
-      &-img {
-        display: block;
-
-        width: 32px;
-        height: 32px;
-
-        pointer-events: none;
-
-        @supports (aspect-ratio: 1 / 1) {
-          aspect-ratio: 1 / 1;
         }
       }
     }

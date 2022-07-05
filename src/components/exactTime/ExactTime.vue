@@ -51,7 +51,10 @@
     </div>
 
 
+    <widget-loading v-if="loading" />
+
     <exact-time-clocks
+      v-else
       :hours="hours"
       :minutes="minutes"
       :seconds="seconds"

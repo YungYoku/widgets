@@ -40,7 +40,9 @@ import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks";
 
 export default {
   name: "WeatherForecastSettings",
+
   components: { WidgetDeveloperLinks, WeatherForecastCloseButton },
+  
   data() {
     return {
       settings: [

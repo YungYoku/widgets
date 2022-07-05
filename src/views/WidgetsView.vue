@@ -65,15 +65,18 @@ export default {
 
     onDrop(event) {
       const itemID = parseInt(event.dataTransfer.getData("itemID"));
-
-      const path = [...event.path];
+      let target = event.target;
       let toWidget;
       let toWidgetId;
       let toWidgetType;
-      
-      path.forEach(el => {
-        if (el.className && !el.id.includes("Svg")) {
-          let classNames = [...el.className.split(" ")];
+
+      while (target) {
+        if (target.nodeName.toLowerCase() === "body") {
+          break;
+        }
+
+        if (target.className && !target.id.includes("Svg")) {
+          let classNames = [...target.className.split(" ")];
 
           if (classNames.includes("widget")) {
             toWidgetType = this.detectWidgetType(classNames);
@@ -82,7 +85,11 @@ export default {
             toWidget = this.widgets.find(item => item.id === toWidgetId);
           }
         }
-      });
+
+        if (target.parentNode) {
+          target = target.parentNode;
+        }
+      }
 
 
       if (toWidgetType) {

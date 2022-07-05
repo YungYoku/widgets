@@ -67,6 +67,7 @@ export default {
       const itemID = parseInt(event.dataTransfer.getData("itemID"));
 
       const path = [...event.path];
+      let toWidget;
       let toWidgetId;
       let toWidgetType;
       path.forEach(el => {
@@ -76,22 +77,19 @@ export default {
           if (classNames.includes("widget")) {
             toWidgetType = this.detectWidgetType(classNames);
             classNames = classNames.filter(el => el !== "widget" && el !== toWidgetType);
-            toWidgetId = classNames[0].replace(toWidgetType, "");
+            toWidgetId = parseInt(classNames[0].replace(toWidgetType, ""));
+            toWidget = this.widgets.find(item => item.id === toWidgetId);
           }
         }
       });
 
 
       if (toWidgetType) {
-        const item = this.widgets.find(item => item.id === itemID);
+        const fromWidget = this.widgets.find(item => item.id === itemID);
 
-
-        console.log("Перетаскиваемый виджет: ", item);
-        console.log("На виджет: ", {
-          id: toWidgetId,
-          type: toWidgetType
-        });
-        //item.sequenceId = 0; // найти элемент с помощью path и записать его sId, а потом увеличить sId всех последующих элементов на 1
+        const tempOrder = fromWidget.order;
+        fromWidget.order = toWidget.order;
+        toWidget.order = tempOrder;
       }
     },
 

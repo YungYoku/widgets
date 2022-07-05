@@ -59,6 +59,7 @@ export default {
       return (
         className &&
         className !== "add-widget__button" &&
+        className !== "add-widget__button-img" &&
         className !== "add-widget-context"
       );
     },

@@ -5,7 +5,11 @@
       type="button"
       @click="showContext"
     >
-      +
+      <img
+        alt="Add"
+        class="add-widget__button-img"
+        src="@/assets/img/add.svg"
+      />
     </button>
 
     <add-widget-context
@@ -86,13 +90,13 @@ export default {
 
   transition: all 0.3s;
 
-  button {
-    width: 89px;
-    height: 89px;
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    font-size: 60px;
-    font-weight: 400;
-    text-align: center;
+    width: 64px;
+    height: 64px;
 
     background-color: #ffffff;
     border-radius: 20px;
@@ -106,6 +110,13 @@ export default {
     &:hover {
       opacity: 1;
       transition: all 0.2s;
+    }
+
+    &-img {
+      width: 32px;
+      height: 32px;
+
+      pointer-events: none;
     }
   }
 }

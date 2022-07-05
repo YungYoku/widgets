@@ -70,8 +70,9 @@ export default {
       let toWidget;
       let toWidgetId;
       let toWidgetType;
+      
       path.forEach(el => {
-        if (el.className) {
+        if (el.className && !el.id.includes("Svg")) {
           let classNames = [...el.className.split(" ")];
 
           if (classNames.includes("widget")) {

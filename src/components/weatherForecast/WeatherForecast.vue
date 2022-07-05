@@ -292,6 +292,8 @@ export default {
   },
 
   mounted() {
+    this.loading = false;
+
     if (localStorage.settings) {
       const lsSettings = JSON.parse(localStorage.settings);
 
@@ -307,7 +309,6 @@ export default {
       if (!settingsGeoAccess) {
         this.geoAccessShowing = false;
         this.geoAccessError = true;
-        this.loading = false;
         return;
       }
     }
@@ -321,8 +322,6 @@ export default {
             this.handleGeoPermission(permission.state);
           }
         );
-    } else {
-      this.loading = false;
     }
   },
 
@@ -335,10 +334,8 @@ export default {
         case "denied":
           this.geoAccessShowing = false;
           this.geoAccessError = true;
-          this.loading = false;
           break;
         case "prompt":
-          this.loading = false;
           break;
       }
     },
@@ -379,12 +376,24 @@ export default {
         if (flag) {
           this.geoAccessError = false;
           this.geoAccessShowing = true;
-          this.loading = false;
         } else {
           this.geoAccessError = true;
           this.geoAccessShowing = false;
-          this.loading = false;
         }
+      }
+    },
+
+    handleRequestErrors(error) {
+      const response = error.response;
+      const status = response.status;
+      const statusText = response.statusText;
+
+      if (status === 401) {
+        console.error(`API key error ${status} (${statusText})`);
+      } else if (status === 404) {
+        console.error(`Wrong city name error ${status} (${statusText})`);
+      } else if (status === 429) {
+        console.error(`Free plan limit error ${status} (${statusText})`);
       }
     },
 
@@ -409,9 +418,7 @@ export default {
           this.setDailyWeather(response.data.daily);
           this.cityExistError = false;
         })
-        .catch(e => {
-          console.error(e);
-        });
+        .catch(this.handleRequestErrors);
     },
 
     async loadCityName(lat, lon) {
@@ -425,9 +432,7 @@ export default {
         .then(response => {
           this.cityName = response.data[0].local_names[this.lang];
         })
-        .catch(e => {
-          console.error(e);
-        });
+        .catch(this.handleRequestErrors);
     },
 
     async loadFromSaved(city) {
@@ -514,20 +519,24 @@ export default {
       if (day === 0) {
         return "Сегодня";
       }
+
       const index = (day + new Date().getDay() - 1) % dayNamings.length;
+
       return dayNamings[index];
     },
 
     getDate(day, daysInMonth) {
       const month = new Date().getMonth();
+
       if (day <= daysInMonth) {
         return day + " " + monthNamings[month];
       }
+
       return day % daysInMonth + " " + monthNamings[month + 1];
     },
 
     getWeatherGif(id) {
-      id = id.slice(0, 2); // Поскольку пока-что иконки одинаковые для дня и ночи, убираем букву в конце id
+      id = id.slice(0, 2); // Поскольку иконки одинаковые для дня и ночи, убираем букву в конце id
       switch (id) {
         case "01":
           return "Sun";

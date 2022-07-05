@@ -11,10 +11,12 @@
     "Exact Time".
 </span>
 
-<br/>
+<br>
+<br>
 
 [Link to the site is here.](https://reliable-raindrop-761a7a.netlify.app/)
-<br><br>
+<br>
+<br>
 
 <h2>
     Weather Forecast

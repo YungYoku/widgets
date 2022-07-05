@@ -56,7 +56,7 @@ export default {
       console.log("Перетаскиваемый виджет: ", item);
 
       const path = [...event.path];
-
+      
       path.forEach(el => {
         if (el.className) {
           const classNames = [...el.className.split(" ")];

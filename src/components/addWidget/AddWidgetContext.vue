@@ -37,12 +37,11 @@ export default {
   computed: {
     styleLeft() {
       const x = this.x;
-      
-      if (x > 0) {
-        return `calc(50% + ${x}px)`;
-      } else if (x < 0) {
-        return `calc(50% - ${Math.abs(x)}px)`;
-      }
+
+      if (x > 0) return `calc(50% + ${x}px)`;
+
+      if (x < 0) return `calc(50% - ${Math.abs(x)}px)`;
+
       return `50%`;
     }
   },
@@ -56,14 +55,16 @@ export default {
   },
 
   methods: {
-    handleClick(e) {
-      const className = e.target.className;
+    isNotClickedContext(className) {
+      return (
+        className &&
+        className !== "add-widget__button" &&
+        className !== "add-widget-context"
+      );
+    },
 
-      if (
-        className
-        && className !== "add-widget__button"
-        && className !== "add-widget-context"
-      ) {
+    handleClick(e) {
+      if (this.isNotClickedContext(e.target.className)) {
         this.$emit("hide");
       }
     }

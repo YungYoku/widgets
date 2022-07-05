@@ -535,7 +535,7 @@ export default {
       return day % daysInMonth + " " + monthNamings[month + 1];
     },
 
-    getWeatherGif(id) {
+    getWeatherIconName(id) {
       id = id.slice(0, 2); // Поскольку иконки одинаковые для дня и ночи, убираем букву в конце id
       switch (id) {
         case "01":
@@ -563,7 +563,7 @@ export default {
 
     setCurrentWeather(current) {
       let description = current.weather[0].description;
-      this.current.icon = this.getWeatherGif(current.weather[0].icon);
+      this.current.icon = this.getWeatherIconName(current.weather[0].icon);
       this.current.temperature = `${Math.round(current.temp)}°С`;
       this.current.feelsLike = `ощущается как ${Math.round(current.feels_like)}°С`;
       this.current.description = description[0].toUpperCase() + description.slice(1);
@@ -593,7 +593,7 @@ export default {
         min: Math.round(day.temp.min),
         weekDayNaming: this.getWeekDayNaming(index),
         date: this.getDate(index + new Date().getDate(), this.daysInMonth),
-        icon: this.getWeatherGif(day.weather[0].icon)
+        icon: this.getWeatherIconName(day.weather[0].icon)
       };
     },
 

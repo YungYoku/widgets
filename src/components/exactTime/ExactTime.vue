@@ -177,6 +177,9 @@ export default {
           }
 
           this.loading = false;
+        })
+        .catch(error => {
+          console.error(error);
         });
     },
 
@@ -192,6 +195,9 @@ export default {
           if (time) {
             this.setResponseTime(this.formatTime(time));
           }
+        })
+        .catch(error => {
+          console.error(error);
         });
     },
 

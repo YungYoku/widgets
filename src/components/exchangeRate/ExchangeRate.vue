@@ -149,18 +149,14 @@ export default {
       if (this.from === "RUB") {
         if (this.to === "RUB") {
           return 1;
-        } else {
-          return (1 / currencyTo.value).toFixed(2);
         }
-      } else if (this.to === "RUB") {
-        if (currencyFrom) {
-          return currencyFrom.value;
-        }
-      } else {
-        return (currencyFrom.value / currencyTo.value).toFixed(2);
+
+        return (1 / currencyTo.value).toFixed(2);
+      } else if (this.to === "RUB" && currencyFrom) {
+        return currencyFrom.value;
       }
 
-      return 0;
+      return (currencyFrom.value / currencyTo.value).toFixed(2);
     },
 
     normalizeNumber(num) {
@@ -232,6 +228,9 @@ export default {
           this.currencies = this.formatCurrencies(json);
 
           this.loading = false;
+        })
+        .catch(error => {
+          console.error(error);
         });
     },
 

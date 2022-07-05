@@ -40,17 +40,33 @@ export default {
     return {
       newId: 0,
       widgets: [],
+      widgetsType: [
+        "weather-forecast",
+        "exact-time",
+        "exchange-rate"
+      ],
       drag: false
     };
   },
 
   methods: {
-    onDrop(e) {
-      const itemID = parseInt(e.dataTransfer.getData("itemID"));
+    onDrop(event) {
+      const itemID = parseInt(event.dataTransfer.getData("itemID"));
       const item = this.widgets.find(item => item.id === itemID);
-      console.log([...e.path]);
+      console.log("Перетаскиваемый виджет: ", item);
+
+      const path = [...event.path];
+
+      path.forEach(el => {
+        if (el.className) {
+          const classNames = [...el.className.split(" ")];
+
+          if (classNames.includes("widget")) {
+            console.log("На виджет: ", classNames);
+          }
+        }
+      });
       //item.sequenceId = 0; // найти элемент с помощью path и записать его sId, а потом увеличить sId всех последующих элементов на 1
-      console.log(item);
     },
 
     closeWidget(id) {

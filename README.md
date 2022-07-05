@@ -1,5 +1,12 @@
 # Widgets
 
+Web app for adding, using and removing widgets.
+<br/>
+Current list of widgets:
+"Weather Forecast",
+"Exchange Rate",
+"Exact Time".
+
 ## Project setup
 
 ```

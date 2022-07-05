@@ -218,6 +218,8 @@ export default {
 
     transition: all 0.3s;
 
+    user-select: text;
+
     @media (max-width: 1000px) {
       width: 100%;
     }

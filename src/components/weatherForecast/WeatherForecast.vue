@@ -149,7 +149,7 @@ export default {
   data() {
     return {
       baseURL: "https://api.openweathermap.org/",
-      apiKey: process.env.WEATHER_API_KEY,
+      apiKey: process.env.VUE_APP_WEATHER_API_KEY,
       loading: true,
       lang: window.navigator.language.slice(0, 2),
       isCollapsed: false,

@@ -6,6 +6,8 @@ Current list of widgets:
 "Weather Forecast",
 "Exchange Rate",
 "Exact Time".
+<br/><br/>
+[Link to the site is here.](https://reliable-raindrop-761a7a.netlify.app/)
 
 ## Project setup
 

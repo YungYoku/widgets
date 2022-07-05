@@ -80,7 +80,11 @@ export default {
 
           if (classNames.includes("widget")) {
             toWidgetType = this.detectWidgetType(classNames);
-            classNames = classNames.filter(el => el !== "widget" && el !== toWidgetType);
+            classNames = classNames.filter(el =>
+              el !== "widget" &&
+              el !== "cityError" &&
+              el !== toWidgetType
+            );
             toWidgetId = parseInt(classNames[0].replace(toWidgetType, ""));
             toWidget = this.widgets.find(item => item.id === toWidgetId);
           }
@@ -91,9 +95,9 @@ export default {
         }
       }
 
+      const fromWidget = this.widgets.find(item => item.id === itemID);
 
-      if (toWidgetType) {
-        const fromWidget = this.widgets.find(item => item.id === itemID);
+      if (toWidget && fromWidget) {
 
         const tempOrder = fromWidget.order;
         fromWidget.order = toWidget.order;

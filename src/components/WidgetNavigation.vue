@@ -41,6 +41,7 @@ export default {
     return {
       navigationStore: [
         {
+          name: "close",
           img: close,
           alt: "Выход",
           turnOver: false,
@@ -50,6 +51,7 @@ export default {
         },
 
         {
+          name: "collapse",
           img: arrow,
           alt: "Сворачивание",
           turnOver: false,
@@ -60,6 +62,7 @@ export default {
         },
 
         {
+          name: "settings",
           img: settings,
           alt: "Настройки",
           turnOver: false,
@@ -69,6 +72,7 @@ export default {
         },
 
         {
+          name: "saved",
           img: saved,
           alt: "Сохранённое",
           turnOver: false,
@@ -78,6 +82,7 @@ export default {
         },
 
         {
+          name: "map",
           img: map,
           alt: "На карте",
           turnOver: false,
@@ -94,7 +99,7 @@ export default {
       let navigationStore = this.navigationStore;
 
       navigationStore = navigationStore.filter(nav => {
-        return this.rules.includes(nav.alt);
+        return this.rules.includes(nav.name);
       });
 
       return navigationStore;
@@ -136,8 +141,8 @@ export default {
     &-img {
       display: block;
 
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
 
       pointer-events: none;
 

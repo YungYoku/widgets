@@ -1,8 +1,7 @@
 <template>
   <div
     :style="{
-      backgroundImage,
-      'color': 'green'
+      backgroundImage
     }"
     class="loading without-context"
   >

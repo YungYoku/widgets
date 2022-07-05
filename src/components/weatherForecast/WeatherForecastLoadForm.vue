@@ -98,9 +98,11 @@ export default {
 
     optionCities() {
       const firstLet = this.city[0].toLowerCase();
+
       let _cities = cities[firstLet] || [];
       _cities = _cities.filter(city => city.startsWith(this.city));
       _cities = _cities.filter(city => city !== this.city);
+
       return _cities.slice(0, 20);
     }
   },
@@ -129,7 +131,7 @@ export default {
   },
 
   destroyed() {
-    document.addEventListener("click", this.handleClick);
+    document.removeEventListener("click", this.handleClick);
   },
 
   methods: {

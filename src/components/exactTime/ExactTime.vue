@@ -127,7 +127,7 @@ export default {
     },
 
     navigationRules() {
-      return ["Выход", "Сворачивание"];
+      return ["close", "collapse"];
     }
   },
 
@@ -248,8 +248,8 @@ export default {
   background-color: #ffffff;
 
   &.collapsed {
-    max-width: 110px;
-    max-height: 70px;
+    max-width: 96px;
+    max-height: 62px;
     padding: 20px;
     overflow: hidden;
 

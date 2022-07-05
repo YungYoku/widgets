@@ -59,6 +59,7 @@ export default {
     return {
       settings: [
         {
+          name: "geo",
           title: "Использовать местоположение",
           turnedOn: true,
           action: i => {
@@ -77,6 +78,7 @@ export default {
         },
 
         {
+          name: "theme",
           title: "Фиолетовая тема",
           turnedOn: false,
           action: i => {
@@ -115,33 +117,44 @@ export default {
   },
 
   created() {
-    if (localStorage.settings) {
-      const storage = JSON.parse(localStorage.settings);
-      const length = this.settings.length;
-
-      if (storage.length !== length) {
-        this.saveCommonSettings();
-      }
-
-      for (let i = 0; i < length; i++) {
-        if (this.settings[i].title === storage[i].title) {
-          this.settings[i].turnedOn = storage[i].turnedOn;
-        }
-      }
-    } else {
-      this.saveCommonSettings();
-    }
+    this.loadLsSettings();
   },
 
   methods: {
-    saveCommonSettings() {
+    resetLsSettings() {
       const settings = this.settings.map(setting => {
         return {
-          title: setting.title,
+          name: setting.name,
           turnedOn: setting.turnedOn
         };
       });
+
       localStorage.settings = JSON.stringify(settings);
+    },
+
+    updateSettingsFromLs() {
+      const lsSettings = JSON.parse(localStorage.settings);
+      const length = this.settings.length;
+
+      for (let i = 0; i < length; i++) {
+        if (this.settings[i].name === lsSettings[i].name) {
+          this.settings[i].turnedOn = lsSettings[i].turnedOn;
+        }
+      }
+    },
+
+    loadLsSettings() {
+      if (localStorage.settings) {
+        const lsSettings = JSON.parse(localStorage.settings);
+
+        if (lsSettings.length !== this.settings.length) {
+          this.resetLsSettings();
+        } else {
+          this.updateSettingsFromLs();
+        }
+      } else {
+        this.resetLsSettings();
+      }
     }
   }
 };

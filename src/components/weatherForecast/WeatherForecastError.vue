@@ -34,9 +34,12 @@ export default {
     errorText() {
       if (this.geoExistError) {
         return "Устройство не поддерживает геолокацию";
-      } else if (this.geoAccessError) {
+      }
+
+      if (this.geoAccessError) {
         return "Доступ к геолокации запрещен";
       }
+
       return "";
     }
   }

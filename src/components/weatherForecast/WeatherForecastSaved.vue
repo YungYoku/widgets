@@ -47,11 +47,21 @@ export default {
 
   data() {
     return {
-      saved: localStorage.saved ? JSON.parse(localStorage.saved) : []
+      saved: []
     };
   },
 
+  mounted() {
+    this.loadLsSaved();
+  },
+
   methods: {
+    loadLsSaved() {
+      if (localStorage.saved) {
+        this.saved = JSON.parse(localStorage.saved);
+      }
+    },
+
     getFormattedCityName(city) {
       // Оставляет буквы и тире
       city = city.replace(/[^a-zа-яё\s-]/gi, "");

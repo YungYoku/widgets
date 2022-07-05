@@ -31,11 +31,10 @@ export default {
       default: ""
     },
 
-    copyWeatherForecast: {
-      type: Function,
+    copyingData: {
+      type: String,
       required: true,
-      default: () => {
-      }
+      default: ""
     },
 
     cityName: {
@@ -54,16 +53,16 @@ export default {
         {
           text: "Скопировать прогноз",
           action: () => {
-            navigator.clipboard.writeText(this.copyWeatherForecast());
+            navigator.clipboard.writeText(this.copyingData);
           }
         },
 
         {
           text: "Сохранить",
           action: () => {
-            const saved = JSON.parse(localStorage.getItem("saved"));
+            if (localStorage.saved) {
+              const saved = JSON.parse(localStorage.saved);
 
-            if (saved) {
               if (typeof saved === "object") {
                 if (!saved.includes(this.cityName)) {
                   saved.push(this.cityName);
@@ -153,25 +152,36 @@ export default {
       }
     },
 
+    isItMobileDevice() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    },
+
+    doesNotItNeedContext(domEl) {
+      return (
+        domEl.nodeName.toLowerCase() === "body" ||
+        domEl.classList.contains("without-context")
+      );
+    },
+
+    doesItNeedContext(domEl) {
+      return domEl.classList.contains("with-context");
+    },
+
     handleContext(e) {
       this.showing = false;
 
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      if (this.isItMobileDevice()) {
         return false;
       }
 
       let domEl = e.target;
       while (domEl) {
-        if (
-          domEl.nodeName.toLowerCase() === "body"
-          || domEl.classList.contains("without-context")
-          || domEl.classList.contains("loading")
-        ) {
+        if (this.doesNotItNeedContext(domEl)) {
           this.showing = false;
           break;
         }
 
-        if (domEl.classList.contains("with-context")) {
+        if (this.doesItNeedContext(domEl)) {
           this.setMenuCoords(e);
           this.showing = true;
           break;

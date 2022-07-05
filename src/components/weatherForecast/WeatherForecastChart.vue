@@ -20,7 +20,7 @@ export default {
   },
 
   props: {
-    temps: {
+    temperature: {
       type: Array,
       required: true,
       default: () => {
@@ -32,6 +32,7 @@ export default {
             min: 0,
             weekDayNaming: "Сегодня"
           },
+
           {
             date: "2 января",
             icon: "https://openweathermap.org/img/wn/02d.png",
@@ -39,6 +40,7 @@ export default {
             min: 0,
             weekDayNaming: "Пн"
           },
+
           {
             date: "3 января",
             icon: "https://openweathermap.org/img/wn/02d.png",
@@ -46,6 +48,7 @@ export default {
             min: 0,
             weekDayNaming: "Вт"
           },
+
           {
             date: "4 января",
             icon: "https://openweathermap.org/img/wn/02d.png",
@@ -53,6 +56,7 @@ export default {
             min: 0,
             weekDayNaming: "Ср"
           },
+
           {
             date: "5 января",
             icon: "https://openweathermap.org/img/wn/02d.png",
@@ -60,6 +64,7 @@ export default {
             min: 0,
             weekDayNaming: "Чт"
           },
+
           {
             date: "6 января",
             icon: "https://openweathermap.org/img/wn/02d.png",
@@ -67,6 +72,7 @@ export default {
             min: 0,
             weekDayNaming: "Пт"
           },
+
           {
             date: "7 января",
             icon: "https://openweathermap.org/img/wn/02d.png",
@@ -74,6 +80,7 @@ export default {
             min: 0,
             weekDayNaming: "Сб"
           },
+
           {
             date: "8 января",
             icon: "https://openweathermap.org/img/wn/02d.png",
@@ -108,12 +115,15 @@ export default {
           selection: {
             enabled: false
           },
+
           zoom: {
             enabled: false
           },
+
           toolbar: {
             show: false
           },
+
           sparkline: {
             enabled: false
           }
@@ -220,41 +230,48 @@ export default {
 
   computed: {
     series() {
-      const temps = this.temps;
+      const temperature = this.temperature;
 
-      const top = {
+      const graphTop = {
         name: "",
         data: [],
         min: 200
       };
 
-      const bottom = {
+      const graphBottom = {
         name: "",
         data: [],
         max: -200
       };
 
-      temps.forEach(el => {
-        top.min = top.min > el.max ? el.max : top.min;
-        bottom.max = bottom.max < el.min ? el.min : bottom.max;
+      temperature.forEach(el => {
+        if (graphTop.min > el.max) {
+          graphTop.min = el.max;
+        }
+
+        if (graphBottom.max < el.min) {
+          graphBottom.max = el.min;
+        }
       });
 
-      top.min = top.min < 0 ? Math.abs(top.min) : 0;
-      bottom.max = bottom.max < 0 ? 0 : bottom.max;
+      graphTop.min = graphTop.min < 0 ? Math.abs(graphTop.min) : 0;
+      if (graphBottom.max < 0) {
+        graphBottom.max = 0;
+      }
 
-      temps.forEach((el, index) => {
-        top.data.push({
+      temperature.forEach((el, index) => {
+        graphTop.data.push({
           x: index,
-          y: el.max + top.min
+          y: el.max + graphTop.min
         });
 
-        bottom.data.push({
+        graphBottom.data.push({
           x: index,
-          y: el.min - bottom.max
+          y: el.min - graphBottom.max
         });
       });
 
-      return [top, bottom];
+      return [graphTop, graphBottom];
     }
   }
 };

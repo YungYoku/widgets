@@ -9,7 +9,7 @@
     ]"
     :style="{
       order,
-      'minHeight': ((settingsShowing || savedShowing) && !loading) ? '300px' : 'auto'
+      minHeight
     }"
     @dragstart="startDrag($event)"
   >
@@ -23,7 +23,7 @@
 
     <weather-forecast-context
       :city-name="cityName"
-      :copy-weather-forecast="copyWeatherForecast"
+      :copying-data="copyingData"
       :unique-class-name="'.' + uniqueClassName"
     />
 
@@ -255,6 +255,13 @@ export default {
       return Math.round((nextMonth - thisMonth) / 1000 / secondsInDay);
     },
 
+    copyingData() {
+      return `
+        Текущая температура равна ${this.current.temperature}
+        , ${this.current.feelsLike}
+      `;
+    },
+
     anyGeoError() {
       return this.geoExistError || this.geoAccessError;
     },
@@ -267,33 +274,36 @@ export default {
       return !this.errorShowing && !this.geoAccessShowing;
     },
 
+    minHeight() {
+      return ((this.settingsShowing || this.savedShowing) && !this.loading) ? "300px" : "auto";
+    },
+
     navigationRules() {
       if (this.isCollapsed) {
-        return ["Выход", "Сворачивание"];
+        return ["close", "collapse"];
       }
 
       if (this.weatherShowing) {
-        return ["Выход", "Сворачивание", "Настройки", "Сохранённое", "На карте"];
+        return ["close", "collapse", "settings", "saved", "map"];
       }
 
-      return ["Выход", "Сворачивание", "Настройки", "Сохранённое"];
+      return ["close", "collapse", "settings", "saved"];
     }
   },
 
   mounted() {
-    let settingsGeoAccess = false;
-    let settings = localStorage.settings;
-    if (settings) {
-      settings = JSON.parse(settings);
+    if (localStorage.settings) {
+      const lsSettings = JSON.parse(localStorage.settings);
 
-      const theme = settings.find(settings => settings.title === "Фиолетовая тема");
 
+      const theme = lsSettings.find(setting => setting.name === "theme");
       if (theme) {
         this.theme = theme.turnedOn ? "purple" : "light";
         this.switchTheme(this.theme);
       }
 
-      settingsGeoAccess = settings.find(settings => settings.title === "Использовать местоположение").turnedOn;
+
+      const settingsGeoAccess = lsSettings.find(setting => setting.name === "geo").turnedOn;
       if (!settingsGeoAccess) {
         this.geoAccessShowing = false;
         this.geoAccessError = true;
@@ -302,20 +312,13 @@ export default {
       }
     }
 
+
     if (navigator.permissions) {
       navigator.permissions.query({
         name: "geolocation"
       })
         .then(permission => {
-            if (permission.state === "granted") {
-              this.loadByCoords();
-            } else if (permission.state === "denied") {
-              this.geoAccessShowing = false;
-              this.geoAccessError = true;
-              this.loading = false;
-            } else if (permission.state === "prompt") {
-              this.loading = false;
-            }
+            this.handleGeoPermission(permission.state);
           }
         );
     } else {
@@ -324,24 +327,46 @@ export default {
   },
 
   methods: {
+    handleGeoPermission(permission) {
+      switch (permission) {
+        case "granted":
+          this.loadByCoords();
+          break;
+        case "denied":
+          this.geoAccessShowing = false;
+          this.geoAccessError = true;
+          this.loading = false;
+          break;
+        case "prompt":
+          this.loading = false;
+          break;
+      }
+    },
+
     startDrag(e) {
       e.dataTransfer.dropEffect = "move";
       e.dataTransfer.effectAllowed = "move";
       e.dataTransfer.setData("itemID", this.id.toString());
     },
 
-
     collapseWidget() {
       this.isCollapsed = !this.isCollapsed;
     },
 
     switchTheme(theme) {
+      const lightThemeColor = "rgb(255, 255, 255)";
+      const purpleThemeColor = "rgb(173, 170, 255)";
+      let themeColor;
+
       this.theme = theme;
+
       if (theme === "light") {
-        document.documentElement.style.setProperty("--main-background-color", "rgb(255, 255, 255)");
+        themeColor = lightThemeColor;
       } else {
-        document.documentElement.style.setProperty("--main-background-color", "rgb(173, 170, 255)");
+        themeColor = purpleThemeColor;
       }
+
+      document.documentElement.style.setProperty("--main-background-color", themeColor);
     },
 
     blockGeoAccess() {
@@ -584,13 +609,6 @@ export default {
       this.savedShowing = false;
     },
 
-    copyWeatherForecast() {
-      return `
-        Текущая температура равна ${this.current.temperature}
-        , ${this.current.feelsLike}
-      `;
-    },
-
     openMap() {
       if (this.weatherShowing) {
         this.mapsShowing = true;
@@ -657,8 +675,8 @@ export default {
   }
 
   &.collapsed {
-    width: 110px;
-    max-height: 70px;
+    width: 94px;
+    max-height: 62px;
     padding: 20px;
     overflow: hidden;
 

@@ -45,7 +45,7 @@
 
       <weather-forecast-chart
         :chart-colors="chartColors"
-        :temps="weather.week"
+        :temperature="weather.week"
       />
 
       <div class="graph__min">
@@ -161,25 +161,23 @@ export default {
   computed: {
     chartColors() {
       return {
-        day: this.getTempColor(this.weather.averageTemperatureDay),
-        night: this.getTempColor(this.weather.averageTemperatureNight)
+        day: this.getTemperatureColor(this.weather.averageTemperatureDay),
+        night: this.getTemperatureColor(this.weather.averageTemperatureNight)
       };
     }
   },
 
   methods: {
-    getTempColor(temp) {
-      if (temp >= 30) {
-        return hotter;
-      } else if (temp >= 20) {
-        return hot;
-      } else if (temp > 0) {
-        return normal;
-      } else if (temp <= -20) {
-        return colder;
-      } else if (temp <= 0) {
-        return cold;
-      }
+    getTemperatureColor(temperature) {
+      if (temperature >= 30) return hotter;
+
+      if (temperature >= 20) return hot;
+
+      if (temperature > 0) return normal;
+
+      if (temperature <= -20) return colder;
+
+      if (temperature <= 0) return cold;
     }
   }
 };

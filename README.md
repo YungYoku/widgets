@@ -6,9 +6,9 @@ Web app for adding, using and removing widgets.
 <br/>
 Current list of widgets:
 
-- :sunny: *Weather Forecast*,
-- :coin: *Exchange Rate*,
-- :watch: *Exact Time*.
+- :sunny:&nbsp;*Weather Forecast*,
+- :coin:&nbsp;&nbsp;*Exchange Rate*,
+- :watch:&nbsp;*Exact Time*.
 
 ![All widgets](main-page.jpeg)
 

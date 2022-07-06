@@ -171,6 +171,14 @@ export default {
       e.dataTransfer.setData("itemID", this.id.toString());
     },
 
+    showLoading() {
+      this.loading = true;
+    },
+
+    hideLoading() {
+      this.loading = false;
+    },
+
     collapseWidget() {
       this.isCollapsed = !this.isCollapsed;
     },
@@ -194,15 +202,19 @@ export default {
     },
 
     setTime(time) {
-      this.date = time.date;
-      this.hours = time.hours;
-      this.minutes = time.minutes;
-      this.seconds = time.seconds;
+      if (time) {
+        this.date = time.date;
+        this.hours = time.hours;
+        this.minutes = time.minutes;
+        this.seconds = time.seconds;
+      }
     },
 
     startClocks(time) {
-      this.setTime(time);
-      this.interval = setInterval(this.increaseSeconds, 1000);
+      if (time) {
+        this.setTime(time);
+        this.interval = setInterval(this.increaseSeconds, 1000);
+      }
     },
 
     handleRequestErrors(error) {
@@ -217,34 +229,30 @@ export default {
     },
 
     loadTimeByIp() {
-      this.loading = true;
+      this.showLoading();
 
       this.$http.get(`${this.baseURL}ip`)
         .then(response => {
           const time = response.data.datetime;
 
-          if (time) {
-            this.startClocks(this.getFormattedTime(time));
-          }
+          this.startClocks(this.getFormattedTime(time));
 
-          this.loading = false;
+          this.hideLoading();
         })
         .catch(this.handleRequestErrors);
     },
 
     loadTimeByTimezone() {
-      this.loading = true;
+      this.showLoading();
 
       this.$http
         .get(`${this.baseURL}timezone/${this.timezone}`)
         .then(response => {
           const time = response.data.datetime;
 
-          if (time) {
-            this.setTime(this.getFormattedTime(time));
-          }
+          this.setTime(this.getFormattedTime(time));
 
-          this.loading = false;
+          this.hideLoading();
         })
         .catch(this.handleRequestErrors);
     },

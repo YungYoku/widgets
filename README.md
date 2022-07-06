@@ -6,9 +6,9 @@ Web app for adding, using and removing widgets.
 <br/>
 Current list of widgets:
 
-- :sunny:&nbsp;*Weather Forecast*,
-- :dollar:&nbsp;*Exchange Rate*,
-- :watch:&nbsp;*Exact Time*.
+- :sunny: *Weather Forecast*,
+- :dollar: *Exchange Rate*,
+- :watch: *Exact Time*.
 
 ![All widgets](main-page.jpeg)
 
@@ -46,8 +46,23 @@ ___
 
 ## Exact Time
 
-```
-Soon...
+Function that loads time data using [WorldTimeApi](https://worldtimeapi.org/).
+
+```vue
+loadTimeByTimezone() {
+  this.showLoading();
+
+  this.$http
+    .get(`${this.baseURL}timezone/${this.timezone}`)
+    .then(response => {
+      const time = response.data.datetime;
+
+      this.setTime(this.getFormattedTime(time));
+
+      this.hideLoading();
+    })
+    .catch(this.handleRequestErrors);
+},
 ```
 
 <br>

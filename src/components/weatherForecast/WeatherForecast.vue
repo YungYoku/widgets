@@ -490,15 +490,13 @@ export default {
       }
     },
 
-    handleSameNameCity(city) {
-      if (city.toLowerCase() === this.cityName.toLowerCase()) {
-        document.activeElement.blur();
-        this.cityExistError = false;
+    isItSameCity(city) {
+      return city.toLowerCase() === this.cityName.toLowerCase();
+    },
 
-        return true;
-      }
-
-      return false;
+    handleSameNameCity() {
+      document.activeElement.blur();
+      this.cityExistError = false;
     },
 
     async loadCoordsByCityName(city) {
@@ -523,7 +521,10 @@ export default {
     },
 
     async loadByCityName(city) {
-      if (this.handleSameNameCity(city)) return;
+      if (this.isItSameCity(city)) {
+        this.handleSameNameCity();
+        return;
+      }
 
       this.showLoading();
 

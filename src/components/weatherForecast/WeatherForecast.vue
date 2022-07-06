@@ -155,7 +155,7 @@ export default {
 
   data() {
     return {
-      baseURL: "https://api.openweathermap.org/",
+      baseURL: process.env.VUE_APP_WEATHER_BASE_URL,
       apiKey: process.env.VUE_APP_WEATHER_API_KEY,
       loading: true,
       lang: window.navigator.language.slice(0, 2),
@@ -427,6 +427,9 @@ export default {
           }
         )
         .then((response) => {
+          this.lat = lat;
+          this.lon = lon;
+
           this.geoAccessRequestShowing = false;
           this.searchesAmount++;
           this.setCurrentWeather(response.data.current);
@@ -501,31 +504,39 @@ export default {
       return false;
     },
 
-    async loadByCityName(city) {
-      if (this.handleSameNameCity(city)) return;
-
-      if (city) {
-        this.showLoading();
-
-        await this.$http
-          .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`, {
+    async loadCoordsByCityName(city) {
+      return await this.$http
+        .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`,
+          {
             params: {
               q: city
             }
           })
-          .then((response) => {
-            this.lat = response.data[0].lat;
-            this.lon = response.data[0].lon;
+        .then((response) => {
+          return {
+            lat: response.data[0].lat,
+            lon: response.data[0].lon
+          };
+        })
+        .catch(() => {
+          this.cityExistError = true;
+          this.hideLoading();
+          return undefined;
+        });
+    },
 
-            this.loadWeatherForecast(this.lat, this.lon)
-              .then(this.hideLoading);
+    async loadByCityName(city) {
+      if (this.handleSameNameCity(city)) return;
 
-            this.cityName = city;
-          })
-          .catch(() => {
-            this.cityExistError = true;
-            this.hideLoading();
-          });
+      this.showLoading();
+
+      const coords = await this.loadCoordsByCityName(city);
+      if (coords) {
+        this.cityName = city;
+
+        await this.loadWeatherForecast(this.lat, this.lon);
+
+        this.hideLoading();
       }
     },
 

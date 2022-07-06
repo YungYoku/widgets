@@ -69,7 +69,7 @@ export default {
 
   data() {
     return {
-      baseURL: "https://www.cbr.ru/",
+      baseURL: process.env.VUE_APP_EXCHANGE_BASE_URL,
       loading: true,
       isCollapsed: false,
       currencies: [],

@@ -84,7 +84,7 @@ export default {
 
   data() {
     return {
-      baseURL: "https://worldtimeapi.org/api/",
+      baseURL: process.env.VUE_APP_TIME_BASE_URL,
       loading: true,
       isCollapsed: false,
       interval: null,

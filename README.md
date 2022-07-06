@@ -3,7 +3,7 @@
 ## Description
 
 Web app for adding, using and removing widgets.
-<br/>
+
 Current list of widgets:
 
 - :sunny: *Weather Forecast*,
@@ -46,7 +46,11 @@ ___
 
 ## Exact Time
 
-Function that loads time data using [WorldTimeApi](https://worldtimeapi.org/).
+This widget uses [WorldTimeApi](https://worldtimeapi.org/).
+
+<br>
+
+Function that loads time data by timezone.
 
 ```javascript
 loadTimeByTimezone(timezone) {
@@ -60,6 +64,28 @@ loadTimeByTimezone(timezone) {
         const time = response.data.datetime;
 
         this.setTime(this.getFormattedTime(time));
+    })
+    .catch(this.handleRequestErrors)
+    .finally(this.hideLoading);
+}
+```
+
+<br>
+
+Function that loads time data by ip.
+This function is called every time you add the widget.
+
+```javascript
+loadTimeByIp() {
+  this.showLoading();
+
+  this.$http.get(`${this.baseURL}ip`)
+    .then(response => {
+      this.resetError();
+
+      const time = response.data.datetime;
+
+      this.startClocks(this.getFormattedTime(time));
     })
     .catch(this.handleRequestErrors)
     .finally(this.hideLoading);

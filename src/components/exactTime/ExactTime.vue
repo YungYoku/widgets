@@ -197,11 +197,11 @@ export default {
       }
     },
 
-    async loadTimeByIp() {
+    async request(path) {
       this.showLoading();
 
       await this.$http
-        .get(`${this.baseURL}ip`)
+        .get(`${this.baseURL}${path}`)
         .then(response => {
           this.resetError();
 
@@ -213,20 +213,12 @@ export default {
         .finally(this.hideLoading);
     },
 
+    async loadTimeByIp() {
+      await this.request("ip");
+    },
+
     async loadTimeByTimezone(timezone) {
-      this.showLoading();
-
-      await this.$http
-        .get(`${this.baseURL}timezone/${timezone}`)
-        .then(response => {
-          this.resetError();
-
-          const time = response.data.datetime;
-
-          this.setTime(this.getFormattedTime(time));
-        })
-        .catch(this.handleRequestErrors)
-        .finally(this.hideLoading);
+      await this.request("timezone/" + timezone);
     },
 
     increaseHours() {

@@ -72,43 +72,22 @@ and it doesn't need any api key.
 
 <br>
 
-Function that loads time data by timezone.
+Function that loads time data by provided path,
+it can be ip or timezone. This function is called
+every time you add the widget.
 
 ```javascript
-async loadTimeByTimezone(timezone) {
-    this.showLoading();
-
-    await this.$http
-    .get(`${this.baseURL}timezone/${timezone}`)
-    .then(response => {
-        this.resetError();
-
-        const time = response.data.datetime;
-
-        this.setTime(this.getFormattedTime(time));
-    })
-    .catch(this.handleRequestErrors)
-    .finally(this.hideLoading);
-}
-```
-
-<br>
-
-Function that loads time data by ip.
-This function is called every time you add the widget.
-
-```javascript
-async loadTimeByIp() {
+async request(path) {
   this.showLoading();
 
   await this.$http
-    .get(`${this.baseURL}ip`)
+    .get(`${this.baseURL}${path}`)
     .then(response => {
       this.resetError();
 
       const time = response.data.datetime;
 
-      this.startClocks(this.getFormattedTime(time));
+      this.setTime(this.getFormattedTime(time));
     })
     .catch(this.handleRequestErrors)
     .finally(this.hideLoading);

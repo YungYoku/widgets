@@ -22,6 +22,11 @@ ___
 
 ## Weather Forecast
 
+This widget uses [OpenWeatherMapApi](https://api.openweathermap.org/),
+and it does need an api key.
+
+<br>
+
 ```
 Soon...
 ```

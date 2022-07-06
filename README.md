@@ -34,8 +34,27 @@ ___
 
 ## Exchange Rate
 
+This widget uses [CBR xml requests](https://www.cbr.ru/development/sxml/),
+and it doesn't need any api key.
+
+<br>
+
+Function that loads currencies data.
+
 ```
-Soon...
+async loadExchangeRate() {
+  this.showLoading();
+
+  await this.$http
+    .get(`${this.baseURL}scripts/XML_daily.asp`)
+    .then(response => {
+      const json = this.xmlToJson(response.data);
+
+      this.currencies = this.formatCurrencies(json);
+    })
+    .catch(this.handleRequestErrors)
+    .finally(this.hideLoading);
+}
 ```
 
 <br>
@@ -54,10 +73,10 @@ and it doesn't need any api key.
 Function that loads time data by timezone.
 
 ```javascript
-loadTimeByTimezone(timezone) {
+async loadTimeByTimezone(timezone) {
     this.showLoading();
 
-    this.$http
+    await this.$http
     .get(`${this.baseURL}timezone/${timezone}`)
     .then(response => {
         this.resetError();
@@ -77,10 +96,11 @@ Function that loads time data by ip.
 This function is called every time you add the widget.
 
 ```javascript
-loadTimeByIp() {
+async loadTimeByIp() {
   this.showLoading();
 
-  this.$http.get(`${this.baseURL}ip`)
+  await this.$http
+    .get(`${this.baseURL}ip`)
     .then(response => {
       this.resetError();
 

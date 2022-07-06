@@ -196,10 +196,11 @@ export default {
       }
     },
 
-    loadTimeByIp() {
+    async loadTimeByIp() {
       this.showLoading();
 
-      this.$http.get(`${this.baseURL}ip`)
+      await this.$http
+        .get(`${this.baseURL}ip`)
         .then(response => {
           this.resetError();
 
@@ -211,10 +212,10 @@ export default {
         .finally(this.hideLoading);
     },
 
-    loadTimeByTimezone(timezone) {
+    async loadTimeByTimezone(timezone) {
       this.showLoading();
 
-      this.$http
+      await this.$http
         .get(`${this.baseURL}timezone/${timezone}`)
         .then(response => {
           this.resetError();

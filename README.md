@@ -1,4 +1,6 @@
-# Widgets
+<h1 align="center">Widgets</h1>
+
+## Description
 
 Web app for adding, using and removing widgets.
 <br/>
@@ -8,9 +10,9 @@ Current list of widgets:
 - :coin: *Exchange Rate*,
 - :watch: *Exact Time*.
 
-<br>
-
 ![All widgets](main-page.jpeg)
+
+<br>
 
 [Link to the site is here.](https://reliable-raindrop-761a7a.netlify.app/)
 

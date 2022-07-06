@@ -166,14 +166,15 @@ export default {
         this.hours = time.hours;
         this.minutes = time.minutes;
         this.seconds = time.seconds;
+
+        if (!this.interval) {
+          this.startClocks();
+        }
       }
     },
 
-    startClocks(time) {
-      if (time) {
-        this.setTime(time);
-        this.interval = setInterval(this.increaseSeconds, 1000);
-      }
+    startClocks() {
+      this.interval = setInterval(this.increaseSeconds, 1000);
     },
 
     resetError() {
@@ -206,7 +207,7 @@ export default {
 
           const time = response.data.datetime;
 
-          this.startClocks(this.getFormattedTime(time));
+          this.setTime(this.getFormattedTime(time));
         })
         .catch(this.handleRequestErrors)
         .finally(this.hideLoading);

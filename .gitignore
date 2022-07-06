@@ -5,6 +5,7 @@ node_modules
 
 # local env files
 .env
+.env.production
 .env.*.local
 
 # Log files

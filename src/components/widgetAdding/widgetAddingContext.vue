@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "AddWidgetContext",
+  name: "WidgetAddingContext",
 
   props: {
     widgets: {

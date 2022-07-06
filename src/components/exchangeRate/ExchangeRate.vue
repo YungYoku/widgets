@@ -20,48 +20,11 @@
       Курс валют
     </h2>
 
-
-    <widget-loading v-if="loading" />
-
-    <div
-      v-else
-      class="exchange-rate__currencies"
-    >
-      <select
-        id="from"
-        v-model="from"
-        class="exchange-rate__from"
-        name="from"
-        title="Сконвертировать из"
-      >
-        <option
-          v-for="currency in currenciesList"
-          :key="currency"
-          :value="currency"
-        >
-          {{ currency }}
-        </option>
-      </select>
-
-      ->
-
-      <select
-        id="to"
-        v-model="to"
-        class="exchange-rate__to"
-        name="to"
-        title="Сконвертировать в"
-      >
-        <option
-          v-for="currency in currenciesList"
-          :key="currency"
-          :value="currency"
-        >
-          {{ currency }}
-        </option>
-      </select>
-    </div>
-
+    <exchange-rate-form
+      :currencies-list="currenciesList"
+      :loading="loading"
+      @updateExchangeRate="updateExchangeRate"
+    />
 
     <widget-loading v-if="loading" />
 
@@ -77,11 +40,12 @@
 <script>
 import WidgetNavigation from "@/components/WidgetNavigation";
 import WidgetLoading from "@/components/WidgetLoading";
+import ExchangeRateForm from "@/components/exchangeRate/ExchangeRateForm";
 
 export default {
   name: "ExchangeRate",
 
-  components: { WidgetLoading, WidgetNavigation },
+  components: { ExchangeRateForm, WidgetLoading, WidgetNavigation },
 
   props: {
     id: {
@@ -108,11 +72,9 @@ export default {
       baseURL: "https://www.cbr.ru/",
       loading: true,
       isCollapsed: false,
-      date: "01.01.2022",
       currencies: [],
       currenciesList: [],
-      from: "USD",
-      to: "RUB"
+      exchangedCurrencies: ""
     };
   },
 
@@ -121,21 +83,9 @@ export default {
       return `exchange-rate${this.id}`;
     },
 
-    exchangedCurrencies() {
-      const result = this.exchangeCurrencies();
-      return `
-        1 ${this.from} = ${result} ${this.to}
-      `;
-    },
-
     navigationRules() {
       return ["close", "collapse"];
     }
-  },
-
-  mounted() {
-    this.updateDate();
-    this.loadExchangeRate();
   },
 
   methods: {
@@ -157,39 +107,29 @@ export default {
       this.isCollapsed = !this.isCollapsed;
     },
 
-    exchangeCurrencies() {
-      const currencyFrom = this.currencies.find(currency => currency.code === this.from);
-      const currencyTo = this.currencies.find(currency => currency.code === this.to);
-
-      if (this.from === "RUB") {
-        if (this.to === "RUB") {
-          return 1;
-        }
-
-        return (1 / currencyTo.value).toFixed(2);
-      } else if (this.to === "RUB" && currencyFrom) {
-        return currencyFrom.value;
+    async updateExchangeRate(exchangeRate) {
+      if (!this.currencies.length) {
+        await this.loadExchangeRate();
       }
 
-      return (currencyFrom.value / currencyTo.value).toFixed(2);
-    },
+      const fromCode = exchangeRate.from;
+      const toCode = exchangeRate.to;
+      let result = 1;
 
-    normalizeNumber(num) {
-      if (num < 10) {
-        return "0" + num;
+      const currencyFrom = this.currencies.find(currency => currency.code === fromCode);
+      const currencyTo = this.currencies.find(currency => currency.code === toCode);
+
+      if (fromCode === toCode) {
+        result = 1;
+      } else if (fromCode === "RUB") {
+        result = (1 / currencyTo.value).toFixed(2);
+      } else if (toCode === "RUB") {
+        result = currencyFrom.value;
+      } else {
+        result = (currencyFrom.value / currencyTo.value).toFixed(2);
       }
-      return num;
-    },
 
-    updateDate() {
-      const year = new Date().getFullYear();
-      let month = new Date().getMonth() + 1;
-      let day = new Date().getDate();
-
-      month = this.normalizeNumber(month);
-      day = this.normalizeNumber(day);
-
-      this.date = `${day}/${month}/${year}`;
+      this.exchangedCurrencies = `1 ${fromCode} = ${result} ${toCode}`;
     },
 
     stringToXML(xmlString) {
@@ -237,10 +177,11 @@ export default {
       console.error(error);
     },
 
-    loadExchangeRate() {
+    async loadExchangeRate() {
       this.showLoading();
 
-      this.$http.get(`${this.baseURL}scripts/XML_daily.asp`)
+      await this.$http
+        .get(`${this.baseURL}scripts/XML_daily.asp`)
         .then(response => {
           const json = this.xmlToJson(response.data);
 
@@ -268,29 +209,6 @@ export default {
     overflow: hidden;
 
     transition: all 0.3s;
-  }
-
-  &__currencies {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-
-    .exchange-rate__from,
-    .exchange-rate__to {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      min-width: 10px;
-      min-height: 10px;
-      padding: 10px;
-
-      text-align: center;
-
-      border: 1px solid #999999;
-      border-radius: 10px;
-    }
   }
 }
 </style>

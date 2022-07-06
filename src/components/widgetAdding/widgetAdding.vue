@@ -12,7 +12,7 @@
       />
     </button>
 
-    <add-widget-context
+    <widget-adding-context
       v-if="contextShowing"
       :widgets="widgets"
       :x="contextX"
@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import AddWidgetContext from "@/components/addWidget/AddWidgetContext";
+import widgetAddingContext from "@/components/widgetAdding/widgetAddingContext";
 
 export default {
-  name: "AddWidget",
+  name: "WidgetAdding",
 
-  components: { AddWidgetContext },
+  components: { widgetAddingContext },
 
   data() {
     return {

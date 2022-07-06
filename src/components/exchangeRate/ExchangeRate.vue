@@ -145,6 +145,14 @@ export default {
       e.dataTransfer.setData("itemID", this.id.toString());
     },
 
+    showLoading() {
+      this.loading = true;
+    },
+
+    hideLoading() {
+      this.loading = false;
+    },
+
     collapseWidget() {
       this.isCollapsed = !this.isCollapsed;
     },
@@ -188,7 +196,8 @@ export default {
       return (new DOMParser()).parseFromString(xmlString, "text/xml");
     },
 
-    xmlToJson(xml) {
+    xmlToJson(xmlString) {
+      const xml = this.stringToXML(xmlString);
       let currencies = [...xml.childNodes[0].childNodes] || [];
 
       currencies = currencies.map(_currency => {
@@ -224,21 +233,21 @@ export default {
       });
     },
 
+    handleRequestErrors(error) {
+      console.error(error);
+    },
+
     loadExchangeRate() {
-      this.loading = true;
+      this.showLoading();
 
       this.$http.get(`${this.baseURL}scripts/XML_daily.asp`)
         .then(response => {
-          const xml = this.stringToXML(response.data);
-          const json = this.xmlToJson(xml);
+          const json = this.xmlToJson(response.data);
 
           this.currencies = this.formatCurrencies(json);
-
-          this.loading = false;
         })
-        .catch(error => {
-          console.error(error);
-        });
+        .catch(this.handleRequestErrors)
+        .finally(this.hideLoading);
     },
 
     closeWidget() {

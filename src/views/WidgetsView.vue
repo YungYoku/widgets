@@ -20,7 +20,7 @@
       @closeWidget="closeWidget"
     />
 
-    <add-widget
+    <widget-adding
       @addWidget="addWidget"
     />
   </div>
@@ -30,12 +30,12 @@
 import ExactTime from "@/components/exactTime/ExactTime";
 import ExchangeRate from "@/components/exchangeRate/ExchangeRate";
 import WeatherForecast from "@/components/weatherForecast/WeatherForecast.vue";
-import AddWidget from "@/components/addWidget/AddWidget";
+import widgetAdding from "@/components/widgetAdding/widgetAdding";
 
 export default {
   name: "WidgetsView",
 
-  components: { AddWidget, ExchangeRate, ExactTime, WeatherForecast },
+  components: { widgetAdding, ExchangeRate, ExactTime, WeatherForecast },
 
   data() {
     return {

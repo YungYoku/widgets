@@ -22,36 +22,7 @@
       Точное время
     </h2>
 
-    <div class="exact-time__timezone">
-      <h3 class="text">
-        Выберите регион:
-      </h3>
-
-      <select
-        id="timezone"
-        v-model="timezone"
-        name="timezone"
-        title="Регион"
-      >
-        <option
-          disabled
-          hidden
-          selected
-          value="Не выбран"
-        >
-          Не выбран
-        </option>
-
-        <option
-          v-for="timezone in timezones"
-          :key="timezone"
-          :value="timezone"
-        >
-          {{ timezone }}
-        </option>
-      </select>
-    </div>
-
+    <exact-time-form @loadTimeByTimezone="loadTimeByTimezone" />
 
     <widget-loading v-if="loading" />
 
@@ -81,15 +52,15 @@
 </template>
 
 <script>
-import timezones from "@/assets/js/timezones";
 import WidgetNavigation from "@/components/WidgetNavigation";
 import WidgetLoading from "@/components/WidgetLoading";
 import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks";
+import ExactTimeForm from "@/components/exactTime/ExactTimeForm";
 
 export default {
   name: "ExactTime",
 
-  components: { ExactTimeClocks, WidgetLoading, WidgetNavigation },
+  components: { ExactTimeForm, ExactTimeClocks, WidgetLoading, WidgetNavigation },
 
   props: {
     id: {
@@ -117,24 +88,18 @@ export default {
       loading: true,
       isCollapsed: false,
       interval: null,
-      timezone: "Не выбран",
       date: "0000-00-00",
       hours: 0,
       minutes: 0,
-      seconds: 0
+      seconds: 0,
+      errorExists: false,
+      errorText: ""
     };
   },
 
   computed: {
     uniqueClassName() {
       return `exact-time${this.id}`;
-    },
-
-    timezones() {
-      if (timezones) {
-        return timezones;
-      }
-      return [];
     },
 
     time() {
@@ -147,12 +112,6 @@ export default {
 
     navigationRules() {
       return ["close", "collapse"];
-    }
-  },
-
-  watch: {
-    timezone() {
-      this.loadTimeByTimezone();
     }
   },
 
@@ -217,9 +176,18 @@ export default {
       }
     },
 
+    resetError() {
+      this.errorExists = false;
+      this.errorText = "";
+    },
+
     handleRequestErrors(error) {
+      this.errorExists = true;
+
       const status = error.response.status;
       const statusText = error.response.statusText;
+
+      this.errorText = statusText;
 
       if (status === 404) {
         console.error(`${statusText} ${error}`);
@@ -233,28 +201,30 @@ export default {
 
       this.$http.get(`${this.baseURL}ip`)
         .then(response => {
+          this.resetError();
+
           const time = response.data.datetime;
 
           this.startClocks(this.getFormattedTime(time));
-
-          this.hideLoading();
         })
-        .catch(this.handleRequestErrors);
+        .catch(this.handleRequestErrors)
+        .finally(this.hideLoading);
     },
 
-    loadTimeByTimezone() {
+    loadTimeByTimezone(timezone) {
       this.showLoading();
 
       this.$http
-        .get(`${this.baseURL}timezone/${this.timezone}`)
+        .get(`${this.baseURL}timezone/${timezone}`)
         .then(response => {
+          this.resetError();
+
           const time = response.data.datetime;
 
           this.setTime(this.getFormattedTime(time));
-
-          this.hideLoading();
         })
-        .catch(this.handleRequestErrors);
+        .catch(this.handleRequestErrors)
+        .finally(this.hideLoading);
     },
 
     increaseHours() {
@@ -305,21 +275,6 @@ export default {
     overflow: hidden;
 
     transition: all 0.3s;
-  }
-
-  &__timezone {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-
-    select {
-      max-width: 150px;
-      padding: 10px;
-
-      border: 1px solid #999999;
-      border-radius: 15px;
-    }
   }
 
   .text {

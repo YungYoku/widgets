@@ -48,21 +48,22 @@ ___
 
 Function that loads time data using [WorldTimeApi](https://worldtimeapi.org/).
 
-```vue
-loadTimeByTimezone() {
-  this.showLoading();
+```javascript
+loadTimeByTimezone(timezone) {
+    this.showLoading();
 
-  this.$http
-    .get(`${this.baseURL}timezone/${this.timezone}`)
+    this.$http
+    .get(`${this.baseURL}timezone/${timezone}`)
     .then(response => {
-      const time = response.data.datetime;
+        this.resetError();
 
-      this.setTime(this.getFormattedTime(time));
+        const time = response.data.datetime;
 
-      this.hideLoading();
+        this.setTime(this.getFormattedTime(time));
     })
-    .catch(this.handleRequestErrors);
-},
+    .catch(this.handleRequestErrors)
+    .finally(this.hideLoading);
+}
 ```
 
 <br>
@@ -73,7 +74,7 @@ ___
 
 ## Project setup
 
-```
+```shell
 npm install
 ```
 
@@ -82,12 +83,12 @@ and put it inside .env and .env.production files on the root of the project (Exa
 
 ### Compiles and hot-reloads for development
 
-```
+```shell
 npm run serve
 ```
 
 ### Compiles and minifies for production
 
-```
+```shell
 npm run build
 ```

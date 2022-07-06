@@ -5,7 +5,9 @@
       uniqueClassName,
       isCollapsed ? 'collapsed' : ''
     ]"
-    :style="{order}"
+    :style="{
+      order
+    }"
     class="widget exact-time"
     @dragstart="startDrag($event)"
   >
@@ -166,13 +168,41 @@ export default {
       this.isCollapsed = !this.isCollapsed;
     },
 
-    formatTime(str) {
-      const time = str
+    getFormattedTime(str) {
+      let time = str
         .split("T")[1]
         .split(".")[0]
         .split(":");
 
-      return time.map(dig => parseInt(dig));
+      time = time.map(dig => parseInt(dig));
+
+      return {
+        hours: time[0],
+        minutes: time[1],
+        seconds: time[2]
+      };
+    },
+
+    setTime(time) {
+      this.hours = time.hours;
+      this.minutes = time.minutes;
+      this.seconds = time.seconds;
+    },
+
+    startClocks(time) {
+      this.setTime(time);
+      this.interval = setInterval(this.increaseSeconds, 1000);
+    },
+
+    handleRequestErrors(error) {
+      const status = error.response.status;
+      const statusText = error.response.statusText;
+
+      if (status === 404) {
+        console.error(`${statusText} ${error}`);
+      } else {
+        console.error(error);
+      }
     },
 
     loadTimeByIp() {
@@ -183,14 +213,12 @@ export default {
           const time = response.data.datetime;
 
           if (time) {
-            this.startClocks(this.formatTime(time));
+            this.startClocks(this.getFormattedTime(time));
           }
 
           this.loading = false;
         })
-        .catch(error => {
-          console.error(error);
-        });
+        .catch(this.handleRequestErrors);
     },
 
     loadTimeByTimezone() {
@@ -198,17 +226,15 @@ export default {
 
       this.$http.get(`${this.baseURL}timezone/${this.timezone}`)
         .then(response => {
-          this.loading = false;
-
           const time = response.data.datetime;
 
           if (time) {
-            this.setResponseTime(this.formatTime(time));
+            this.setTime(this.getFormattedTime(time));
           }
+
+          this.loading = false;
         })
-        .catch(error => {
-          console.error(error);
-        });
+        .catch(this.handleRequestErrors);
     },
 
     increaseHours() {
@@ -237,17 +263,6 @@ export default {
 
         this.increaseMinutes();
       }
-    },
-
-    setResponseTime(time) {
-      this.hours = time[0];
-      this.minutes = time[1];
-      this.seconds = time[2];
-    },
-
-    startClocks(time) {
-      this.setResponseTime(time);
-      this.interval = setInterval(this.increaseSeconds, 1000);
     },
 
     closeWidget() {

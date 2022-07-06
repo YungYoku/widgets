@@ -36,25 +36,10 @@
     "stylelint-webpack-plugin": "^3.3.0",
     "vue-template-compiler": "^2.7.3"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "plugin:prettier/recommended"
-    ],
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
-    },
-    "rules": {}
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead",
-    "not ie 11"
+    "not ie <= 11"
   ]
 }

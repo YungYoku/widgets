@@ -3,7 +3,11 @@ module.exports = {
   parserOptions: {
     parser: "@babel/eslint-parser",
   },
-  extends: ["eslint:recommended", "plugin:vue/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:vue/recommended",
+    "plugin:vue/essential",
+  ],
   env: {
     node: true,
     commonjs: true,
@@ -25,6 +29,7 @@ module.exports = {
       },
     ],
     semi: ["error", "always"],
+    "prefer-const": "error",
     quotes: ["error", "double", { allowTemplateLiterals: true }],
     "object-curly-spacing": ["warn", "always"],
     "keyword-spacing": "warn",

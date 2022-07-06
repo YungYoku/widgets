@@ -569,7 +569,7 @@ export default {
     },
 
     setCurrentWeather(current) {
-      let description = current.weather[0].description;
+      const description = current.weather[0].description;
       this.current.icon = this.getWeatherIconName(current.weather[0].icon);
       this.current.temperature = `${Math.round(current.temp)}°С`;
       this.current.feelsLike = `ощущается как ${Math.round(current.feels_like)}°С`;
@@ -580,7 +580,7 @@ export default {
       `;
     },
 
-    setAverageTemperature() {
+    updateAverageTemperature() {
       const days = 8;
       let averageTempDay = 0;
       let averageTempNight = 0;
@@ -606,7 +606,7 @@ export default {
 
     setDailyWeather(daily) {
       this.daily.week = daily.map(this.getFormattedDay);
-      this.setAverageTemperature();
+      this.updateAverageTemperature();
     },
 
     openSettings() {

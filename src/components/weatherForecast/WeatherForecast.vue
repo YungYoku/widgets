@@ -299,7 +299,7 @@ export default {
   },
 
   mounted() {
-    this.loading = false;
+    this.hideLoading();
 
     if (localStorage.settings) {
       const lsSettings = JSON.parse(localStorage.settings);
@@ -351,6 +351,14 @@ export default {
       e.dataTransfer.dropEffect = "move";
       e.dataTransfer.effectAllowed = "move";
       e.dataTransfer.setData("itemID", this.id.toString());
+    },
+
+    showLoading() {
+      this.loading = true;
+    },
+
+    hideLoading() {
+      this.loading = false;
     },
 
     collapseWidget() {
@@ -461,14 +469,12 @@ export default {
             this.lat = lat;
             this.lon = lon;
 
-            this.loading = true;
+            this.showLoading();
 
             Promise.all([
               this.loadCityName(lat, lon),
               this.loadWeatherForecast(lat, lon)
-            ]).then(() => {
-              this.loading = false;
-            });
+            ]).then(this.hideLoading);
           },
           () => {
             this.geoAccessRequestShowing = false;
@@ -484,16 +490,22 @@ export default {
       }
     },
 
-    async loadByCityName(city) {
-      const alreadyLoadedCity = city.toLowerCase() === this.cityName.toLowerCase();
-      if (alreadyLoadedCity) {
+    handleSameNameCity(city) {
+      if (city.toLowerCase() === this.cityName.toLowerCase()) {
         document.activeElement.blur();
         this.cityExistError = false;
-        return;
+
+        return true;
       }
 
+      return false;
+    },
+
+    async loadByCityName(city) {
+      if (this.handleSameNameCity(city)) return;
+
       if (city) {
-        this.loading = true;
+        this.showLoading();
 
         await this.$http
           .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`, {
@@ -505,19 +517,14 @@ export default {
             this.lat = response.data[0].lat;
             this.lon = response.data[0].lon;
 
-            this.loadWeatherForecast(
-              response.data[0].lat,
-              response.data[0].lon
-            )
-              .then(() => {
-                this.loading = false;
-              });
+            this.loadWeatherForecast(this.lat, this.lon)
+              .then(this.hideLoading);
 
             this.cityName = city;
           })
           .catch(() => {
             this.cityExistError = true;
-            this.loading = false;
+            this.hideLoading();
           });
       }
     },

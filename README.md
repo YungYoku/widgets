@@ -23,7 +23,12 @@ ___
 ## Weather Forecast
 
 This widget uses [OpenWeatherMapApi](https://api.openweathermap.org/),
-and it does need an api key.
+and it does need an api key. After registration, you can get it
+in your account api keys. You need to put it 
+inside .env and .env.production files 
+in the root of the project 
+(Example shown in .env.example).
+
 
 <br>
 
@@ -110,9 +115,6 @@ ___
 ```shell
 npm install
 ```
-
-Also, you need to get your own api key from [OpenWeatherMap](https://openweathermap.org/)
-and put it inside .env and .env.production files on the root of the project (Example shown in .env.example).
 
 ### Compiles and hot-reloads for development
 

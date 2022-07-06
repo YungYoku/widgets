@@ -1,26 +1,31 @@
-<h1>
-    Widgets
-</h1>
+# Widgets
 
-<span>
-    Web app for adding, using and removing widgets.
-    <br/>
-    Current list of widgets:
-    "Weather Forecast",
-    "Exchange Rate",
-    "Exact Time".
-</span>
+ Web app for adding, using and removing widgets.
+
+<br/>
+
+Current list of widgets:
+
+<br/>
+
+- *Weather Forecast*,
+
+- *Exchange Rate*,
+
+- :compass: *Exact Time*.
 
 <br>
 <br>
 
 [Link to the site is here.](https://reliable-raindrop-761a7a.netlify.app/)
-<br>
+
 <br>
 
-<h2>
-    Weather Forecast
-</h2>
+___
+
+<br>
+
+## Weather Forecast
 
 ```
 Soon...
@@ -28,9 +33,11 @@ Soon...
 
 <br>
 
-<h2>
-    Exchange Rate
-</h2>
+___
+
+<br>
+
+## Exchange Rate
 
 ```
 Soon...
@@ -38,13 +45,19 @@ Soon...
 
 <br>
 
-<h2>
-    Exact Time
-</h2>
+___
+
+<br>
+
+## Exact Time
 
 ```
 Soon...
 ```
+
+<br>
+
+___
 
 <br>
 

@@ -14,9 +14,6 @@ Current list of widgets:
 
 [Link to the site is here.](https://reliable-raindrop-761a7a.netlify.app/)
 
-
-<br>
-
 ___
 
 <br>

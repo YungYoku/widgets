@@ -65,12 +65,18 @@
 
     <widget-loading v-if="loading" />
 
-    <h3
+    <div
       v-else
-      class="text"
+      class="exact-time__time"
     >
-      {{ time }}
-    </h3>
+      <h3 class="text">
+        {{ time }}
+      </h3>
+
+      <h3 class="text">
+        {{ date }}
+      </h3>
+    </div>
   </div>
 </template>
 
@@ -112,6 +118,7 @@ export default {
       isCollapsed: false,
       interval: null,
       timezone: "Не выбран",
+      date: "0000-00-00",
       hours: 0,
       minutes: 0,
       seconds: 0
@@ -168,15 +175,18 @@ export default {
       this.isCollapsed = !this.isCollapsed;
     },
 
-    getFormattedTime(str) {
-      let time = str
-        .split("T")[1]
+    getFormattedTime(unformattedTime) {
+      const fullTime = unformattedTime.split("T");
+
+      const date = fullTime[0];
+
+      let time = fullTime[1]
         .split(".")[0]
         .split(":");
-
       time = time.map(dig => parseInt(dig));
 
       return {
+        date,
         hours: time[0],
         minutes: time[1],
         seconds: time[2]
@@ -184,6 +194,7 @@ export default {
     },
 
     setTime(time) {
+      this.date = time.date;
       this.hours = time.hours;
       this.minutes = time.minutes;
       this.seconds = time.seconds;
@@ -224,7 +235,8 @@ export default {
     loadTimeByTimezone() {
       this.loading = true;
 
-      this.$http.get(`${this.baseURL}timezone/${this.timezone}`)
+      this.$http
+        .get(`${this.baseURL}timezone/${this.timezone}`)
         .then(response => {
           const time = response.data.datetime;
 

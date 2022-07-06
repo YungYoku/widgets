@@ -532,9 +532,9 @@ export default {
         this.cityName = city;
 
         await this.loadWeatherForecast(this.lat, this.lon);
-
-        this.hideLoading();
       }
+
+      this.hideLoading();
     },
 
     getWeekDayNaming(day) {

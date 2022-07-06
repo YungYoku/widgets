@@ -531,7 +531,7 @@ export default {
       if (coords) {
         this.cityName = city;
 
-        await this.loadWeatherForecast(this.lat, this.lon);
+        await this.loadWeatherForecast(coords.lat, coords.lon);
       }
 
       this.hideLoading();

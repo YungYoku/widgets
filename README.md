@@ -1,21 +1,19 @@
 # Widgets
 
- Web app for adding, using and removing widgets.
-
+Web app for adding, using and removing widgets.
 <br/>
-
 Current list of widgets:
 
 - :sunny: *Weather Forecast*,
-
 - :coin: *Exchange Rate*,
-
 - :watch: *Exact Time*.
 
 <br>
-<br>
+
+![All widgets](main-page.jpeg)
 
 [Link to the site is here.](https://reliable-raindrop-761a7a.netlify.app/)
+
 
 <br>
 
@@ -79,13 +77,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -6,8 +6,6 @@
 
 Current list of widgets:
 
-<br/>
-
 - :sunny: *Weather Forecast*,
 
 - :coin: *Exchange Rate*,

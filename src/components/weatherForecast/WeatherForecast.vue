@@ -464,15 +464,12 @@ export default {
       if (navigator.geolocation) {
         await navigator.geolocation.getCurrentPosition(
           position => {
+            this.showLoading();
+
             this.geoAccessRequestShowing = false;
 
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-
-            this.lat = lat;
-            this.lon = lon;
-
-            this.showLoading();
 
             Promise.all([
               this.loadCityName(lat, lon),

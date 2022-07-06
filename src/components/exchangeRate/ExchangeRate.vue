@@ -20,19 +20,29 @@
       Курс валют
     </h2>
 
-    <exchange-rate-form
-      :currencies-list="currenciesList"
-      :loading="loading"
-      @updateExchangeRate="updateExchangeRate"
+    <exchange-rate-error
+      v-if="errorExists"
+      :text="errorText"
     />
-
-    <widget-loading v-if="loading" />
 
     <div
       v-else
-      class="text"
+      class="exchange-rate__content"
     >
-      {{ exchangedCurrencies }}
+      <exchange-rate-form
+        :currencies-list="currenciesList"
+        :loading="loading"
+        @updateExchangeRate="updateExchangeRate"
+      />
+
+      <widget-loading v-if="loading" />
+
+      <div
+        v-else
+        class="text"
+      >
+        {{ exchangedCurrencies }}
+      </div>
     </div>
   </div>
 </template>
@@ -41,11 +51,12 @@
 import WidgetNavigation from "@/components/WidgetNavigation";
 import WidgetLoading from "@/components/WidgetLoading";
 import ExchangeRateForm from "@/components/exchangeRate/ExchangeRateForm";
+import ExchangeRateError from "@/components/exchangeRate/ExchangeRateError";
 
 export default {
   name: "ExchangeRate",
 
-  components: { ExchangeRateForm, WidgetLoading, WidgetNavigation },
+  components: { ExchangeRateError, ExchangeRateForm, WidgetLoading, WidgetNavigation },
 
   props: {
     id: {
@@ -74,7 +85,9 @@ export default {
       isCollapsed: false,
       currencies: [],
       currenciesList: [],
-      exchangedCurrencies: ""
+      exchangedCurrencies: "",
+      errorExists: false,
+      errorText: ""
     };
   },
 
@@ -173,8 +186,21 @@ export default {
       });
     },
 
+    resetError() {
+      this.errorExists = false;
+      this.errorText = "";
+    },
+
     handleRequestErrors(error) {
+      this.errorExists = true;
+
+      const code = error.code;
+
       console.error(error);
+
+      if (code === "ERR_NETWORK") {
+        this.errorText = "Ошибка загрузки";
+      }
     },
 
     async loadExchangeRate() {
@@ -183,6 +209,8 @@ export default {
       await this.$http
         .get(`${this.baseURL}scripts/XML_daily.asp`)
         .then(response => {
+          this.resetError();
+
           const json = this.xmlToJson(response.data);
 
           this.currencies = this.formatCurrencies(json);
@@ -209,6 +237,12 @@ export default {
     overflow: hidden;
 
     transition: all 0.3s;
+  }
+
+  &__content {
+    display: grid;
+
+    grid-gap: 10px;
   }
 }
 </style>

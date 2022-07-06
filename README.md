@@ -48,6 +48,8 @@ async loadExchangeRate() {
   await this.$http
     .get(`${this.baseURL}scripts/XML_daily.asp`)
     .then(response => {
+      this.resetError();
+
       const json = this.xmlToJson(response.data);
 
       this.currencies = this.formatCurrencies(json);

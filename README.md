@@ -46,7 +46,8 @@ ___
 
 ## Exact Time
 
-This widget uses [WorldTimeApi](https://worldtimeapi.org/).
+This widget uses [WorldTimeApi](https://worldtimeapi.org/),
+and it doesn't need any api key.
 
 <br>
 

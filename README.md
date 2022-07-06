@@ -112,6 +112,8 @@ ___
 
 ## Project setup
 
+Was used Node 16.10.0
+
 ```shell
 npm install
 ```

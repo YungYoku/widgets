@@ -21,9 +21,9 @@
     </h2>
 
     <div class="exact-time__timezone">
-      <h4 class="text">
+      <h3 class="text">
         Выберите регион:
-      </h4>
+      </h3>
 
       <select
         id="timezone"

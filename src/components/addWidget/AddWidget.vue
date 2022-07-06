@@ -6,7 +6,7 @@
       @click="showContext"
     >
       <img
-        alt="Add"
+        alt="Добавление"
         class="add-widget__button-img"
         src="@/assets/img/add.svg"
       />
@@ -108,6 +108,11 @@ export default {
     user-select: none;
 
     &:hover {
+      opacity: 1;
+      transition: all 0.2s;
+    }
+
+    &:focus {
       opacity: 1;
       transition: all 0.2s;
     }

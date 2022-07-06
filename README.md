@@ -41,7 +41,7 @@ and it doesn't need any api key.
 
 Function that loads currencies data.
 
-```
+```javascript
 async loadExchangeRate() {
   this.showLoading();
 

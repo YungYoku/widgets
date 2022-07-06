@@ -8,11 +8,11 @@ Current list of widgets:
 
 <br/>
 
-- *Weather Forecast*,
+- :sunny: *Weather Forecast*,
 
-- *Exchange Rate*,
+- :coin: *Exchange Rate*,
 
-- :compass: *Exact Time*.
+- :watch: *Exact Time*.
 
 <br>
 <br>

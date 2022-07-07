@@ -32,8 +32,35 @@ in the root of the project
 
 <br>
 
-```
-Soon...
+Function that loads weather forecast by coordinates.
+
+```javascript
+async loadWeatherForecast(lat, lon) {
+  await this.$http
+    .get(
+      `${this.baseURL}data/2.5/onecall?appid=${this.apiKey}`,
+      {
+        params: {
+          lat,
+          lon,
+          exclude: "hourly,minutely,alerts",
+          units: "metric",
+          lang: this.lang
+        }
+      }
+    )
+    .then(response => {
+      this.searchesAmount++;
+
+      this.setLatLon(lat, lon);
+
+      this.setWeather(response.data);
+
+      this.geoAccessRequestShowing = false;
+      this.cityExistError = false;
+    })
+    .catch(this.handleRequestErrors);
+}
 ```
 
 <br>

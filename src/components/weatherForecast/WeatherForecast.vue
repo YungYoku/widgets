@@ -14,11 +14,10 @@
     }"
     @dragstart="startDrag($event)"
   >
-    <weather-forecast-error
+    <widget-error
       v-if="errorShowing && !geoAccessRequestShowing"
       :geo-access-error="geoAccessError"
       :geo-exist-error="geoExistError"
-      :searches-amount="searchesAmount"
       class="error"
     />
 
@@ -38,7 +37,7 @@
       @openSettings="openSettings"
     />
 
-    <weather-forecast-geo-access
+    <widget-geo-access
       v-if="geoAccessRequestShowing"
       @allow="loadByCoords"
       @forbid="blockGeoAccess"
@@ -93,10 +92,10 @@
 import WeatherForecastToday from "@/components/weatherForecast/WeatherForecastToday.vue";
 import WeatherForecastWeek from "@/components/weatherForecast/WeatherForecastWeek.vue";
 import WeatherForecastLoadForm from "@/components/weatherForecast/WeatherForecastLoadForm.vue";
-import WeatherForecastError from "@/components/weatherForecast/WeatherForecastError.vue";
+import WidgetError from "@/components/WidgetError.vue";
 import WeatherForecastContext from "@/components/weatherForecast/WeatherForecastContext.vue";
 import WeatherForecastSettings from "@/components/weatherForecast/WeatherForecastSettings.vue";
-import WeatherForecastGeoAccess from "@/components/weatherForecast/WeatherForecastGeoAccess.vue";
+import WidgetGeoAccess from "@/components/WidgetGeoAccess.vue";
 import WeatherForecastSaved from "@/components/weatherForecast/WeatherForecastSaved.vue";
 import WeatherForecastMaps from "@/components/weatherForecast/WeatherForecastMaps.vue";
 import WidgetNavigation from "@/components/WidgetNavigation";
@@ -122,12 +121,12 @@ export default {
 
   components: {
     WidgetNavigation,
+    WidgetGeoAccess,
+    WidgetError,
     WeatherForecastMaps,
     WeatherForecastSaved,
-    WeatherForecastGeoAccess,
     WeatherForecastSettings,
     WeatherForecastContext,
-    WeatherForecastError,
     WeatherForecastLoadForm,
     WeatherForecastWeek,
     WeatherForecastToday
@@ -381,20 +380,25 @@ export default {
       document.documentElement.style.setProperty("--main-background-color", themeColor);
     },
 
-    blockGeoAccess() {
-      this.geoAccessRequestShowing = false;
-      this.geoAccessError = true;
+    giveGeoAccess() {
+      this.geoAccessError = false;
+      this.geoAccessRequestShowing = true;
     },
 
-    handleGeoAccess(flag) {
-      if (!this.searchesAmount) {
-        if (flag) {
-          this.geoAccessError = false;
-          this.geoAccessRequestShowing = true;
-        } else {
-          this.geoAccessError = true;
-          this.geoAccessRequestShowing = false;
-        }
+    blockGeoAccess() {
+      this.geoAccessError = true;
+      this.geoAccessRequestShowing = false;
+    },
+
+    handleGeoAccess(access) {
+      if (this.searchesAmount) {
+        return;
+      }
+
+      if (access) {
+        this.giveGeoAccess();
+      } else {
+        this.blockGeoAccess();
       }
     },
 
@@ -403,12 +407,16 @@ export default {
       const status = response.status;
       const statusText = response.statusText;
 
-      if (status === 401) {
-        console.error(`API key error ${status} (${statusText})`);
-      } else if (status === 404) {
-        console.error(`Wrong city name error ${status} (${statusText})`);
-      } else if (status === 429) {
-        console.error(`Free plan limit error ${status} (${statusText})`);
+      switch (status) {
+        case 401:
+          console.error(`API key error ${status} (${statusText})`);
+          break;
+        case 404:
+          console.error(`Wrong city name error ${status} (${statusText})`);
+          break;
+        case 429:
+          console.error(`Free plan limit error ${status} (${statusText})`);
+          break;
       }
     },
 

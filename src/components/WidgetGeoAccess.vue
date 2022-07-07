@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "WeatherForecastGeoAccess",
+  name: "WidgetGeoAccess",
 
   methods: {
     allow() {

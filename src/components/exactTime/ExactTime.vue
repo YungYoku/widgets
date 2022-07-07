@@ -24,7 +24,7 @@
 
     <exact-time-form @loadTimeByTimezone="loadTimeByTimezone" />
 
-    <exact-time-error
+    <widget-error
       v-if="errorExists"
       :text="errorText"
     />
@@ -66,12 +66,18 @@ import WidgetNavigation from "@/components/WidgetNavigation";
 import WidgetLoading from "@/components/WidgetLoading";
 import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks";
 import ExactTimeForm from "@/components/exactTime/ExactTimeForm";
-import ExactTimeError from "@/components/exactTime/ExactTimeError";
+import WidgetError from "@/components/WidgetError";
 
 export default {
   name: "ExactTime",
 
-  components: { ExactTimeError, ExactTimeForm, ExactTimeClocks, WidgetLoading, WidgetNavigation },
+  components: {
+    WidgetError,
+    ExactTimeForm,
+    ExactTimeClocks,
+    WidgetLoading,
+    WidgetNavigation
+  },
 
   props: {
     id: {

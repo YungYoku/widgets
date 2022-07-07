@@ -20,7 +20,7 @@
       Курс валют
     </h2>
 
-    <exchange-rate-error
+    <widget-error
       v-if="errorExists"
       :text="errorText"
     />
@@ -51,12 +51,17 @@
 import WidgetNavigation from "@/components/WidgetNavigation";
 import WidgetLoading from "@/components/WidgetLoading";
 import ExchangeRateForm from "@/components/exchangeRate/ExchangeRateForm";
-import ExchangeRateError from "@/components/exchangeRate/ExchangeRateError";
+import WidgetError from "@/components/WidgetError";
 
 export default {
   name: "ExchangeRate",
 
-  components: { ExchangeRateError, ExchangeRateForm, WidgetLoading, WidgetNavigation },
+  components: {
+    WidgetError,
+    ExchangeRateForm,
+    WidgetLoading,
+    WidgetNavigation
+  },
 
   props: {
     id: {

@@ -8,30 +8,34 @@
 
 <script>
 export default {
-  name: "WeatherForecastError",
+  name: "WidgetError",
 
   props: {
+    text: {
+      type: String,
+      required: false,
+      default: ""
+    },
+
     geoExistError: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false
     },
 
     geoAccessError: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false
-    },
-
-    searchesAmount: {
-      type: Number,
-      required: true,
-      default: 0
     }
   },
 
   computed: {
     errorText() {
+      if (this.text) {
+        return this.text;
+      }
+
       if (this.geoExistError) {
         return "Устройство не поддерживает геолокацию";
       }
@@ -54,7 +58,7 @@ export default {
   &__text {
     margin: 0;
 
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 400;
     text-align: center;
     word-wrap: break-word;

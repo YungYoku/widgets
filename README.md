@@ -130,6 +130,12 @@ npm run serve
 npm run build
 ```
 
+<br>
+
+___
+
+<br>
+
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)

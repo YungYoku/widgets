@@ -24,29 +24,39 @@
 
     <exact-time-form @loadTimeByTimezone="loadTimeByTimezone" />
 
-    <widget-loading v-if="loading" />
-
-    <exact-time-clocks
-      v-else
-      :hours="hours"
-      :minutes="minutes"
-      :seconds="seconds"
+    <exact-time-error
+      v-if="errorExists"
+      :text="errorText"
     />
-
-
-    <widget-loading v-if="loading" />
 
     <div
       v-else
-      class="exact-time__time"
+      class="exact-time__content"
     >
-      <h3 class="text">
-        {{ time }}
-      </h3>
+      <widget-loading v-if="loading" />
 
-      <h3 class="text">
-        {{ date }}
-      </h3>
+      <exact-time-clocks
+        v-else
+        :hours="hours"
+        :minutes="minutes"
+        :seconds="seconds"
+      />
+
+
+      <widget-loading v-if="loading" />
+
+      <div
+        v-else
+        class="exact-time__time"
+      >
+        <h3 class="text">
+          {{ time }}
+        </h3>
+
+        <h3 class="text">
+          {{ date }}
+        </h3>
+      </div>
     </div>
   </div>
 </template>
@@ -56,11 +66,12 @@ import WidgetNavigation from "@/components/WidgetNavigation";
 import WidgetLoading from "@/components/WidgetLoading";
 import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks";
 import ExactTimeForm from "@/components/exactTime/ExactTimeForm";
+import ExactTimeError from "@/components/exactTime/ExactTimeError";
 
 export default {
   name: "ExactTime",
 
-  components: { ExactTimeForm, ExactTimeClocks, WidgetLoading, WidgetNavigation },
+  components: { ExactTimeError, ExactTimeForm, ExactTimeClocks, WidgetLoading, WidgetNavigation },
 
   props: {
     id: {
@@ -271,8 +282,14 @@ export default {
     transition: all 0.3s;
   }
 
-  .text {
-    text-align: center;
+  &__content {
+    display: grid;
+
+    grid-gap: 10px;
+
+    .text {
+      text-align: center;
+    }
   }
 }
 </style>

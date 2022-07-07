@@ -112,7 +112,7 @@ ___
 
 ## Project setup
 
-Was used Node 16.10.0
+Project was made with Node 16.10.0.
 
 ```shell
 npm install
@@ -129,3 +129,7 @@ npm run serve
 ```shell
 npm run build
 ```
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)

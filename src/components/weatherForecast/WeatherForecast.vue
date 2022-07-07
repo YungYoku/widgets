@@ -412,6 +412,16 @@ export default {
       }
     },
 
+    setLatLon(lat, lon) {
+      this.lat = lat;
+      this.lon = lon;
+    },
+
+    setWeather(weather) {
+      this.setCurrentWeather(weather.current);
+      this.setDailyWeather(weather.daily);
+    },
+
     async loadWeatherForecast(lat, lon) {
       await this.$http
         .get(
@@ -426,14 +436,14 @@ export default {
             }
           }
         )
-        .then((response) => {
-          this.lat = lat;
-          this.lon = lon;
+        .then(response => {
+          this.searchesAmount++;
+
+          this.setLatLon(lat, lon);
+
+          this.setWeather(response.data);
 
           this.geoAccessRequestShowing = false;
-          this.searchesAmount++;
-          this.setCurrentWeather(response.data.current);
-          this.setDailyWeather(response.data.daily);
           this.cityExistError = false;
         })
         .catch(this.handleRequestErrors);
@@ -520,17 +530,17 @@ export default {
         });
     },
 
-    async loadByCityName(city) {
-      if (this.isItSameCity(city)) {
+    async loadByCityName(cityName) {
+      if (this.isItSameCity(cityName)) {
         this.handleSameNameCity();
         return;
       }
 
       this.showLoading();
 
-      const coords = await this.loadCoordsByCityName(city);
+      const coords = await this.loadCoordsByCityName(cityName);
       if (coords) {
-        this.cityName = city;
+        this.cityName = cityName;
 
         await this.loadWeatherForecast(coords.lat, coords.lon);
       }

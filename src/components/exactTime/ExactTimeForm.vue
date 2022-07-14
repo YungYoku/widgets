@@ -30,10 +30,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import timezones from "@/assets/js/timezones";
 
-export default {
+export default Vue.extend({
   name: "ExactTimeForm",
 
   data() {
@@ -56,7 +57,7 @@ export default {
       this.$emit("loadTimeByTimezone", this.timezone);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -43,10 +43,11 @@
   </div>
 </template>
 
-<script>
-import WidgetLoading from "@/components/WidgetLoading";
+<script lang="ts">
+import Vue from "vue";
+import WidgetLoading from "@/components/WidgetLoading.vue";
 
-export default {
+export default Vue.extend({
   name: "ExchangeRateForm",
 
   components: { WidgetLoading },
@@ -89,12 +90,12 @@ export default {
   methods: {
     updateExchangeRate() {
       this.$emit("updateExchangeRate", {
-        to: this.to,
-        from: this.from
+        from: this.from,
+        to: this.to
       });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

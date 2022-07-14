@@ -10,7 +10,7 @@
 
     <div class="settings__list">
       <div
-        v-for="(setting, i) in settings"
+        v-for="setting in settings"
         :key="setting.title"
         class="settings__list-item"
       >
@@ -20,7 +20,7 @@
             'turned-on': setting.turnedOn
           }"
           class="settings__list-item-button"
-          @click="setting.action(i)"
+          @click="swapSetting(setting.name, setting.actionType)"
         >
         </button>
       </div>
@@ -34,15 +34,17 @@
   </div>
 </template>
 
-<script>
-import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
-import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks";
+<script lang="ts">
+import Vue from "vue";
+import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
+import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks.vue";
+import { Setting } from "@/interfaces/setting";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastSettings",
 
   components: { WidgetDeveloperLinks, WeatherForecastCloseButton },
-  
+
   data() {
     return {
       settings: [
@@ -50,41 +52,14 @@ export default {
           name: "geo",
           title: "Использовать местоположение",
           turnedOn: true,
-          action: i => {
-            const turnedOn = !this.settings[i].turnedOn;
-
-            this.settings[i].turnedOn = turnedOn;
-
-            const storage = JSON.parse(localStorage.settings);
-            if (storage) {
-              storage[i].turnedOn = turnedOn;
-              localStorage.settings = JSON.stringify(storage);
-            }
-
-            this.$emit("giveGeoAccess", turnedOn);
-          }
+          actionType: "giveGeoAccess"
         },
 
         {
           name: "theme",
           title: "Фиолетовая тема",
           turnedOn: false,
-          action: i => {
-            const turnedOn = !this.settings[i].turnedOn;
-
-            this.settings[i].turnedOn = turnedOn;
-
-            const storage = JSON.parse(localStorage.settings);
-            if (storage) {
-              storage[i].turnedOn = turnedOn;
-              localStorage.settings = JSON.stringify(storage);
-            }
-            if (turnedOn) {
-              this.$emit("switchTheme", "purple");
-            } else {
-              this.$emit("switchTheme", "light");
-            }
-          }
+          actionType: "switchTheme"
         }
       ]
     };
@@ -95,6 +70,33 @@ export default {
   },
 
   methods: {
+    swapSetting(name: string, actionType: string) {
+      const setting = this.settings.find(item => item.name === name);
+
+      if (setting) {
+        const turnedOn = !setting.turnedOn;
+
+        const storage = JSON.parse(localStorage.settings) as Array<Setting>;
+        if (storage) {
+          const storageSetting = storage.find(item => item.name === name);
+          if (storageSetting) {
+            setting.turnedOn = turnedOn;
+
+            storageSetting.turnedOn = turnedOn;
+            localStorage.settings = JSON.stringify(storage);
+
+            this.$emit(actionType, turnedOn);
+          }
+
+          return false;
+        }
+
+        return false;
+      }
+
+      return false;
+    },
+
     resetLsSettings() {
       const settings = this.settings.map(setting => {
         return {
@@ -131,7 +133,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -47,13 +47,20 @@
   </div>
 </template>
 
-<script>
-import WidgetNavigation from "@/components/WidgetNavigation";
-import WidgetLoading from "@/components/WidgetLoading";
-import ExchangeRateForm from "@/components/exchangeRate/ExchangeRateForm";
-import WidgetError from "@/components/WidgetError";
+<script lang="ts">
+import Vue from "vue";
+import WidgetNavigation from "@/components/WidgetNavigation.vue";
+import WidgetLoading from "@/components/WidgetLoading.vue";
+import ExchangeRateForm from "@/components/exchangeRate/ExchangeRateForm.vue";
+import WidgetError from "@/components/WidgetError.vue";
+import { UnformattedCurrency } from "@/interfaces/unformattedCurrency";
+import { Currency } from "@/interfaces/currency";
+import { ExchangeRate } from "@/interfaces/exchangeRate";
+import { ExchangeError } from "@/interfaces/exchangeError";
+import { AxiosResponse } from "axios";
+import { UnformattedCurrencyAttribute } from "@/interfaces/UnformattedCurrencyAttribute";
 
-export default {
+export default Vue.extend({
   name: "ExchangeRate",
 
   components: {
@@ -88,8 +95,8 @@ export default {
       baseURL: process.env.VUE_APP_EXCHANGE_BASE_URL,
       loading: true,
       isCollapsed: false,
-      currencies: [],
-      currenciesList: [],
+      currencies: [] as Array<Currency>,
+      currenciesList: [] as Array<string>,
       exchangedCurrencies: "",
       errorExists: false,
       errorText: ""
@@ -107,10 +114,12 @@ export default {
   },
 
   methods: {
-    startDrag(e) {
-      e.dataTransfer.dropEffect = "move";
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("itemID", this.id.toString());
+    startDrag(event: DragEvent) {
+      const dataTransfer = event.dataTransfer as DataTransfer;
+
+      dataTransfer.dropEffect = "move";
+      dataTransfer.effectAllowed = "move";
+      dataTransfer.setData("itemID", this.id.toString());
     },
 
     showLoading() {
@@ -125,10 +134,22 @@ export default {
       this.isCollapsed = !this.isCollapsed;
     },
 
-    async updateExchangeRate(exchangeRate) {
+    addRubExchangePair() {
+      this.currencies.push({
+        code: "RUB",
+        name: "Рубль РФ",
+        nominal: 1,
+        numCode: "0",
+        value: 1
+      });
+    },
+
+    async updateExchangeRate(exchangeRate: ExchangeRate) {
       if (!this.currencies.length) {
         await this.loadExchangeRate();
       }
+
+      this.addRubExchangePair();
 
       const fromCode = exchangeRate.from;
       const toCode = exchangeRate.to;
@@ -137,40 +158,47 @@ export default {
       const currencyFrom = this.currencies.find(currency => currency.code === fromCode);
       const currencyTo = this.currencies.find(currency => currency.code === toCode);
 
-      if (fromCode === toCode) {
-        result = 1;
-      } else if (fromCode === "RUB") {
-        result = (1 / currencyTo.value).toFixed(2);
-      } else if (toCode === "RUB") {
-        result = currencyFrom.value;
-      } else {
-        result = (currencyFrom.value / currencyTo.value).toFixed(2);
-      }
+      if (currencyFrom && currencyTo) {
+        if (fromCode === toCode) {
+          result = 1;
+        } else if (fromCode === "RUB") {
+          result = parseInt((1 / currencyTo.value).toFixed(2));
+        } else if (toCode === "RUB") {
+          result = currencyFrom.value;
+        } else {
+          result = parseInt((currencyFrom.value / currencyTo.value).toFixed(2));
+        }
 
-      this.exchangedCurrencies = `1 ${fromCode} = ${result} ${toCode}`;
+        this.exchangedCurrencies = `1 ${fromCode} = ${result} ${toCode}`;
+      }
     },
 
-    stringToXML(xmlString) {
+    stringToXML(xmlString: string) {
       return (new DOMParser()).parseFromString(xmlString, "text/xml");
     },
 
-    xmlToJson(xmlString) {
+    xmlToJson(xmlString: string) {
       const xml = this.stringToXML(xmlString);
-      let currencies = [...xml.childNodes[0].childNodes] || [];
+      const nodes = [...xml.childNodes[0].childNodes] || [];
 
-      currencies = currencies.map(_currency => {
-        const attrs = [..._currency.childNodes];
+      const currencies = nodes.map(_currency => {
+        const childNodes = _currency.childNodes;
+        const attrs = [...childNodes] as Array<UnformattedCurrencyAttribute>;
 
-        const currency = {};
-        attrs.forEach(attr => currency[attr.localName] = attr.textContent);
+        const currency = {} as UnformattedCurrency;
+        attrs.forEach((attr: UnformattedCurrencyAttribute) => {
+          const attrName = attr.localName as string;
+
+          currency[attrName] = attr.textContent;
+        });
 
         return currency;
       });
 
-      return currencies;
+      return currencies as Array<UnformattedCurrency>;
     },
 
-    formatCurrencies(currencies) {
+    formatCurrencies(currencies: Array<UnformattedCurrency>) {
       this.currenciesList.push("RUB");
 
       return currencies.map(currency => {
@@ -185,9 +213,8 @@ export default {
           name: currency.Name,
           nominal: nominal / nominal,
           numCode: currency.NumCode,
-          value: value / nominal,
-          attributes: currency.attributes
-        };
+          value: value / nominal
+        } as Currency;
       });
     },
 
@@ -196,7 +223,7 @@ export default {
       this.errorText = "";
     },
 
-    handleRequestErrors(error) {
+    handleRequestErrors(error: ExchangeError) {
       this.errorExists = true;
 
       const code = error.code;
@@ -213,7 +240,7 @@ export default {
 
       await this.$http
         .get(`${this.baseURL}scripts/XML_daily.asp`)
-        .then(response => {
+        .then((response: AxiosResponse<string>) => {
           this.resetError();
 
           const json = this.xmlToJson(response.data);
@@ -228,7 +255,7 @@ export default {
       this.$emit("closeWidget", this.id);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -61,10 +61,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastChart from "@/components/weatherForecast/WeatherForecastChart.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
+import { ChartColors } from "@/interfaces/chartColors";
 
 const hotter = "#DC143C";
 const hot = "#FF7F50";
@@ -72,7 +74,7 @@ const normal = "#f4df5b";
 const cold = "#ADD8E6";
 const colder = "#4682B4";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastWeek",
 
   components: {
@@ -159,7 +161,7 @@ export default {
   },
 
   computed: {
-    chartColors() {
+    chartColors(): ChartColors {
       return {
         day: this.getTemperatureColor(this.weather.averageTemperatureDay),
         night: this.getTemperatureColor(this.weather.averageTemperatureNight)
@@ -168,7 +170,7 @@ export default {
   },
 
   methods: {
-    getTemperatureColor(temperature) {
+    getTemperatureColor(temperature: number) {
       if (temperature >= 30) return hotter;
 
       if (temperature >= 20) return hot;
@@ -178,9 +180,11 @@ export default {
       if (temperature <= -20) return colder;
 
       if (temperature <= 0) return cold;
+
+      return normal;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

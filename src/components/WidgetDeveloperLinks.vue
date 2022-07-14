@@ -15,11 +15,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import github from "@/assets/img/github.svg";
 import telegram from "@/assets/img/telegram.svg";
 
-export default {
+export default Vue.extend({
   name: "WidgetDeveloperLinks",
 
   data() {
@@ -39,7 +40,7 @@ export default {
       ]
     };
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

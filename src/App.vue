@@ -4,14 +4,15 @@
   </div>
 </template>
 
-<script>
-import WidgetsView from "@/views/WidgetsView";
+<script lang="ts">
+import Vue from "vue";
+import WidgetsView from "@/views/WidgetsView.vue";
 
-export default {
+export default Vue.extend({
   name: "App",
 
   components: { WidgetsView }
-};
+});
 </script>
 
 <style lang="scss" scoped>

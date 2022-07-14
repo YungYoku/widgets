@@ -55,10 +55,11 @@
   </div>
 </template>
 
-<script>
-import cities from "@/assets/js/cities.js";
+<script lang="ts">
+import Vue from "vue";
+import cities from "@/assets/js/cities";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastLoadForm",
 
   props: {
@@ -93,14 +94,14 @@ export default {
       return this.cityExistError && this.searchesAmount > 0;
     },
 
-    placeholder() {
+    placeholder(): string {
       return this.inputError ? "Введите существующий город" : "Введите город";
     },
 
     optionCities() {
-      const firstLet = this.city[0].toLowerCase();
+      const firstLetter = this.city[0].toLowerCase();
 
-      let _cities = cities[firstLet] || [];
+      let _cities = cities[firstLetter] as Array<string> || [];
       _cities = _cities.filter(city => city.startsWith(this.city));
       _cities = _cities.filter(city => city !== this.city);
 
@@ -136,10 +137,14 @@ export default {
   },
 
   methods: {
-    setCity(city) {
+    setCity(city: string) {
       this.city = city;
       this.selectShowing = false;
-      this.$refs["inputCity"].focus();
+
+      const inputCity = this.$refs["inputCity"] as HTMLElement;
+      if (inputCity) {
+        inputCity.focus();
+      }
     },
 
     load() {
@@ -149,10 +154,12 @@ export default {
       }
     },
 
-    handleClick(e) {
-      const className = e.target.className;
+    handleClick(event: Event) {
+      const target = event.target as HTMLElement;
 
-      if (className && typeof className === "string") {
+      const className = target.className.toString();
+
+      if (className) {
         const isInputClicked = className.includes("inputCity");
         const isOptionClicked = className.includes("citySelect") || className.includes("citySelectItem");
 
@@ -166,7 +173,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

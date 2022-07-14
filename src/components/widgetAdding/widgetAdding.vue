@@ -22,10 +22,11 @@
   </div>
 </template>
 
-<script>
-import widgetAddingContext from "@/components/widgetAdding/widgetAddingContext";
+<script lang="ts">
+import Vue from "vue";
+import widgetAddingContext from "@/components/widgetAdding/widgetAddingContext.vue";
 
-export default {
+export default Vue.extend({
   name: "WidgetAdding",
 
   components: { widgetAddingContext },
@@ -35,15 +36,15 @@ export default {
       widgets: [
         {
           name: "Прогноз погоды",
-          is: "weather-forecast"
+          type: "weather-forecast"
         },
         {
           name: "Точное время",
-          is: "exact-time"
+          type: "exact-time"
         },
         {
           name: "Курс валют",
-          is: "exchange-rate"
+          type: "exchange-rate"
         }
       ],
       contextShowing: false,
@@ -53,28 +54,31 @@ export default {
 
   methods: {
     showContext() {
-      const windowWidth = window.innerWidth;
-      const buttonX = document.querySelector(".add-widget").offsetLeft + 45;
+      const button = document.querySelector(".add-widget") as HTMLElement;
+      if (button) {
+        const windowWidth = window.innerWidth;
+        const buttonX = button.offsetLeft + 45;
 
-      if (buttonX + 150 > windowWidth) {
-        this.contextX = -150;
-      } else {
-        this.contextX = 0;
+        if (buttonX + 150 > windowWidth) {
+          this.contextX = -150;
+        } else {
+          this.contextX = 0;
+        }
+
+        this.contextShowing = true;
       }
-
-      this.contextShowing = true;
     },
 
     hideContext() {
       this.contextShowing = false;
     },
 
-    addWidget(widget) {
+    addWidget(type: string) {
       this.hideContext();
-      this.$emit("addWidget", widget);
+      this.$emit("addWidget", type);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

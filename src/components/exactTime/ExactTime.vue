@@ -61,14 +61,19 @@
   </div>
 </template>
 
-<script>
-import WidgetNavigation from "@/components/WidgetNavigation";
-import WidgetLoading from "@/components/WidgetLoading";
-import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks";
-import ExactTimeForm from "@/components/exactTime/ExactTimeForm";
-import WidgetError from "@/components/WidgetError";
+<script lang="ts">
+import Vue from "vue";
+import WidgetNavigation from "@/components/WidgetNavigation.vue";
+import WidgetLoading from "@/components/WidgetLoading.vue";
+import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks.vue";
+import ExactTimeForm from "@/components/exactTime/ExactTimeForm.vue";
+import WidgetError from "@/components/WidgetError.vue";
+import { Time } from "@/interfaces/time";
+import { TimeResponse } from "@/interfaces/timeResponse";
+import { TimeError } from "@/interfaces/timeError";
+import { AxiosResponse } from "axios";
 
-export default {
+export default Vue.extend({
   name: "ExactTime",
 
   components: {
@@ -104,7 +109,7 @@ export default {
       baseURL: process.env.VUE_APP_TIME_BASE_URL,
       loading: true,
       isCollapsed: false,
-      interval: null,
+      interval: null as unknown as number,
       date: "0000-00-00",
       hours: 0,
       minutes: 0,
@@ -141,10 +146,12 @@ export default {
   },
 
   methods: {
-    startDrag(e) {
-      e.dataTransfer.dropEffect = "move";
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("itemID", this.id.toString());
+    startDrag(event: DragEvent) {
+      const dataTransfer = event.dataTransfer as DataTransfer;
+
+      dataTransfer.dropEffect = "move";
+      dataTransfer.effectAllowed = "move";
+      dataTransfer.setData("itemID", this.id.toString());
     },
 
     showLoading() {
@@ -159,25 +166,25 @@ export default {
       this.isCollapsed = !this.isCollapsed;
     },
 
-    getFormattedTime(unformattedTime) {
+    getFormattedTime(unformattedTime: string) {
       const fullTime = unformattedTime.split("T");
 
       const date = fullTime[0];
 
-      let time = fullTime[1]
+      const time = fullTime[1]
         .split(".")[0]
-        .split(":");
-      time = time.map(dig => parseInt(dig));
+        .split(":")
+        .map(digit => parseInt(digit)) as Array<number>;
 
       return {
         date,
         hours: time[0],
         minutes: time[1],
         seconds: time[2]
-      };
+      } as Time;
     },
 
-    setTime(time) {
+    setTime(time: Time) {
       if (time) {
         this.date = time.date;
         this.hours = time.hours;
@@ -199,7 +206,7 @@ export default {
       this.errorText = "";
     },
 
-    handleRequestErrors(error) {
+    handleRequestErrors(error: TimeError) {
       this.errorExists = true;
 
       const status = error.response.status;
@@ -214,12 +221,12 @@ export default {
       }
     },
 
-    async request(path) {
+    async request(path: string) {
       this.showLoading();
 
       await this.$http
         .get(`${this.baseURL}${path}`)
-        .then(response => {
+        .then((response: AxiosResponse<TimeResponse>) => {
           this.resetError();
 
           const time = response.data.datetime;
@@ -234,7 +241,7 @@ export default {
       await this.request("ip");
     },
 
-    async loadTimeByTimezone(timezone) {
+    async loadTimeByTimezone(timezone: string) {
       await this.request("timezone/" + timezone);
     },
 
@@ -270,7 +277,7 @@ export default {
       this.$emit("closeWidget", this.id);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

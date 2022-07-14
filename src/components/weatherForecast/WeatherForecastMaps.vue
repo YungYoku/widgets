@@ -16,11 +16,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 import { LMap, LTileLayer } from "vue2-leaflet";
-import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastMaps",
 
   components: {
@@ -52,11 +53,18 @@ export default {
 
   methods: {
     removeLeafletUiTrash() {
-      document.querySelector(".leaflet-control-zoom").remove();
-      document.querySelector(".leaflet-control-attribution").remove();
+      const leafletZoom = document.querySelector(".leaflet-control-zoom");
+      if (leafletZoom) {
+        leafletZoom.remove();
+      }
+
+      const leafletAttribution = document.querySelector(".leaflet-control-attribution");
+      if (leafletAttribution) {
+        leafletAttribution.remove();
+      }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

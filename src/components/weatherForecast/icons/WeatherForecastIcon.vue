@@ -4,7 +4,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import WeatherForecastIconClouds from "@/components/weatherForecast/icons/WeatherForecastIconClouds.vue";
 import WeatherForecastIconLightning from "@/components/weatherForecast/icons/WeatherForecastIconLightning.vue";
 import WeatherForecastIconMist from "@/components/weatherForecast/icons/WeatherForecastIconMist.vue";
@@ -12,7 +13,7 @@ import WeatherForecastIconSun from "@/components/weatherForecast/icons/WeatherFo
 import WeatherForecastIconRain from "@/components/weatherForecast/icons/WeatherForecastIconRain.vue";
 import WeatherForecastIconSnow from "@/components/weatherForecast/icons/WeatherForecastIconSnow.vue";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastIcon",
 
   components: {
@@ -31,7 +32,7 @@ export default {
       default: "Sun"
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

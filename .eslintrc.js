@@ -1,17 +1,21 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   parserOptions: {
-    parser: "@babel/eslint-parser",
+    parser: "@typescript-eslint/parser"
   },
+
   extends: [
     "eslint:recommended",
     "plugin:vue/recommended",
     "plugin:vue/essential",
+    "@vue/typescript"
   ],
+
   env: {
     node: true,
-    commonjs: true,
+    commonjs: true
   },
+
   rules: {
     strict: 0,
     "vue/no-v-html": ["off"],
@@ -24,22 +28,23 @@ module.exports = {
       {
         html: {
           normal: "never",
-          void: "always",
-        },
-      },
+          void: "always"
+        }
+      }
     ],
     semi: ["error", "always"],
     "prefer-const": "error",
     quotes: ["error", "double", { allowTemplateLiterals: true }],
     "object-curly-spacing": ["warn", "always"],
-    "keyword-spacing": "warn",
+    "keyword-spacing": "warn"
   },
+
   overrides: [
     {
       files: ["*.vue"],
       rules: {
-        indent: "off",
-      },
-    },
-  ],
+        indent: "off"
+      }
+    }
+  ]
 };

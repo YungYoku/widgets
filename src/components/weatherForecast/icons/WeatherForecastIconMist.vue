@@ -10,13 +10,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import WeatherForecastIconSun from "@/components/weatherForecast/icons/WeatherForecastIconSun.vue";
+import Vue from "vue";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastIconMist",
   components: { WeatherForecastIconSun }
-};
+});
 </script>
 
 <style lang="scss" scoped>

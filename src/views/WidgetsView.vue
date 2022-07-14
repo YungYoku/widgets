@@ -26,13 +26,15 @@
   </div>
 </template>
 
-<script>
-import ExactTime from "@/components/exactTime/ExactTime";
-import ExchangeRate from "@/components/exchangeRate/ExchangeRate";
+<script lang="ts">
+import Vue from "vue";
+import ExactTime from "@/components/exactTime/ExactTime.vue";
+import ExchangeRate from "@/components/exchangeRate/ExchangeRate.vue";
 import WeatherForecast from "@/components/weatherForecast/WeatherForecast.vue";
-import widgetAdding from "@/components/widgetAdding/widgetAdding";
+import widgetAdding from "@/components/widgetAdding/widgetAdding.vue";
+import type { WidgetItem } from "@/interfaces/widgetItem";
 
-export default {
+export default Vue.extend({
   name: "WidgetsView",
 
   components: { widgetAdding, ExchangeRate, ExactTime, WeatherForecast },
@@ -40,7 +42,7 @@ export default {
   data() {
     return {
       newId: 0,
-      widgets: [],
+      widgets: [] as Array<WidgetItem>,
       widgetsType: [
         "weather-forecast",
         "exact-time",
@@ -51,7 +53,7 @@ export default {
   },
 
   methods: {
-    detectWidgetType(classNames) {
+    detectWidgetType(classNames: Array<string>) {
       for (const className of classNames) {
         for (const widgetType of this.widgetsType) {
           if (className.includes(widgetType)) {
@@ -63,12 +65,13 @@ export default {
       return "";
     },
 
-    onDrop(event) {
-      const itemID = parseInt(event.dataTransfer.getData("itemID"));
-      let target = event.target;
+    onDrop(event: DragEvent) {
+      const dataTransfer = event.dataTransfer as DataTransfer;
+      const itemID = parseInt(dataTransfer.getData("itemID"));
+      let target = event.target as HTMLElement;
       let toWidget;
-      let toWidgetId;
-      let toWidgetType;
+      let toWidgetId: number;
+      let toWidgetType: string;
 
       while (target) {
         if (target.nodeName.toLowerCase() === "body") {
@@ -91,40 +94,41 @@ export default {
         }
 
         if (target.parentNode) {
-          target = target.parentNode;
+          target = target.parentNode as HTMLElement;
         }
       }
 
       const fromWidget = this.widgets.find(item => item.id === itemID);
 
       if (toWidget && fromWidget) {
-
         const tempOrder = fromWidget.order;
         fromWidget.order = toWidget.order;
         toWidget.order = tempOrder;
       }
     },
 
-    closeWidget(id) {
+    closeWidget(id: number) {
+      //Исчезновение
       this.animateDisappearance(id);
-
-      // Из-за обновления всего массива, все сиджеты на сайте обновлялись
-      // setTimeout(() => {
-      //   this.widgets = this.widgets.filter(widget => widget.id !== id);
-      // }, 500);
     },
 
-    animateDisappearance(id) {
+    animateDisappearance(id: number) {
       const targetWidget = this.widgets.find(widget => widget.id === id);
-      const target = document.querySelector("." + targetWidget.type + targetWidget.id);
-      target.classList.add("closed");
 
-      setTimeout(() => {
-        targetWidget.hidden = true;
-      }, 500);
+      if (targetWidget) {
+        const target = document.querySelector("." + targetWidget.type + targetWidget.id);
+
+        if (target) {
+          target.classList.add("closed");
+
+          setTimeout(() => {
+            targetWidget.hidden = true;
+          }, 500);
+        }
+      }
     },
 
-    addWidget(type) {
+    addWidget(type: string) {
       this.widgets.push({
         type,
         id: this.newId,
@@ -135,7 +139,7 @@ export default {
       this.newId++;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

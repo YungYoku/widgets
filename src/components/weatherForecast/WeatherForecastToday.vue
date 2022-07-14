@@ -35,11 +35,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastToday",
 
   components: {
@@ -74,7 +75,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

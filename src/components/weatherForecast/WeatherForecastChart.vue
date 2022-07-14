@@ -9,10 +9,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import VueApexCharts from "vue-apexcharts";
+import { Temperature } from "@/interfaces/temperature";
+import { GraphItem } from "@/interfaces/graphItem";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastChart",
 
   components: {
@@ -230,17 +233,17 @@ export default {
 
   computed: {
     series() {
-      const temperature = this.temperature;
+      const temperature = this.temperature as Array<Temperature>;
 
       const graphTop = {
         name: "",
-        data: [],
+        data: [] as Array<GraphItem>,
         min: 200
       };
 
       const graphBottom = {
         name: "",
-        data: [],
+        data: [] as Array<GraphItem>,
         max: -200
       };
 
@@ -274,7 +277,7 @@ export default {
       return [graphTop, graphBottom];
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

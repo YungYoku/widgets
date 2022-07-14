@@ -34,8 +34,8 @@ in the root of the project
 
 Function that loads weather forecast by coordinates.
 
-```javascript
-async loadWeatherForecast(lat, lon) {
+```typescript
+async loadWeatherForecast(lat: number, lon: number) {
   await this.$http
     .get(
       `${this.baseURL}data/2.5/onecall?appid=${this.apiKey}`,
@@ -49,7 +49,7 @@ async loadWeatherForecast(lat, lon) {
         }
       }
     )
-    .then(response => {
+    .then((response: AxiosResponse<WeatherResponse>) => {
       this.searchesAmount++;
 
       this.setLatLon(lat, lon);
@@ -78,13 +78,13 @@ and it doesn't need any api key.
 
 Function that loads currencies data.
 
-```javascript
+```typescript
 async loadExchangeRate() {
   this.showLoading();
 
   await this.$http
     .get(`${this.baseURL}scripts/XML_daily.asp`)
-    .then(response => {
+    .then((response: AxiosResponse<string>) => {
       this.resetError();
 
       const json = this.xmlToJson(response.data);
@@ -113,13 +113,13 @@ Function that loads time data by provided path,
 it can be ip or timezone. This function is called
 every time you add the widget.
 
-```javascript
-async request(path) {
+```typescript
+async request(path: string) {
   this.showLoading();
 
   await this.$http
     .get(`${this.baseURL}${path}`)
-    .then(response => {
+    .then((response: AxiosResponse<TimeResponse>) => {
       this.resetError();
 
       const time = response.data.datetime;

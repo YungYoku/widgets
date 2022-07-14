@@ -5,13 +5,10 @@
       :key="button.img"
       class="navigation__button"
       type="button"
-      @click="button.action"
+      @click="action(button.name)"
     >
       <img
         :alt="button.alt"
-        :class="{
-          'turn-over': button.turnOver,
-        }"
         :src="button.img"
         class="navigation__button-img"
       />
@@ -19,14 +16,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import close from "@/assets/img/close.svg";
-import arrow from "@/assets/img/arrow.svg";
+import arrowUp from "@/assets/img/arrow-up.svg";
+import arrowDown from "@/assets/img/arrow-down.svg";
 import settings from "@/assets/img/settings.svg";
 import saved from "@/assets/img/saved.svg";
 import map from "@/assets/img/map.svg";
 
-export default {
+export default Vue.extend({
   name: "WidgetNavigation",
 
   props: {
@@ -44,51 +43,40 @@ export default {
           name: "close",
           img: close,
           alt: "Выход",
-          turnOver: false,
-          action: () => {
-            this.$emit("closeWidget");
-          }
+          emitType: "closeWidget",
+          imageSwapping: false
         },
 
         {
           name: "collapse",
-          img: arrow,
-          alt: "Сворачивание",
-          turnOver: false,
-          action: () => {
-            this.navigationStore[1].turnOver = !this.navigationStore[1].turnOver;
-            this.$emit("collapseWidget");
-          }
+          img: arrowUp,
+          alt: "Свернуть",
+          emitType: "collapseWidget",
+          imageSwapping: true
         },
 
         {
           name: "settings",
           img: settings,
           alt: "Настройки",
-          turnOver: false,
-          action: () => {
-            this.$emit("openSettings");
-          }
+          emitType: "openSettings",
+          imageSwapping: false
         },
 
         {
           name: "saved",
           img: saved,
           alt: "Сохранённое",
-          turnOver: false,
-          action: () => {
-            this.$emit("openSaved");
-          }
+          emitType: "openSaved",
+          imageSwapping: false
         },
 
         {
           name: "map",
           img: map,
           alt: "На карте",
-          turnOver: false,
-          action: () => {
-            this.$emit("openMap");
-          }
+          emitType: "openMap",
+          imageSwapping: false
         }
       ]
     };
@@ -104,8 +92,36 @@ export default {
 
       return navigationStore;
     }
+  },
+
+  methods: {
+    swapImage(name: string) {
+      const nav = this.navigationStore.find(item => item.name === name);
+
+      if (nav) {
+        if (nav.alt === "Свернуть") {
+          nav.img = arrowDown;
+          nav.alt = "Развернуть";
+        } else if (nav.alt === "Развернуть") {
+          nav.img = arrowUp;
+          nav.alt = "Свернуть";
+        }
+      }
+    },
+
+    action(name: string) {
+      const nav = this.navigationStore.find(item => item.name === name);
+
+      if (nav) {
+        this.$emit(nav.emitType);
+
+        if (nav.imageSwapping) {
+          this.swapImage(name);
+        }
+      }
+    }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -148,10 +164,6 @@ export default {
 
       @supports (aspect-ratio: 1 / 1) {
         aspect-ratio: 1 / 1;
-      }
-
-      &.turn-over {
-        transform: rotate(180deg);
       }
     }
   }

@@ -30,8 +30,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   name: "ExactTimeClocks",
 
   props: {
@@ -70,7 +72,7 @@ export default {
       return `rotate(${angle}deg)`;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

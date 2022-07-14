@@ -20,8 +20,10 @@
   </transition>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   name: "WeatherForecastSettings",
 
   props: {
@@ -83,7 +85,11 @@ export default {
 
   mounted() {
     document.addEventListener("click", this.handleClick);
-    document.querySelector(this.uniqueClassName).oncontextmenu = this.handleContext;
+
+    const block = document.querySelector(this.uniqueClassName) as HTMLElement;
+    if (block) {
+      block.oncontextmenu = this.handleContext;
+    }
   },
 
   destroyed() {
@@ -95,9 +101,9 @@ export default {
       this.showing = false;
     },
 
-    getMouseX(e) {
-      const pageX = e.pageX;
-      const clientX = e.clientX;
+    getMouseX(event: MouseEvent) {
+      const pageX = event.pageX;
+      const clientX = event.clientX;
 
       if (pageX) {
         return pageX;
@@ -115,9 +121,9 @@ export default {
       return 0;
     },
 
-    getMouseY(e) {
-      const pageY = e.pageY;
-      const clientY = e.clientY;
+    getMouseY(event: MouseEvent) {
+      const pageY = event.pageY;
+      const clientY = event.clientY;
 
       if (pageY) {
         return pageY;
@@ -135,20 +141,23 @@ export default {
       return 0;
     },
 
-    setMenuCoords(e) {
-      const weatherForecast = document.querySelector(this.uniqueClassName);
-      const weatherForecastWidth = weatherForecast.clientWidth;
-      const weatherForecastHeight = weatherForecast.clientHeight;
+    setMenuCoords(event: MouseEvent) {
+      const weatherForecast = document.querySelector(this.uniqueClassName) as HTMLElement;
 
-      const clickX = this.x = this.getMouseX(e) - weatherForecast.offsetLeft;
-      const clickY = this.y = this.getMouseY(e) - weatherForecast.offsetTop;
+      if (weatherForecast) {
+        const weatherForecastWidth = weatherForecast.clientWidth;
+        const weatherForecastHeight = weatherForecast.clientHeight;
 
-      if (clickX + 155 > weatherForecastWidth) {
-        this.x = clickX - 155;
-      }
+        const clickX = this.x = this.getMouseX(event) - weatherForecast.offsetLeft;
+        const clickY = this.y = this.getMouseY(event) - weatherForecast.offsetTop;
 
-      if (clickY + 70 > weatherForecastHeight) {
-        this.y = clickY - 70;
+        if (clickX + 155 > weatherForecastWidth) {
+          this.x = clickX - 155;
+        }
+
+        if (clickY + 70 > weatherForecastHeight) {
+          this.y = clickY - 70;
+        }
       }
     },
 
@@ -156,25 +165,25 @@ export default {
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     },
 
-    doesNotItNeedContext(domEl) {
+    doesNotItNeedContext(domEl: HTMLElement) {
       return (
         domEl.nodeName.toLowerCase() === "body" ||
         domEl.classList.contains("without-context")
       );
     },
 
-    doesItNeedContext(domEl) {
+    doesItNeedContext(domEl: HTMLElement) {
       return domEl.classList.contains("with-context");
     },
 
-    handleContext(e) {
+    handleContext(event: MouseEvent) {
       this.showing = false;
 
       if (this.isItMobileDevice()) {
         return false;
       }
 
-      let domEl = e.target;
+      let domEl = event.target as HTMLElement;
       while (domEl) {
         if (this.doesNotItNeedContext(domEl)) {
           this.showing = false;
@@ -182,20 +191,20 @@ export default {
         }
 
         if (this.doesItNeedContext(domEl)) {
-          this.setMenuCoords(e);
+          this.setMenuCoords(event);
           this.showing = true;
           break;
         }
 
         if (domEl.parentNode) {
-          domEl = domEl.parentNode;
+          domEl = domEl.parentNode as HTMLElement;
         }
       }
 
       return false;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

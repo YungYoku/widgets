@@ -88,7 +88,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import WeatherForecastToday from "@/components/weatherForecast/WeatherForecastToday.vue";
 import WeatherForecastWeek from "@/components/weatherForecast/WeatherForecastWeek.vue";
 import WeatherForecastLoadForm from "@/components/weatherForecast/WeatherForecastLoadForm.vue";
@@ -98,7 +99,13 @@ import WeatherForecastSettings from "@/components/weatherForecast/WeatherForecas
 import WidgetGeoAccess from "@/components/WidgetGeoAccess.vue";
 import WeatherForecastSaved from "@/components/weatherForecast/WeatherForecastSaved.vue";
 import WeatherForecastMaps from "@/components/weatherForecast/WeatherForecastMaps.vue";
-import WidgetNavigation from "@/components/WidgetNavigation";
+import WidgetNavigation from "@/components/WidgetNavigation.vue";
+import { Setting } from "@/interfaces/setting";
+import { WeatherResponseCurrent } from "@/interfaces/weatherResponseCurrent";
+import { WeatherResponseDaily } from "@/interfaces/weatherResponseDaily";
+import { WeatherResponse } from "@/interfaces/weatherResponse";
+import { WeatherError } from "@/interfaces/weatherError";
+import { AxiosResponse } from "axios";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -116,7 +123,7 @@ const monthNamings = [
   "Дек"
 ];
 
-export default {
+export default Vue.extend({
   name: "WeatherForecast",
 
   components: {
@@ -248,7 +255,7 @@ export default {
       return `weather-forecast${this.id}`;
     },
 
-    cityErrorClassName() {
+    cityErrorClassName(): string {
       return this.errorShowing || this.geoAccessRequestShowing ? "cityError" : "";
     },
 
@@ -258,7 +265,9 @@ export default {
       const thisMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
       const nextMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
 
-      return Math.round((nextMonth - thisMonth) / 1000 / secondsInDay);
+      const daysAmountBetweenMonth = nextMonth - thisMonth;
+
+      return Math.round(daysAmountBetweenMonth / 1000 / secondsInDay);
     },
 
     copyingData() {
@@ -268,15 +277,15 @@ export default {
       `;
     },
 
-    anyGeoError() {
+    anyGeoError(): boolean {
       return this.geoExistError || this.geoAccessError;
     },
 
-    errorShowing() {
+    errorShowing(): boolean {
       return !this.searchesAmount ? this.anyGeoError : false;
     },
 
-    weatherShowing() {
+    weatherShowing(): boolean {
       return !this.errorShowing && !this.geoAccessRequestShowing;
     },
 
@@ -301,18 +310,17 @@ export default {
     this.hideLoading();
 
     if (localStorage.settings) {
-      const lsSettings = JSON.parse(localStorage.settings);
+      const lsSettings = JSON.parse(localStorage.settings) as Array<Setting>;
 
 
-      const theme = lsSettings.find(setting => setting.name === "theme");
-      if (theme) {
-        this.theme = theme.turnedOn ? "purple" : "light";
-        this.switchTheme(this.theme);
+      const themeSetting = lsSettings.find(setting => setting.name === "theme");
+      if (themeSetting) {
+        this.switchTheme(themeSetting.turnedOn);
       }
 
 
-      const settingsGeoAccess = lsSettings.find(setting => setting.name === "geo").turnedOn;
-      if (!settingsGeoAccess) {
+      const geoSetting = lsSettings.find(setting => setting.name === "geo");
+      if (!geoSetting?.turnedOn) {
         this.geoAccessRequestShowing = false;
         this.geoAccessError = true;
         return;
@@ -332,7 +340,7 @@ export default {
   },
 
   methods: {
-    handleGeoPermission(permission) {
+    handleGeoPermission(permission: string) {
       switch (permission) {
         case "granted":
           this.loadByCoords();
@@ -346,10 +354,12 @@ export default {
       }
     },
 
-    startDrag(e) {
-      e.dataTransfer.dropEffect = "move";
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("itemID", this.id.toString());
+    startDrag(event: DragEvent) {
+      const dataTransfer = event.dataTransfer as DataTransfer;
+
+      dataTransfer.dropEffect = "move";
+      dataTransfer.effectAllowed = "move";
+      dataTransfer.setData("itemID", this.id.toString());
     },
 
     showLoading() {
@@ -364,17 +374,17 @@ export default {
       this.isCollapsed = !this.isCollapsed;
     },
 
-    switchTheme(theme) {
+    switchTheme(isThemePurple: boolean) {
       const lightThemeColor = "rgb(255, 255, 255)";
       const purpleThemeColor = "rgb(173, 170, 255)";
       let themeColor;
 
-      this.theme = theme;
-
-      if (theme === "light") {
-        themeColor = lightThemeColor;
-      } else {
+      if (isThemePurple) {
         themeColor = purpleThemeColor;
+        this.theme = "purple";
+      } else {
+        themeColor = lightThemeColor;
+        this.theme = "light";
       }
 
       document.documentElement.style.setProperty("--main-background-color", themeColor);
@@ -390,7 +400,7 @@ export default {
       this.geoAccessRequestShowing = false;
     },
 
-    handleGeoAccess(access) {
+    handleGeoAccess(access: boolean) {
       if (this.searchesAmount) {
         return;
       }
@@ -402,7 +412,8 @@ export default {
       }
     },
 
-    handleRequestErrors(error) {
+    handleRequestErrors(error: WeatherError) {
+      console.log(error);
       const response = error.response;
       const status = response.status;
       const statusText = response.statusText;
@@ -420,17 +431,17 @@ export default {
       }
     },
 
-    setLatLon(lat, lon) {
+    setLatLon(lat: number, lon: number) {
       this.lat = lat;
       this.lon = lon;
     },
 
-    setWeather(weather) {
+    setWeather(weather: WeatherResponse) {
       this.setCurrentWeather(weather.current);
       this.setDailyWeather(weather.daily);
     },
 
-    async loadWeatherForecast(lat, lon) {
+    async loadWeatherForecast(lat: number, lon: number) {
       await this.$http
         .get(
           `${this.baseURL}data/2.5/onecall?appid=${this.apiKey}`,
@@ -444,7 +455,7 @@ export default {
             }
           }
         )
-        .then(response => {
+        .then((response: AxiosResponse<WeatherResponse>) => {
           this.searchesAmount++;
 
           this.setLatLon(lat, lon);
@@ -457,7 +468,7 @@ export default {
         .catch(this.handleRequestErrors);
     },
 
-    async loadCityName(lat, lon) {
+    async loadCityName(lat: number, lon: number) {
       await this.$http
         .get(`${this.baseURL}geo/1.0/reverse?appid=${this.apiKey}`, {
           params: {
@@ -471,7 +482,7 @@ export default {
         .catch(this.handleRequestErrors);
     },
 
-    async loadFromSaved(city) {
+    async loadFromSaved(city: string) {
       this.closeSaved();
       if (city !== this.cityName) {
         await this.loadByCityName(city);
@@ -508,16 +519,19 @@ export default {
       }
     },
 
-    isItSameCity(city) {
+    isItSameCity(city: string) {
       return city.toLowerCase() === this.cityName.toLowerCase();
     },
 
     handleSameNameCity() {
-      document.activeElement.blur();
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement) {
+        activeElement.blur();
+      }
       this.cityExistError = false;
     },
 
-    async loadCoordsByCityName(city) {
+    async loadCoordsByCityName(city: string) {
       return await this.$http
         .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`,
           {
@@ -525,20 +539,21 @@ export default {
               q: city
             }
           })
-        .then((response) => {
+        .then(response => {
           return {
             lat: response.data[0].lat,
             lon: response.data[0].lon
           };
         })
-        .catch(() => {
+        .catch(error => {
+          console.error(error);
           this.cityExistError = true;
           this.hideLoading();
           return undefined;
         });
     },
 
-    async loadByCityName(cityName) {
+    async loadByCityName(cityName: string) {
       if (this.isItSameCity(cityName)) {
         this.handleSameNameCity();
         return;
@@ -556,7 +571,7 @@ export default {
       this.hideLoading();
     },
 
-    getWeekDayNaming(day) {
+    getWeekDayNaming(day: number) {
       if (day === 0) {
         return "Сегодня";
       }
@@ -566,7 +581,7 @@ export default {
       return dayNamings[index];
     },
 
-    getDate(day, daysInMonth) {
+    getDate(day: number, daysInMonth: number) {
       const month = new Date().getMonth();
 
       if (day <= daysInMonth) {
@@ -576,7 +591,7 @@ export default {
       return day % daysInMonth + " " + monthNamings[month + 1];
     },
 
-    getWeatherIconName(id) {
+    getWeatherIconName(id: string) {
       id = id.slice(0, 2); // Поскольку иконки одинаковые для дня и ночи, убираем букву в конце id
       switch (id) {
         case "01":
@@ -602,7 +617,7 @@ export default {
       }
     },
 
-    setCurrentWeather(current) {
+    setCurrentWeather(current: WeatherResponseCurrent) {
       const description = current.weather[0].description;
       this.current.icon = this.getWeatherIconName(current.weather[0].icon);
       this.current.temperature = `${Math.round(current.temp)}°С`;
@@ -628,7 +643,7 @@ export default {
       this.daily.averageTemperatureNight = averageTempNight / days;
     },
 
-    getFormattedDay(day, index) {
+    getFormattedDay(day: WeatherResponseDaily, index: number) {
       return {
         max: Math.round(day.temp.max),
         min: Math.round(day.temp.min),
@@ -638,7 +653,7 @@ export default {
       };
     },
 
-    setDailyWeather(daily) {
+    setDailyWeather(daily: Array<WeatherResponseDaily>) {
       this.daily.week = daily.map(this.getFormattedDay);
       this.updateAverageTemperature();
     },
@@ -673,7 +688,7 @@ export default {
       this.$emit("closeWidget", this.id);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -8,8 +8,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   name: "WidgetLoading",
 
   computed: {
@@ -17,9 +19,9 @@ export default {
       const bgColor = document.documentElement.style.cssText;
       let style;
 
-      const reg = new RegExp(`--main-background-color: rgb`);
+      const regular = new RegExp(`--main-background-color: rgb`);
       if (bgColor) {
-        style = bgColor.replace(reg, "");
+        style = bgColor.replace(regular, "");
       } else {
         style = "--main-background-color: rgb(255, 255, 255);";
       }
@@ -37,7 +39,7 @@ export default {
       return `linear-gradient(90deg, ${firstColor}, ${secondColor}, ${firstColor}, ${secondColor})`;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -7,17 +7,19 @@
   >
     <button
       v-for="widget in widgets"
-      :key="widget.is"
+      :key="widget.type"
       type="button"
-      @click="$emit('addWidget', widget.is)"
+      @click="$emit('addWidget', widget.type)"
     >
       {{ widget.name }}
     </button>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   name: "WidgetAddingContext",
 
   props: {
@@ -55,7 +57,7 @@ export default {
   },
 
   methods: {
-    isNotClickedContext(className) {
+    isNotClickedContext(className: string) {
       return (
         className &&
         className !== "add-widget__button" &&
@@ -64,13 +66,16 @@ export default {
       );
     },
 
-    handleClick(e) {
-      if (this.isNotClickedContext(e.target.className)) {
-        this.$emit("hide");
+    handleClick(event: Event) {
+      const target = event.target as HTMLElement;
+      if (target) {
+        if (this.isNotClickedContext(target.className)) {
+          this.$emit("hide");
+        }
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

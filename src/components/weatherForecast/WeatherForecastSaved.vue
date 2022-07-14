@@ -31,10 +31,11 @@
   </div>
 </template>
 
-<script>
-import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton";
+<script lang="ts">
+import Vue from "vue";
+import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 
-export default {
+export default Vue.extend({
   name: "WeatherForecastSaved",
   components: { WeatherForecastCloseButton },
   props: {
@@ -62,7 +63,7 @@ export default {
       }
     },
 
-    getFormattedCityName(city) {
+    getFormattedCityName(city: string) {
       // Оставляет буквы и тире
       city = city.replace(/[^a-zа-яё\s-]/gi, "");
 
@@ -76,13 +77,13 @@ export default {
       return city;
     },
 
-    loadFromSaved(city) {
+    loadFromSaved(city: string) {
       if (city !== this.currentCity) {
         this.$emit("loadFromSaved", this.getFormattedCityName(city));
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

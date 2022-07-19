@@ -58,6 +58,7 @@
 <script lang="ts">
 import Vue from "vue";
 import cities from "@/assets/js/cities";
+import { CitiesAlphabet } from "@/interfaces/citiesAlphabet";
 
 export default Vue.extend({
   name: "WeatherForecastLoadForm",
@@ -85,7 +86,8 @@ export default Vue.extend({
   data() {
     return {
       city: "",
-      selectShowing: false
+      selectShowing: false,
+      cities: cities as CitiesAlphabet
     };
   },
 
@@ -101,7 +103,7 @@ export default Vue.extend({
     optionCities() {
       const firstLetter = this.city[0].toLowerCase();
 
-      let _cities = cities[firstLetter] as Array<string> || [];
+      let _cities = this.cities[firstLetter] as Array<string> || [];
       _cities = _cities.filter(city => city.startsWith(this.city));
       _cities = _cities.filter(city => city !== this.city);
 

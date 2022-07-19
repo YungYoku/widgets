@@ -260,14 +260,10 @@ export default Vue.extend({
     },
 
     daysInMonth() {
-      const secondsInDay = 86400;
+      const year = new Date().getFullYear();
+      const monthIndex = new Date().getMonth() + 1;
 
-      const thisMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-      const nextMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
-
-      const daysAmountBetweenMonth = nextMonth - thisMonth;
-
-      return Math.round(daysAmountBetweenMonth / 1000 / secondsInDay);
+      return new Date(year, monthIndex, 0).getDate();
     },
 
     copyingData() {

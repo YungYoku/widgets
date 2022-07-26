@@ -1,4 +1,4 @@
-export interface WeatherResponseCurrent {
+export interface WeatherForecastResponseCurrent {
   clouds: number;
   dew_point: number;
   dt: number;

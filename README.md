@@ -49,7 +49,7 @@ async loadWeatherForecast(lat: number, lon: number) {
         }
       }
     )
-    .then((response: AxiosResponse<WeatherResponse>) => {
+    .then((response: AxiosResponse<WeatherForecastResponse>) => {
       this.searchesAmount++;
 
       this.setLatLon(lat, lon);

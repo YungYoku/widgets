@@ -189,7 +189,7 @@ export default Vue.extend({
   width: 100%;
   height: 100%;
 
-  @media (min-width: 1000px) {
+  @media (min-width: 768px) {
     &.searchable {
       .input-city,
       .search {
@@ -200,7 +200,7 @@ export default Vue.extend({
     }
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 768px) {
     flex-direction: column;
 
     grid-template: auto auto / 1fr;
@@ -317,7 +317,7 @@ export default Vue.extend({
 
     -webkit-appearance: button;
 
-    @media (max-width: 1000px) {
+    @media (max-width: 768px) {
       width: 100%;
     }
 

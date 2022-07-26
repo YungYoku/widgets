@@ -100,9 +100,9 @@ import WidgetGeoAccess from "@/components/WidgetGeoAccess.vue";
 import WeatherForecastSaved from "@/components/weatherForecast/WeatherForecastSaved.vue";
 import WeatherForecastMaps from "@/components/weatherForecast/WeatherForecastMaps.vue";
 import WidgetNavigation from "@/components/WidgetNavigation.vue";
-import { WeatherResponseCurrent } from "@/interfaces/weatherResponseCurrent";
-import { WeatherResponseDaily } from "@/interfaces/weatherResponseDaily";
-import { WeatherResponse } from "@/interfaces/weatherResponse";
+import { WeatherForecastResponseCurrent } from "@/interfaces/weatherForecastResponseCurrent";
+import { WeatherForecastResponseDaily } from "@/interfaces/weatherForecastResponseDaily";
+import { WeatherForecastResponse } from "@/interfaces/weatherForecastResponse";
 import { WeatherError } from "@/interfaces/weatherError";
 import { AxiosResponse } from "axios";
 import { WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
@@ -408,7 +408,6 @@ export default Vue.extend({
     },
 
     handleRequestErrors(error: WeatherError) {
-      console.log(error);
       const response = error.response;
       const status = response.status;
       const statusText = response.statusText;
@@ -431,7 +430,7 @@ export default Vue.extend({
       this.lon = lon;
     },
 
-    setWeather(weather: WeatherResponse) {
+    setWeather(weather: WeatherForecastResponse) {
       this.setCurrentWeather(weather.current);
       this.setDailyWeather(weather.daily);
     },
@@ -450,7 +449,7 @@ export default Vue.extend({
             }
           }
         )
-        .then((response: AxiosResponse<WeatherResponse>) => {
+        .then((response: AxiosResponse<WeatherForecastResponse>) => {
           this.searchesAmount++;
 
           this.setLatLon(lat, lon);
@@ -535,9 +534,11 @@ export default Vue.extend({
             }
           })
         .then(response => {
+          const responseData = response.data[0];
+
           return {
-            lat: response.data[0].lat,
-            lon: response.data[0].lon
+            lat: responseData.lat,
+            lon: responseData.lon
           };
         })
         .catch(error => {
@@ -577,17 +578,17 @@ export default Vue.extend({
     },
 
     getDate(day: number, daysInMonth: number) {
-      const month = new Date().getMonth();
+      const monthIndex = new Date().getMonth();
 
       if (day <= daysInMonth) {
-        return day + " " + monthNamings[month];
+        return day + " " + monthNamings[monthIndex];
       }
 
-      return day % daysInMonth + " " + monthNamings[month + 1];
+      return day % daysInMonth + " " + monthNamings[monthIndex + 1];
     },
 
     getWeatherIconName(id: string) {
-      id = id.slice(0, 2); // Поскольку иконки одинаковые для дня и ночи, убираем букву в конце id
+      id = id.slice(0, 2); // Иконки одинаковые для дня и ночи, убираем букву в конце id
       switch (id) {
         case "01":
           return "Sun";
@@ -612,7 +613,7 @@ export default Vue.extend({
       }
     },
 
-    setCurrentWeather(current: WeatherResponseCurrent) {
+    setCurrentWeather(current: WeatherForecastResponseCurrent) {
       const description = current.weather[0].description;
       this.current.icon = this.getWeatherIconName(current.weather[0].icon);
       this.current.temperature = `${Math.round(current.temp)}°С`;
@@ -638,7 +639,7 @@ export default Vue.extend({
       this.daily.averageTemperatureNight = averageTempNight / days;
     },
 
-    getFormattedDay(day: WeatherResponseDaily, index: number) {
+    getFormattedDay(day: WeatherForecastResponseDaily, index: number) {
       return {
         max: Math.round(day.temp.max),
         min: Math.round(day.temp.min),
@@ -648,7 +649,7 @@ export default Vue.extend({
       };
     },
 
-    setDailyWeather(daily: Array<WeatherResponseDaily>) {
+    setDailyWeather(daily: Array<WeatherForecastResponseDaily>) {
       this.daily.week = daily.map(this.getFormattedDay);
       this.updateAverageTemperature();
     },

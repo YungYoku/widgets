@@ -1,7 +1,7 @@
 <template>
   <div class="timezone">
     <h3 class="text">
-      Выберите регион:
+      Регион:
     </h3>
 
     <select

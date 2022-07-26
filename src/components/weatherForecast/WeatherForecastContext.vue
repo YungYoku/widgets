@@ -220,6 +220,11 @@ export default Vue.extend({
   padding: 5px;
 
   background-color: var(--main-background-color);
+  @supports (backdrop-filter: blur(20px)) {
+    background-color: transparent;
+
+    backdrop-filter: blur(20px);
+  }
   border: 1px solid #333333;
   border-radius: 10px;
 

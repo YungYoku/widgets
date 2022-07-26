@@ -5,7 +5,7 @@
         :style="{
           transform: secondsAngle
         }"
-        class="exact-time-clocks__arrow seconds"
+        class="exact-time-clocks__circle-arrow seconds"
       >
       </div>
 
@@ -13,7 +13,7 @@
         :style="{
           transform: minutesAngle
         }"
-        class="exact-time-clocks__arrow minutes"
+        class="exact-time-clocks__circle-arrow minutes"
       >
       </div>
 
@@ -21,11 +21,11 @@
         :style="{
           transform: hoursAngle
         }"
-        class="exact-time-clocks__arrow hours"
+        class="exact-time-clocks__circle-arrow hours"
       >
       </div>
 
-      <div class="exact-time-clocks__center"></div>
+      <div class="exact-time-clocks__circle-center"></div>
     </div>
   </div>
 </template>
@@ -95,46 +95,7 @@ export default Vue.extend({
     border: 3px solid #222222;
     border-radius: 50%;
 
-    .exact-time-clocks__arrow.seconds {
-      z-index: 3;
-
-      &::after {
-        top: 0;
-
-        width: 45%;
-        height: 1px;
-
-        background-color: #ff6666;
-      }
-    }
-
-    .exact-time-clocks__arrow.minutes {
-      z-index: 2;
-
-      &::after {
-        top: -1px;
-
-        width: 40%;
-        height: 2px;
-
-        background-color: #222222;
-      }
-    }
-
-    .exact-time-clocks__arrow.hours {
-      z-index: 1;
-
-      &::after {
-        top: -2px;
-
-        width: 25%;
-        height: 4px;
-
-        background-color: #222222;
-      }
-    }
-
-    .exact-time-clocks__arrow {
+    &-arrow {
       position: absolute;
       top: 50%;
 
@@ -152,7 +113,46 @@ export default Vue.extend({
       }
     }
 
-    .exact-time-clocks__center {
+    &-arrow.seconds {
+      z-index: 3;
+
+      &::after {
+        top: 0;
+
+        width: 45%;
+        height: 1px;
+
+        background-color: #ff6666;
+      }
+    }
+
+    &-arrow.minutes {
+      z-index: 2;
+
+      &::after {
+        top: -1px;
+
+        width: 40%;
+        height: 2px;
+
+        background-color: #222222;
+      }
+    }
+
+    &-arrow.hours {
+      z-index: 1;
+
+      &::after {
+        top: -2px;
+
+        width: 25%;
+        height: 4px;
+
+        background-color: #222222;
+      }
+    }
+
+    &-center {
       position: absolute;
       top: calc(50% - 3px);
       left: calc(50% - 3px);

@@ -1,4 +1,4 @@
-export interface WeatherResponseDaily {
+export interface WeatherForecastResponseDaily {
   clouds: number;
   dew_point: number;
   dt: number;

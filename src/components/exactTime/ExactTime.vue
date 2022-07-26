@@ -9,7 +9,7 @@
       order
     }"
     class="widget exact-time"
-    @dragstart="startDrag($event)"
+    @dragstart="startDrag"
   >
     <widget-navigation
       :rules="navigationRules"

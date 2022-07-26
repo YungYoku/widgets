@@ -7,7 +7,7 @@
     ]"
     :style="{order}"
     class="widget exchange-rate"
-    @dragstart="startDrag($event)"
+    @dragstart="startDrag"
   >
     <widget-navigation
       :rules="navigationRules"
@@ -58,7 +58,7 @@ import { Currency } from "@/interfaces/currency";
 import { ExchangeRate } from "@/interfaces/exchangeRate";
 import { ExchangeError } from "@/interfaces/exchangeError";
 import { AxiosResponse } from "axios";
-import { UnformattedCurrencyAttribute } from "@/interfaces/UnformattedCurrencyAttribute";
+import { UnformattedCurrencyAttribute } from "@/interfaces/unformattedCurrencyAttribute";
 
 export default Vue.extend({
   name: "ExchangeRate",

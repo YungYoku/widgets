@@ -38,7 +38,8 @@
 import Vue from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks.vue";
-import { Setting } from "@/interfaces/setting";
+import { SettingName, WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
+import { WeatherForecastSettings } from "@/interfaces/weatherForecastSetting";
 
 export default Vue.extend({
   name: "WeatherForecastSettings",
@@ -49,19 +50,19 @@ export default Vue.extend({
     return {
       settings: [
         {
-          name: "geo",
+          name: SettingName.Geo,
           title: "Использовать местоположение",
           turnedOn: true,
           actionType: "giveGeoAccess"
         },
 
         {
-          name: "theme",
+          name: SettingName.Theme,
           title: "Фиолетовая тема",
           turnedOn: false,
           actionType: "switchTheme"
         }
-      ]
+      ] as WeatherForecastSettings
     };
   },
 
@@ -70,13 +71,13 @@ export default Vue.extend({
   },
 
   methods: {
-    swapSetting(name: string, actionType: string) {
+    swapSetting(name: SettingName, actionType: string) {
       const setting = this.settings.find(item => item.name === name);
 
       if (setting) {
         const turnedOn = !setting.turnedOn;
 
-        const storage = JSON.parse(localStorage.settings) as Array<Setting>;
+        const storage = JSON.parse(localStorage.settings) as WeatherForecastLSSettings;
         if (storage) {
           const storageSetting = storage.find(item => item.name === name);
           if (storageSetting) {
@@ -121,7 +122,7 @@ export default Vue.extend({
 
     loadLsSettings() {
       if (localStorage.settings) {
-        const lsSettings = JSON.parse(localStorage.settings);
+        const lsSettings = JSON.parse(localStorage.settings) as WeatherForecastLSSettings;
 
         if (lsSettings.length !== this.settings.length) {
           this.resetLsSettings();

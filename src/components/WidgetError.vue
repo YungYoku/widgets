@@ -55,12 +55,12 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .error {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   &__text {
     margin: 0;
 
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 400;
     text-align: center;
     word-wrap: break-word;

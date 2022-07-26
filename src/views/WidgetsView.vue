@@ -1,7 +1,7 @@
 <template>
   <div
     class="widgets-view"
-    @drop="onDrop($event)"
+    @drop="onDrop"
     @dragover.prevent
     @dragenter.prevent
   >

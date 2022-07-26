@@ -12,7 +12,7 @@
       order,
       minHeight
     }"
-    @dragstart="startDrag($event)"
+    @dragstart="startDrag"
   >
     <widget-error
       v-if="errorShowing && !geoAccessRequestShowing"
@@ -100,12 +100,12 @@ import WidgetGeoAccess from "@/components/WidgetGeoAccess.vue";
 import WeatherForecastSaved from "@/components/weatherForecast/WeatherForecastSaved.vue";
 import WeatherForecastMaps from "@/components/weatherForecast/WeatherForecastMaps.vue";
 import WidgetNavigation from "@/components/WidgetNavigation.vue";
-import { Setting } from "@/interfaces/setting";
 import { WeatherResponseCurrent } from "@/interfaces/weatherResponseCurrent";
 import { WeatherResponseDaily } from "@/interfaces/weatherResponseDaily";
 import { WeatherResponse } from "@/interfaces/weatherResponse";
 import { WeatherError } from "@/interfaces/weatherError";
 import { AxiosResponse } from "axios";
+import { WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -306,23 +306,22 @@ export default Vue.extend({
     this.hideLoading();
 
     if (localStorage.settings) {
-      const lsSettings = JSON.parse(localStorage.settings) as Array<Setting>;
+      const lsSettings: WeatherForecastLSSettings = JSON.parse(localStorage.settings);
 
+      if (lsSettings) {
+        const themeSetting = lsSettings.find(setting => setting.name === "theme");
+        if (themeSetting) {
+          this.switchTheme(themeSetting.turnedOn);
+        }
 
-      const themeSetting = lsSettings.find(setting => setting.name === "theme");
-      if (themeSetting) {
-        this.switchTheme(themeSetting.turnedOn);
-      }
-
-
-      const geoSetting = lsSettings.find(setting => setting.name === "geo");
-      if (!geoSetting?.turnedOn) {
-        this.geoAccessRequestShowing = false;
-        this.geoAccessError = true;
-        return;
+        const geoSetting = lsSettings.find(setting => setting.name === "geo");
+        if (!geoSetting?.turnedOn) {
+          this.geoAccessRequestShowing = false;
+          this.geoAccessError = true;
+          return;
+        }
       }
     }
-
 
     if (navigator.permissions) {
       navigator.permissions.query({

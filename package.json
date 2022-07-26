@@ -1,6 +1,6 @@
 {
   "name": "widgets",
-  "version": "0.2.0",
+  "version": "0.6.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "core-js": "^3.23.5",
+    "core-js": "^3.24.0",
     "leaflet": "^1.8.0",
-    "vue": "^2.7.7",
+    "vue": "^2.7.8",
     "vue-apexcharts": "^1.6.2",
     "vue2-leaflet": "^2.7.1",
     "vuex": "^3.6.2"
@@ -19,16 +19,16 @@
   "devDependencies": {
     "@babel/core": "^7.18.9",
     "@babel/eslint-parser": "^7.18.9",
-    "@typescript-eslint/eslint-plugin": "^5.30.7",
-    "@typescript-eslint/parser": "^5.30.7",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-typescript": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-typescript": "^11.0.0",
     "eslint": "^8.20.0",
-    "eslint-plugin-vue": "^9.2.0",
-    "sass": "^1.53.0",
+    "eslint-plugin-vue": "^9.3.0",
+    "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
     "stylelint": "^14.9.1",
     "stylelint-config-rational-order": "^0.1.2",
@@ -37,7 +37,7 @@
     "stylelint-order": "^5.0.0",
     "stylelint-webpack-plugin": "^3.3.0",
     "typescript": "~4.7.4",
-    "vue-template-compiler": "^2.7.7"
+    "vue-template-compiler": "^2.7.8"
   },
   "browserslist": [
     "> 1%",

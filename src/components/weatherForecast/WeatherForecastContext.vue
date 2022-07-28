@@ -53,13 +53,6 @@ export default Vue.extend({
       showing: false,
       settings: [
         {
-          text: "Скопировать прогноз",
-          action: () => {
-            navigator.clipboard.writeText(this.copyingData);
-          }
-        },
-
-        {
           text: "Сохранить",
           action: () => {
             if (localStorage.saved) {
@@ -77,6 +70,13 @@ export default Vue.extend({
             } else {
               localStorage.saved = JSON.stringify([this.cityName]);
             }
+          }
+        },
+
+        {
+          text: "Скопировать прогноз",
+          action: () => {
+            navigator.clipboard.writeText(this.copyingData);
           }
         }
       ]
@@ -220,19 +220,19 @@ export default Vue.extend({
   padding: 5px;
 
   background-color: var(--main-background-color);
+  border-radius: 10px;
+  box-shadow: 0 3px 9px 1px #6666669c;
   @supports (backdrop-filter: blur(20px)) {
     background-color: transparent;
 
     backdrop-filter: blur(20px);
   }
-  border: 1px solid #333333;
-  border-radius: 10px;
 
   &__button {
     width: 100%;
     padding: 5px;
 
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
 
     border-radius: 5px;

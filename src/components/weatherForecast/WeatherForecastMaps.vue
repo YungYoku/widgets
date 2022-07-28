@@ -84,7 +84,7 @@ export default Vue.extend({
   overflow: hidden;
 
   background-color: #ffffff;
-  border-radius: 25px;
+  border-radius: 15px;
 
   &__close-button {
     position: absolute;

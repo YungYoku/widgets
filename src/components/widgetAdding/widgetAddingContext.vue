@@ -92,7 +92,7 @@ export default Vue.extend({
   padding: 10px;
 
   background-color: #ffffff;
-  border-radius: 20px;
+  border-radius: 15px;
 
   gap: 10px;
 

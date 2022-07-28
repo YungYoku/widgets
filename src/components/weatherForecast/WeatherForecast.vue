@@ -306,9 +306,9 @@ export default Vue.extend({
     this.hideLoading();
 
     if (localStorage.settings) {
-      const lsSettings: WeatherForecastLSSettings = JSON.parse(localStorage.settings);
+      const lsSettings: unknown = JSON.parse(localStorage.settings);
 
-      if (lsSettings) {
+      if (lsSettings && this.isWeatherForecastLSSettings(lsSettings)) {
         const themeSetting = lsSettings.find(setting => setting.name === "theme");
         if (themeSetting) {
           this.switchTheme(themeSetting.turnedOn);
@@ -335,6 +335,30 @@ export default Vue.extend({
   },
 
   methods: {
+    isWeatherForecastLSSettings(lsSettings: unknown): lsSettings is WeatherForecastLSSettings {
+      if (!Array.isArray(lsSettings)) {
+        return false;
+      }
+
+      for (let i = 0; i < 2; i++) {
+        if (
+          !lsSettings[i].name ||
+          !lsSettings[i].turnedOn
+        ) {
+          return false;
+        }
+      }
+
+      if (
+        !lsSettings.find(setting => setting.name === "geo") ||
+        !lsSettings.find(setting => setting.name === "theme")
+      ) {
+        return false;
+      }
+
+      return true;
+    },
+
     handleGeoPermission(permission: string) {
       switch (permission) {
         case "granted":

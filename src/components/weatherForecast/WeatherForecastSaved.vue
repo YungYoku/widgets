@@ -109,7 +109,7 @@ export default Vue.extend({
 
     backdrop-filter: blur(20px);
   }
-  border-radius: 25px;
+  border-radius: 15px;
 
   &__title {
     margin: 0 0 20px 0;

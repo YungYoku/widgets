@@ -90,8 +90,6 @@ export default Vue.extend({
   align-items: center;
   order: 10000;
 
-  border-radius: 20px;
-
   transition: all 0.3s;
 
   &__button {
@@ -103,7 +101,7 @@ export default Vue.extend({
     height: 64px;
 
     background-color: #ffffff;
-    border-radius: 20px;
+    border-radius: 15px;
 
     cursor: pointer;
     opacity: 0.5;

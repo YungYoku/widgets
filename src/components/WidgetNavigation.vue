@@ -1,15 +1,15 @@
 <template>
   <div class="navigation without-context">
     <button
-      v-for="button in navigation"
-      :key="button.img"
+      v-for="nav in navigation"
+      :key="nav.img"
       class="navigation__button"
       type="button"
-      @click="action(button.name)"
+      @click="action(nav)"
     >
       <img
-        :alt="button.alt"
-        :src="button.img"
+        :alt="nav.alt"
+        :src="nav.img"
         class="navigation__button-img"
       />
     </button>
@@ -24,6 +24,7 @@ import arrowDown from "@/assets/img/arrow-down.svg";
 import settings from "@/assets/img/settings.svg";
 import saved from "@/assets/img/saved.svg";
 import map from "@/assets/img/map.svg";
+import { WidgetNavigation } from "@/interfaces/widgetNavigation";
 
 export default Vue.extend({
   name: "WidgetNavigation",
@@ -78,46 +79,34 @@ export default Vue.extend({
           emitType: "openMap",
           imageSwapping: false
         }
-      ]
+      ] as Array<WidgetNavigation>
     };
   },
 
   computed: {
     navigation() {
-      let navigationStore = this.navigationStore;
-
-      navigationStore = navigationStore.filter(nav => {
+      return this.navigationStore.filter(nav => {
         return this.rules.includes(nav.name);
       });
-
-      return navigationStore;
     }
   },
 
   methods: {
-    swapImage(name: string) {
-      const nav = this.navigationStore.find(item => item.name === name);
-
-      if (nav) {
-        if (nav.alt === "Свернуть") {
-          nav.img = arrowDown;
-          nav.alt = "Развернуть";
-        } else if (nav.alt === "Развернуть") {
-          nav.img = arrowUp;
-          nav.alt = "Свернуть";
-        }
+    swapImage(nav: WidgetNavigation) {
+      if (nav.alt === "Свернуть") {
+        nav.img = arrowDown;
+        nav.alt = "Развернуть";
+      } else if (nav.alt === "Развернуть") {
+        nav.img = arrowUp;
+        nav.alt = "Свернуть";
       }
     },
 
-    action(name: string) {
-      const nav = this.navigationStore.find(item => item.name === name);
+    action(nav: WidgetNavigation) {
+      this.$emit(nav.emitType);
 
-      if (nav) {
-        this.$emit(nav.emitType);
-
-        if (nav.imageSwapping) {
-          this.swapImage(name);
-        }
+      if (nav.imageSwapping) {
+        this.swapImage(nav);
       }
     }
   }

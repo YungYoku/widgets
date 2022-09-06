@@ -4,7 +4,7 @@
       v-for="link in links"
       :key="link.href"
       class="social-links__button"
-      @click="link.action"
+      @click="openLink(link.href)"
     >
       <img
         :alt="link.alt"
@@ -29,16 +29,22 @@ export default Vue.extend({
         {
           image: github,
           alt: "GitHub",
-          action: () => window.open("https://github.com/yungyoku", "_blank")
+          href: "https://github.com/yungyoku"
         },
 
         {
           image: telegram,
           alt: "Телеграм",
-          action: () => window.open("https://t.me/yungyoku", "_blank")
+          href: "https://t.me/yungyoku"
         }
       ]
     };
+  },
+
+  methods: {
+    openLink(link: string) {
+      window.open(link, "_blank");
+    }
   }
 });
 </script>

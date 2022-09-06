@@ -1,5 +1,5 @@
 <template>
-  <div class="add-widget">
+  <div ref="addWidget" class="add-widget">
     <button
       class="add-widget__button"
       type="button"
@@ -54,7 +54,7 @@ export default Vue.extend({
 
   methods: {
     showContext() {
-      const button = document.querySelector(".add-widget") as HTMLElement;
+      const button = this.$refs.addWidget as HTMLElement;
       if (button) {
         const windowWidth = window.innerWidth;
         const buttonX = button.offsetLeft + 45;

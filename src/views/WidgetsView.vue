@@ -43,7 +43,7 @@ export default Vue.extend({
     return {
       newId: 0,
       widgets: [] as Array<WidgetItem>,
-      widgetsType: [
+      widgetTypes: [
         "weather-forecast",
         "exact-time",
         "exchange-rate"
@@ -55,7 +55,7 @@ export default Vue.extend({
   methods: {
     detectWidgetType(classNames: Array<string>) {
       for (const className of classNames) {
-        for (const widgetType of this.widgetsType) {
+        for (const widgetType of this.widgetTypes) {
           if (className.includes(widgetType)) {
             return widgetType;
           }

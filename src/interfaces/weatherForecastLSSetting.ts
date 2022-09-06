@@ -1,4 +1,4 @@
-export enum SettingName {
+export const enum SettingName {
   Geo = "geo",
   Theme = "theme",
 }

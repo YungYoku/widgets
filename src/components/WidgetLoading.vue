@@ -17,13 +17,11 @@ export default Vue.extend({
   computed: {
     backgroundImage() {
       const bgColor = document.documentElement.style.cssText;
-      let style;
+      let style = "255, 255, 255";
 
       const regular = new RegExp(`--main-background-color: rgb`);
       if (bgColor) {
         style = bgColor.replace(regular, "");
-      } else {
-        style = "--main-background-color: rgb(255, 255, 255);";
       }
 
       const digits = style

@@ -97,8 +97,10 @@ export default Vue.extend({
   gap: 10px;
 
   button {
+    width: 100%;
     padding: 10px;
 
+    text-align: left;
     white-space: nowrap;
 
     background-color: #ffffff;

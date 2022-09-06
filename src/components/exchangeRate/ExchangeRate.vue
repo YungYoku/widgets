@@ -151,25 +151,28 @@ export default Vue.extend({
 
       this.addRubExchangePair();
 
-      const fromCode = exchangeRate.from;
-      const toCode = exchangeRate.to;
+      const from: { code: string, currency: Currency | undefined } = {
+        code: exchangeRate.from,
+        currency: this.currencies.find(currency => currency.code === exchangeRate.from)
+      };
+      const to: { code: string, currency: Currency | undefined } = {
+        code: exchangeRate.to,
+        currency: this.currencies.find(currency => currency.code === exchangeRate.to)
+      };
       let result = 1;
 
-      const currencyFrom = this.currencies.find(currency => currency.code === fromCode);
-      const currencyTo = this.currencies.find(currency => currency.code === toCode);
-
-      if (currencyFrom && currencyTo) {
-        if (fromCode === toCode) {
+      if (from.currency && to.currency) {
+        if (from.code === to.code) {
           result = 1;
-        } else if (fromCode === "RUB") {
-          result = parseInt((1 / currencyTo.value).toFixed(2));
-        } else if (toCode === "RUB") {
-          result = currencyFrom.value;
+        } else if (from.code === "RUB") {
+          result = parseInt((1 / to.currency.value).toFixed(2));
+        } else if (to.code === "RUB") {
+          result = from.currency.value;
         } else {
-          result = parseInt((currencyFrom.value / currencyTo.value).toFixed(2));
+          result = parseInt((from.currency.value / to.currency.value).toFixed(2));
         }
 
-        this.exchangedCurrencies = `1 ${fromCode} = ${result} ${toCode}`;
+        this.exchangedCurrencies = `1 ${from.code} = ${result} ${to.code}`;
       }
     },
 

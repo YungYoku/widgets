@@ -62,12 +62,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastChart from "@/components/weatherForecast/WeatherForecastChart.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 import { ChartColors } from "@/interfaces/chartColors";
 import { TemperatureColors } from "@/enums/temperatureColors";
+import { WeatherForecastDaily } from "@/interfaces/weatherForecastDaily";
 
 export default defineComponent({
   name: "WeatherForecastWeek",
@@ -86,9 +87,9 @@ export default defineComponent({
     },
 
     weather: {
-      type: Object,
+      type: Object as PropType<WeatherForecastDaily>,
       required: true,
-      default: () => {
+      default: (): WeatherForecastDaily => {
         return {
           week: [
             {

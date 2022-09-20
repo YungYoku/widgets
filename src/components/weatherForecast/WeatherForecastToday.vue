@@ -36,9 +36,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
+import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
 
 export default defineComponent({
   name: "WeatherForecastToday",
@@ -62,9 +63,9 @@ export default defineComponent({
     },
 
     weather: {
-      type: Object,
+      type: Object as PropType<WeatherForecastCurrent>,
       required: true,
-      default: () => {
+      default: (): WeatherForecastCurrent => {
         return {
           icon: "Sun",
           temperature: "0°С",

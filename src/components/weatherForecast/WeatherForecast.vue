@@ -108,6 +108,8 @@ import axios, { AxiosResponse } from "axios";
 import { isWeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 import { SettingNames } from "@/enums/settingNames";
 import { Navigation } from "@/enums/navigation";
+import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
+import { WeatherForecastDaily, WeatherForecastWeekDay } from "@/interfaces/weatherForecastDaily";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -176,7 +178,7 @@ export default defineComponent({
         feelsLike: "ощущается как 0°С",
         description: "Погодные условия",
         conditions: "Ветер: 0 м/c, Давление: 0 мм рт. ст"
-      },
+      } as WeatherForecastCurrent,
       daily: {
         week: [
           {
@@ -238,7 +240,7 @@ export default defineComponent({
         ],
         averageTemperatureDay: 0,
         averageTemperatureNight: 0
-      },
+      } as WeatherForecastDaily,
       cityName: "Город",
       geoExistError: false,
       geoAccessError: false,
@@ -641,13 +643,13 @@ export default defineComponent({
       this.daily.averageTemperatureNight = averageTempNight / days;
     },
 
-    getFormattedDay(day: WeatherForecastResponseDaily, index: number) {
+    getFormattedDay(day: WeatherForecastResponseDaily, index: number): WeatherForecastWeekDay {
       return {
+        date: this.getDate(index + new Date().getDate(), this.daysInMonth),
+        icon: this.getWeatherIconName(day.weather[0].icon),
         max: Math.round(day.temp.max),
         min: Math.round(day.temp.min),
-        weekDayNaming: this.getWeekDayNaming(index),
-        date: this.getDate(index + new Date().getDate(), this.daysInMonth),
-        icon: this.getWeatherIconName(day.weather[0].icon)
+        weekDayNaming: this.getWeekDayNaming(index)
       };
     },
 

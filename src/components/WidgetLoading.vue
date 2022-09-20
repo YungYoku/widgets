@@ -18,10 +18,10 @@ export default defineComponent({
     backgroundImage() {
       const bgColor = document.documentElement.style.cssText;
       let style = "255, 255, 255";
+      const difference = 30;
 
-      const regular = new RegExp(`--main-background-color: rgb`);
       if (bgColor) {
-        style = bgColor.replace(regular, "");
+        style = bgColor.replace(`--main-background-color: rgb`, "");
       }
 
       const digits = style
@@ -30,7 +30,6 @@ export default defineComponent({
         .map(dig => parseInt(dig));
 
       const firstColor = `rgb(${digits[0]}, ${digits[1]}, ${digits[2]})`;
-      const difference = 30;
       const secondColor = `rgb(${digits[0] - difference}, ${digits[1] - difference}, ${digits[2] - difference})`;
 
       return `linear-gradient(90deg, ${firstColor}, ${secondColor}, ${firstColor}, ${secondColor})`;

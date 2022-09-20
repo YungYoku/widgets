@@ -18,6 +18,7 @@
       :hidden="widget.hidden"
       :order="widget.order"
       @closeWidget="closeWidget"
+      @dragstart="startDrag($event, widget.id)"
     />
 
     <widget-adding
@@ -63,6 +64,14 @@ export default defineComponent({
       }
 
       return "";
+    },
+
+    startDrag(event: DragEvent, id: number) {
+      const dataTransfer = event.dataTransfer as DataTransfer;
+
+      dataTransfer.dropEffect = "move";
+      dataTransfer.effectAllowed = "move";
+      dataTransfer.setData("itemID", id.toString());
     },
 
     onDrop(event: DragEvent) {

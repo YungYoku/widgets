@@ -9,7 +9,6 @@
       order
     }"
     class="widget exact-time"
-    @dragstart="startDrag"
   >
     <widget-navigation
       :rules="navigationRules"
@@ -147,14 +146,6 @@ export default defineComponent({
   },
 
   methods: {
-    startDrag(event: DragEvent) {
-      const dataTransfer = event.dataTransfer as DataTransfer;
-
-      dataTransfer.dropEffect = "move";
-      dataTransfer.effectAllowed = "move";
-      dataTransfer.setData("itemID", this.id.toString());
-    },
-
     showLoading() {
       this.loading = true;
     },

@@ -12,7 +12,6 @@
       order,
       minHeight
     }"
-    @dragstart="startDrag"
   >
     <widget-error
       v-if="errorShowing && !geoAccessRequestShowing"
@@ -351,14 +350,6 @@ export default defineComponent({
         case "prompt":
           break;
       }
-    },
-
-    startDrag(event: DragEvent) {
-      const dataTransfer = event.dataTransfer as DataTransfer;
-
-      dataTransfer.dropEffect = "move";
-      dataTransfer.effectAllowed = "move";
-      dataTransfer.setData("itemID", this.id.toString());
     },
 
     showLoading() {

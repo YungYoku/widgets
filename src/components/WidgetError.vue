@@ -60,7 +60,7 @@ export default defineComponent({
   &__text {
     margin: 0;
 
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     text-align: center;
     word-wrap: break-word;

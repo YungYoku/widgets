@@ -67,10 +67,8 @@ export default defineComponent({
 
     handleClick(event: Event) {
       const target = event.target as HTMLElement;
-      if (target && target.className) {
-        if (this.isContextNotClicked(target.className)) {
-          this.$emit("hide");
-        }
+      if (target && target.className && this.isContextNotClicked(target.className)) {
+        this.$emit("hide");
       }
     }
   }

@@ -107,6 +107,7 @@ import { WeatherError } from "@/interfaces/weatherError";
 import axios, { AxiosResponse } from "axios";
 import { isWeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 import { SettingNames } from "@/enums/settingNames";
+import { Navigation } from "@/enums/navigation";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -292,14 +293,14 @@ export default defineComponent({
 
     navigationRules() {
       if (this.isCollapsed) {
-        return ["close", "collapse"];
+        return [Navigation.Close, Navigation.Collapse];
       }
 
       if (this.weatherShowing) {
-        return ["close", "collapse", "settings", "saved", "map"];
+        return [Navigation.Close, Navigation.Collapse, Navigation.Settings, Navigation.Saved, Navigation.Map];
       }
 
-      return ["close", "collapse", "settings", "saved"];
+      return [Navigation.Close, Navigation.Collapse, Navigation.Settings, Navigation.Saved];
     }
   },
 

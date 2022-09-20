@@ -72,6 +72,7 @@ import { Time } from "@/interfaces/time";
 import { TimeResponse } from "@/interfaces/timeResponse";
 import { TimeError } from "@/interfaces/timeError";
 import axios, { AxiosResponse } from "axios";
+import { Navigation } from "@/enums/navigation";
 
 export default defineComponent({
   name: "ExactTime",
@@ -133,7 +134,7 @@ export default defineComponent({
     },
 
     navigationRules() {
-      return ["close", "collapse"];
+      return [Navigation.Close, Navigation.Collapse];
     }
   },
 

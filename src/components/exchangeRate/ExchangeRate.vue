@@ -59,6 +59,7 @@ import { ExchangeRate } from "@/interfaces/exchangeRate";
 import { ExchangeError } from "@/interfaces/exchangeError";
 import axios, { AxiosResponse } from "axios";
 import { UnformattedCurrencyAttribute } from "@/interfaces/unformattedCurrencyAttribute";
+import { Navigation } from "@/enums/navigation";
 
 export default defineComponent({
   name: "ExchangeRate",
@@ -109,7 +110,7 @@ export default defineComponent({
     },
 
     navigationRules() {
-      return ["close", "collapse"];
+      return [Navigation.Close, Navigation.Collapse];
     }
   },
 

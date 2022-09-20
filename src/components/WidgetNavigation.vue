@@ -25,6 +25,7 @@ import settings from "@/assets/img/settings.svg";
 import saved from "@/assets/img/saved.svg";
 import map from "@/assets/img/map.svg";
 import { WidgetNavigation } from "@/interfaces/widgetNavigation";
+import { Navigation } from "@/enums/navigation";
 
 export default defineComponent({
   name: "WidgetNavigation",
@@ -41,7 +42,7 @@ export default defineComponent({
     return {
       navigationStore: [
         {
-          name: "close",
+          name: Navigation.Close,
           img: close,
           alt: "Выход",
           emitType: "closeWidget",
@@ -49,7 +50,7 @@ export default defineComponent({
         },
 
         {
-          name: "collapse",
+          name: Navigation.Collapse,
           img: arrowUp,
           alt: "Свернуть",
           emitType: "collapseWidget",
@@ -57,7 +58,7 @@ export default defineComponent({
         },
 
         {
-          name: "settings",
+          name: Navigation.Settings,
           img: settings,
           alt: "Настройки",
           emitType: "openSettings",
@@ -65,7 +66,7 @@ export default defineComponent({
         },
 
         {
-          name: "saved",
+          name: Navigation.Saved,
           img: saved,
           alt: "Сохранённое",
           emitType: "openSaved",
@@ -73,7 +74,7 @@ export default defineComponent({
         },
 
         {
-          name: "map",
+          name: Navigation.Map,
           img: map,
           alt: "На карте",
           emitType: "openMap",

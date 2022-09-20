@@ -53,14 +53,38 @@ export default defineComponent({
   },
 
   mounted() {
-    this.loadLsSaved();
+    this.loadLSSaved();
   },
 
   methods: {
-    loadLsSaved() {
-      if (localStorage.saved) {
+    loadLSSaved() {
+      const lsSaved = localStorage.saved;
+      if (this.isLSSaved(lsSaved)) {
         this.saved = JSON.parse(localStorage.saved);
+      } else {
+        this.reset();
       }
+    },
+
+    isLSSaved(lsSaved: unknown): lsSaved is Array<string> {
+      let flag = true;
+
+      if (!lsSaved) {
+        return false;
+      }
+
+      if (!Array.isArray(lsSaved)) {
+        return false;
+      }
+
+      lsSaved.forEach(item => {
+        console.log(typeof item);
+        if (typeof item !== "string") {
+          flag = false;
+        }
+      });
+      console.log(flag);
+      return flag;
     },
 
     getFormattedCityName(city: string) {
@@ -81,6 +105,11 @@ export default defineComponent({
       if (city !== this.currentCity) {
         this.$emit("loadFromSaved", this.getFormattedCityName(city));
       }
+    },
+
+    reset() {
+      this.saved = [];
+      localStorage.saved = [];
     }
   }
 });

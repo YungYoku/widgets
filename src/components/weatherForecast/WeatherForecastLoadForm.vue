@@ -96,7 +96,7 @@ export default defineComponent({
       return this.cityExistError && this.searchesAmount > 0;
     },
 
-    placeholder(): string {
+    placeholder() {
       return this.inputError ? "Введите существующий город" : "Введите город";
     },
 
@@ -143,7 +143,7 @@ export default defineComponent({
       this.city = city;
       this.selectShowing = false;
 
-      const inputCity = this.$refs["inputCity"] as HTMLElement;
+      const inputCity = this.$refs.inputCity as HTMLElement;
       if (inputCity) {
         inputCity.focus();
       }

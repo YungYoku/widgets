@@ -20,7 +20,7 @@
             'turned-on': setting.turnedOn
           }"
           class="settings__list-item-button"
-          @click="swapSetting(setting.name, setting.actionType)"
+          @click="swapSetting(setting)"
         >
         </button>
       </div>
@@ -38,8 +38,8 @@
 import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks.vue";
-import { WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
-import { WeatherForecastSettings } from "@/interfaces/weatherForecastSetting";
+import { isWeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
+import { WeatherForecastSetting, WeatherForecastSettings } from "@/interfaces/weatherForecastSetting";
 import { SettingNames } from "@/enums/settingNames";
 
 export default defineComponent({
@@ -72,36 +72,26 @@ export default defineComponent({
   },
 
   methods: {
-    swapSetting(name: SettingNames, actionType: string) {
-      const setting = this.settings.find(item => item.name === name);
+    swapSetting(setting: WeatherForecastSetting) {
+      const turnedOn = !setting.turnedOn;
 
-      if (setting) {
-        const turnedOn = !setting.turnedOn;
+      const lsSettings = JSON.parse(localStorage.settings);
+      if (isWeatherForecastLSSettings(lsSettings)) {
+        const storageSetting = lsSettings.find(item => item.name === setting.name);
+        if (storageSetting) {
+          setting.turnedOn = turnedOn;
 
-        const storage = JSON.parse(localStorage.settings) as WeatherForecastLSSettings;
-        if (storage) {
-          const storageSetting = storage.find(item => item.name === name);
-          if (storageSetting) {
-            setting.turnedOn = turnedOn;
+          storageSetting.turnedOn = turnedOn;
+          localStorage.settings = JSON.stringify(lsSettings);
 
-            storageSetting.turnedOn = turnedOn;
-            localStorage.settings = JSON.stringify(storage);
-
-            this.$emit(actionType, turnedOn);
-
-            this.resetLsSettings();
-          }
-
-          return false;
+          this.$emit(setting.actionType, turnedOn);
         }
-
-        return false;
       }
 
-      return false;
+      this.updateLsSettings();
     },
 
-    resetLsSettings() {
+    updateLsSettings() {
       const settings = this.settings.map(setting => {
         return {
           name: setting.name,
@@ -124,16 +114,12 @@ export default defineComponent({
     },
 
     loadLsSettings() {
-      if (localStorage.settings) {
-        const lsSettings = JSON.parse(localStorage.settings) as WeatherForecastLSSettings;
-
-        if (lsSettings.length !== this.settings.length) {
-          this.resetLsSettings();
-        } else {
-          this.updateSettingsFromLs();
-        }
+      const lsSettings = JSON.parse(localStorage.settings);
+      
+      if (isWeatherForecastLSSettings(lsSettings)) {
+        this.updateSettingsFromLs();
       } else {
-        this.resetLsSettings();
+        this.updateLsSettings();
       }
     }
   }

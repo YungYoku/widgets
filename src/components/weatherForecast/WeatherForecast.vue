@@ -105,7 +105,7 @@ import { WeatherForecastResponseDaily } from "@/interfaces/weatherForecastRespon
 import { WeatherForecastResponse } from "@/interfaces/weatherForecastResponse";
 import { WeatherError } from "@/interfaces/weatherError";
 import axios, { AxiosResponse } from "axios";
-import { WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
+import { isWeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 import { SettingNames } from "@/enums/settingNames";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
@@ -309,7 +309,7 @@ export default defineComponent({
     if (localStorage.settings) {
       const lsSettings: unknown = JSON.parse(localStorage.settings);
 
-      if (lsSettings && this.isWeatherForecastLSSettings(lsSettings)) {
+      if (lsSettings && isWeatherForecastLSSettings(lsSettings)) {
         const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
         if (themeSetting) {
           this.switchTheme(themeSetting.turnedOn);
@@ -336,30 +336,6 @@ export default defineComponent({
   },
 
   methods: {
-    isWeatherForecastLSSettings(lsSettings: unknown): lsSettings is WeatherForecastLSSettings {
-      if (!Array.isArray(lsSettings)) {
-        return false;
-      }
-
-      for (let i = 0; i < 2; i++) {
-        if (
-          !lsSettings[i].name ||
-          !lsSettings[i].turnedOn
-        ) {
-          return false;
-        }
-      }
-
-      if (
-        !lsSettings.find(setting => setting.name === SettingNames.Geo) ||
-        !lsSettings.find(setting => setting.name === SettingNames.Theme)
-      ) {
-        return false;
-      }
-
-      return true;
-    },
-
     handleGeoPermission(permission: string) {
       switch (permission) {
         case "granted":

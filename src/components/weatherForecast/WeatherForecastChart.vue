@@ -2,7 +2,7 @@
   <div class="chart without-context">
     <vue-apex-charts
       :options="chartOptions"
-      :series="series"
+      :series="[graphTop, graphBottom]"
       height="80"
       type="area"
     />
@@ -232,46 +232,62 @@ export default defineComponent({
   },
 
   computed: {
-    series() {
-      const graphTop = {
-        name: "",
-        data: [] as Array<GraphItem>,
-        min: 200
-      };
-      const graphBottom = {
-        name: "",
-        data: [] as Array<GraphItem>,
-        max: -200
-      };
+    graphTop() {
+      const data = [] as Array<GraphItem>;
+      let min = 200;
 
       this.temperature.forEach(el => {
-        if (graphTop.min > el.max) {
-          graphTop.min = el.max;
-        }
-
-        if (graphBottom.max < el.min) {
-          graphBottom.max = el.min;
+        if (min > el.max) {
+          min = el.max;
         }
       });
 
-      graphTop.min = graphTop.min < 0 ? Math.abs(graphTop.min) : 0;
-      if (graphBottom.max < 0) {
-        graphBottom.max = 0;
+      if (min < 0) {
+        min = Math.abs(min);
+      } else {
+        min = 0;
       }
 
       this.temperature.forEach((el, index) => {
-        graphTop.data.push({
+        data.push({
           x: index,
-          y: el.max + graphTop.min
-        });
-
-        graphBottom.data.push({
-          x: index,
-          y: el.min - graphBottom.max
+          y: el.max + min
         });
       });
 
-      return [graphTop, graphBottom];
+      return {
+        name: "",
+        data,
+        min
+      };
+    },
+
+    graphBottom() {
+      const data = [] as Array<GraphItem>;
+      let max = -200;
+
+      this.temperature.forEach(el => {
+        if (max < el.min) {
+          max = el.min;
+        }
+      });
+
+      if (max < 0) {
+        max = 0;
+      }
+
+      this.temperature.forEach((el, index) => {
+        data.push({
+          x: index,
+          y: el.min - max
+        });
+      });
+
+      return {
+        name: "",
+        data,
+        max
+      };
     }
   }
 });

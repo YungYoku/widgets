@@ -103,11 +103,12 @@ export default defineComponent({
 
     getMouseX(event: MouseEvent) {
       const pageX = event.pageX;
-      const clientX = event.clientX;
-
       if (pageX) {
         return pageX;
-      } else if (clientX) {
+      }
+
+      const clientX = event.clientX;
+      if (clientX) {
         return (
           clientX
           + (
@@ -123,11 +124,12 @@ export default defineComponent({
 
     getMouseY(event: MouseEvent) {
       const pageY = event.pageY;
-      const clientY = event.clientY;
-
       if (pageY) {
         return pageY;
-      } else if (clientY) {
+      }
+
+      const clientY = event.clientY;
+      if (clientY) {
         return (
           clientY
           + (
@@ -165,14 +167,14 @@ export default defineComponent({
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     },
 
-    doesNotItNeedContext(domEl: HTMLElement) {
+    isContextNotNeeded(domEl: HTMLElement) {
       return (
         domEl.nodeName.toLowerCase() === "body" ||
         domEl.classList.contains("without-context")
       );
     },
 
-    doesItNeedContext(domEl: HTMLElement) {
+    isContextNeeded(domEl: HTMLElement) {
       return domEl.classList.contains("with-context");
     },
 
@@ -185,12 +187,12 @@ export default defineComponent({
 
       let domEl = event.target as HTMLElement;
       while (domEl) {
-        if (this.doesNotItNeedContext(domEl)) {
+        if (this.isContextNotNeeded(domEl)) {
           this.showing = false;
           break;
         }
 
-        if (this.doesItNeedContext(domEl)) {
+        if (this.isContextNeeded(domEl)) {
           this.setMenuCoords(event);
           this.showing = true;
           break;

@@ -311,7 +311,7 @@ export default defineComponent({
     if (localStorage.settings) {
       const lsSettings: unknown = JSON.parse(localStorage.settings);
 
-      if (lsSettings && isWeatherForecastLSSettings(lsSettings)) {
+      if (isWeatherForecastLSSettings(lsSettings)) {
         const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
         if (themeSetting) {
           this.switchTheme(themeSetting.turnedOn);

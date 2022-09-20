@@ -182,7 +182,7 @@ export default defineComponent({
 
         const currency = {} as UnformattedCurrency;
         attrs.forEach((attr: UnformattedCurrencyAttribute) => {
-          const attrName = attr.localName as string;
+          const attrName = attr.localName;
 
           currency[attrName] = attr.textContent;
         });

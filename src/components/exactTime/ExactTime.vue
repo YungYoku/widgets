@@ -109,7 +109,7 @@ export default defineComponent({
       baseURL: process.env.VUE_APP_TIME_BASE_URL,
       loading: true,
       isCollapsed: false,
-      interval: null as unknown as number,
+      interval: null as unknown as ReturnType<typeof setInterval>,
       date: "0000-00-00",
       hours: 0,
       minutes: 0,

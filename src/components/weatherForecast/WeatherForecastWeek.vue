@@ -67,12 +67,7 @@ import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastChart from "@/components/weatherForecast/WeatherForecastChart.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 import { ChartColors } from "@/interfaces/chartColors";
-
-const hotter = "#DC143C";
-const hot = "#FF7F50";
-const normal = "#f4df5b";
-const cold = "#ADD8E6";
-const colder = "#4682B4";
+import { TemperatureColors } from "@/enums/temperatureColors";
 
 export default defineComponent({
   name: "WeatherForecastWeek",
@@ -171,17 +166,17 @@ export default defineComponent({
 
   methods: {
     getTemperatureColor(temperature: number) {
-      if (temperature >= 30) return hotter;
+      if (temperature >= 30) return TemperatureColors.Hotter;
 
-      if (temperature >= 20) return hot;
+      if (temperature >= 20) return TemperatureColors.Hot;
 
-      if (temperature > 0) return normal;
+      if (temperature > 0) return TemperatureColors.Normal;
 
-      if (temperature <= -20) return colder;
+      if (temperature <= -20) return TemperatureColors.Colder;
 
-      if (temperature <= 0) return cold;
+      if (temperature <= 0) return TemperatureColors.Cold;
 
-      return normal;
+      return TemperatureColors.Normal;
     }
   }
 });

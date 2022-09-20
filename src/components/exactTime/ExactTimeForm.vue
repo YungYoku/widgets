@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import timezones from "@/assets/js/timezones";
+import _timezones from "@/assets/js/timezones";
 
 export default defineComponent({
   name: "ExactTimeForm",
@@ -45,8 +45,8 @@ export default defineComponent({
 
   computed: {
     timezones() {
-      if (timezones) {
-        return timezones;
+      if (_timezones) {
+        return _timezones;
       }
       return [];
     }

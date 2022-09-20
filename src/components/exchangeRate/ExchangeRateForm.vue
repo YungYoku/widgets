@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 
 export default defineComponent({
@@ -60,9 +60,9 @@ export default defineComponent({
     },
 
     currenciesList: {
-      type: Array,
+      type: Array as PropType<Array<string>>,
       required: true,
-      default: () => []
+      default: (): Array<string> => []
     }
   },
 

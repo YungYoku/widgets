@@ -75,6 +75,8 @@ export default defineComponent({
     swapSetting(setting: WeatherForecastSetting) {
       const turnedOn = !setting.turnedOn;
 
+      this.resetLsSettings();
+
       const lsSettings = JSON.parse(localStorage.settings);
       if (isWeatherForecastLSSettings(lsSettings)) {
         const storageSetting = lsSettings.find(item => item.name === setting.name);
@@ -87,11 +89,9 @@ export default defineComponent({
           this.$emit(setting.actionType, turnedOn);
         }
       }
-
-      this.updateLsSettings();
     },
 
-    updateLsSettings() {
+    resetLsSettings() {
       const settings = this.settings.map(setting => {
         return {
           name: setting.name,
@@ -115,11 +115,11 @@ export default defineComponent({
 
     loadLsSettings() {
       const lsSettings = JSON.parse(localStorage.settings);
-      
+
       if (isWeatherForecastLSSettings(lsSettings)) {
         this.updateSettingsFromLs();
       } else {
-        this.updateLsSettings();
+        this.resetLsSettings();
       }
     }
   }

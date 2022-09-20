@@ -10,12 +10,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import VueApexCharts from "vue-apexcharts";
+import { defineComponent } from "vue";
+import VueApexCharts from "vue3-apexcharts";
 import { Temperature } from "@/interfaces/temperature";
 import { GraphItem } from "@/interfaces/graphItem";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WeatherForecastChart",
 
   components: {

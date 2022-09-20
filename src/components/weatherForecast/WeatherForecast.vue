@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WeatherForecastToday from "@/components/weatherForecast/WeatherForecastToday.vue";
 import WeatherForecastWeek from "@/components/weatherForecast/WeatherForecastWeek.vue";
 import WeatherForecastLoadForm from "@/components/weatherForecast/WeatherForecastLoadForm.vue";
@@ -104,7 +104,7 @@ import { WeatherForecastResponseCurrent } from "@/interfaces/weatherForecastResp
 import { WeatherForecastResponseDaily } from "@/interfaces/weatherForecastResponseDaily";
 import { WeatherForecastResponse } from "@/interfaces/weatherForecastResponse";
 import { WeatherError } from "@/interfaces/weatherError";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
@@ -123,7 +123,7 @@ const monthNamings = [
   "Дек"
 ];
 
-export default Vue.extend({
+export default defineComponent({
   name: "WeatherForecast",
 
   components: {
@@ -460,7 +460,7 @@ export default Vue.extend({
     },
 
     async loadWeatherForecast(lat: number, lon: number) {
-      await this.$http
+      await axios
         .get(
           `${this.baseURL}data/2.5/onecall?appid=${this.apiKey}`,
           {
@@ -487,7 +487,7 @@ export default Vue.extend({
     },
 
     async loadCityName(lat: number, lon: number) {
-      await this.$http
+      await axios
         .get(`${this.baseURL}geo/1.0/reverse?appid=${this.apiKey}`, {
           params: {
             lat,
@@ -550,7 +550,7 @@ export default Vue.extend({
     },
 
     async loadCoordsByCityName(city: string) {
-      return await this.$http
+      return await axios
         .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`,
           {
             params: {

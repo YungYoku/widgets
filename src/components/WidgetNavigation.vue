@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import close from "@/assets/img/close.svg";
 import arrowUp from "@/assets/img/arrow-up.svg";
 import arrowDown from "@/assets/img/arrow-down.svg";
@@ -26,7 +26,7 @@ import saved from "@/assets/img/saved.svg";
 import map from "@/assets/img/map.svg";
 import { WidgetNavigation } from "@/interfaces/widgetNavigation";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WidgetNavigation",
 
   props: {

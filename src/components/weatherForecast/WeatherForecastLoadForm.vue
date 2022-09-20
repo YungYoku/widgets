@@ -56,11 +56,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import cities from "@/assets/js/cities";
 import { CitiesAlphabet } from "@/interfaces/citiesAlphabet";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WeatherForecastLoadForm",
 
   props: {

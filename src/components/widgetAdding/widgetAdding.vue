@@ -23,10 +23,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import widgetAddingContext from "@/components/widgetAdding/widgetAddingContext.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WidgetAdding",
 
   components: { widgetAddingContext },

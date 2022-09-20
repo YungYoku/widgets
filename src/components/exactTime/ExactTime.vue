@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WidgetNavigation from "@/components/WidgetNavigation.vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks.vue";
@@ -71,9 +71,9 @@ import WidgetError from "@/components/WidgetError.vue";
 import { Time } from "@/interfaces/time";
 import { TimeResponse } from "@/interfaces/timeResponse";
 import { TimeError } from "@/interfaces/timeError";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ExactTime",
 
   components: {
@@ -224,7 +224,7 @@ export default Vue.extend({
     async request(path: string) {
       this.showLoading();
 
-      await this.$http
+      await axios
         .get(`${this.baseURL}${path}`)
         .then((response: AxiosResponse<TimeResponse>) => {
           this.resetError();

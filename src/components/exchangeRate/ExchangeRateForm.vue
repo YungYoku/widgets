@@ -44,10 +44,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ExchangeRateForm",
 
   components: { WidgetLoading },

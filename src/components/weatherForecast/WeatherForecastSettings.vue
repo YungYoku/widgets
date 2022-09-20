@@ -35,13 +35,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks.vue";
 import { SettingName, WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 import { WeatherForecastSettings } from "@/interfaces/weatherForecastSetting";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WeatherForecastSettings",
 
   components: { WidgetDeveloperLinks, WeatherForecastCloseButton },

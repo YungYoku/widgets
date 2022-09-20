@@ -27,14 +27,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import ExactTime from "@/components/exactTime/ExactTime.vue";
 import ExchangeRate from "@/components/exchangeRate/ExchangeRate.vue";
 import WeatherForecast from "@/components/weatherForecast/WeatherForecast.vue";
 import widgetAdding from "@/components/widgetAdding/widgetAdding.vue";
 import type { WidgetItem } from "@/interfaces/widgetItem";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WidgetsView",
 
   components: { widgetAdding, ExchangeRate, ExactTime, WeatherForecast },

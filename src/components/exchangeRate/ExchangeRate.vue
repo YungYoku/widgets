@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WidgetNavigation from "@/components/WidgetNavigation.vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import ExchangeRateForm from "@/components/exchangeRate/ExchangeRateForm.vue";
@@ -57,10 +57,10 @@ import { UnformattedCurrency } from "@/interfaces/unformattedCurrency";
 import { Currency } from "@/interfaces/currency";
 import { ExchangeRate } from "@/interfaces/exchangeRate";
 import { ExchangeError } from "@/interfaces/exchangeError";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { UnformattedCurrencyAttribute } from "@/interfaces/unformattedCurrencyAttribute";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ExchangeRate",
 
   components: {
@@ -241,7 +241,7 @@ export default Vue.extend({
     async loadExchangeRate() {
       this.showLoading();
 
-      await this.$http
+      await axios
         .get(`${this.baseURL}scripts/XML_daily.asp`)
         .then((response: AxiosResponse<string>) => {
           this.resetError();

@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastChart from "@/components/weatherForecast/WeatherForecastChart.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
@@ -74,7 +74,7 @@ const normal = "#f4df5b";
 const cold = "#ADD8E6";
 const colder = "#4682B4";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WeatherForecastWeek",
 
   components: {

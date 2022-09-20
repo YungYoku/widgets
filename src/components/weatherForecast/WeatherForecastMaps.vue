@@ -9,6 +9,7 @@
       <l-map
         :center="coords"
         :zoom="zoom"
+        @ready="removeUiTrash"
       >
         <l-tile-layer :url="url" />
       </l-map>
@@ -17,11 +18,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
-import { LMap, LTileLayer } from "vue2-leaflet";
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WeatherForecastMaps",
 
   components: {
@@ -34,33 +36,25 @@ export default Vue.extend({
     coords: {
       type: Array,
       required: true,
-      default: () => {
-        return [0, 0];
-      }
+      default: () => [0, 0]
     }
   },
 
   data() {
     return {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      zoom: 15
+      zoom: 15,
+      uiCleaned: false
     };
   },
 
-  mounted() {
-    this.removeLeafletUiTrash();
-  },
-
   methods: {
-    removeLeafletUiTrash() {
-      const leafletZoom = document.querySelector(".leaflet-control-zoom");
-      if (leafletZoom) {
-        leafletZoom.remove();
-      }
+    removeUiTrash() {
+      const uiTrash = document.querySelector(".leaflet-control-container");
 
-      const leafletAttribution = document.querySelector(".leaflet-control-attribution");
-      if (leafletAttribution) {
-        leafletAttribution.remove();
+      if (uiTrash && !this.uiCleaned) {
+        this.uiCleaned = true;
+        uiTrash.remove();
       }
     }
   }

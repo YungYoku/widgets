@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WidgetLoading",
 
   computed: {
@@ -32,7 +32,6 @@ export default Vue.extend({
       const firstColor = `rgb(${digits[0]}, ${digits[1]}, ${digits[2]})`;
       const difference = 30;
       const secondColor = `rgb(${digits[0] - difference}, ${digits[1] - difference}, ${digits[2] - difference})`;
-
 
       return `linear-gradient(90deg, ${firstColor}, ${secondColor}, ${firstColor}, ${secondColor})`;
     }

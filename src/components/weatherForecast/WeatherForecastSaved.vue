@@ -32,10 +32,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "WeatherForecastSaved",
   components: { WeatherForecastCloseButton },
   props: {

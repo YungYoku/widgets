@@ -1,5 +1,8 @@
 <template>
-  <div ref="addWidget" class="add-widget">
+  <div
+    ref="addWidget"
+    class="add-widget"
+  >
     <button
       class="add-widget__button"
       type="button"
@@ -54,18 +57,23 @@ export default defineComponent({
 
   methods: {
     showContext() {
+      if (this.contextShowing) {
+        return;
+      }
+
       const button = this.$refs.addWidget as HTMLElement;
       if (button) {
+        this.contextShowing = true;
+
         const windowWidth = window.innerWidth;
         const buttonX = button.offsetLeft + 45;
+        const contextWidth = 150;
 
-        if (buttonX + 150 > windowWidth) {
-          this.contextX = -150;
+        if (buttonX + contextWidth > windowWidth) {
+          this.contextX = -contextWidth;
         } else {
           this.contextX = 0;
         }
-
-        this.contextShowing = true;
       }
     },
 

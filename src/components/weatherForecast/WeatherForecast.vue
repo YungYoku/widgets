@@ -106,6 +106,7 @@ import { WeatherForecastResponse } from "@/interfaces/weatherForecastResponse";
 import { WeatherError } from "@/interfaces/weatherError";
 import axios, { AxiosResponse } from "axios";
 import { WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
+import { SettingNames } from "@/enums/settingNames";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -309,12 +310,12 @@ export default defineComponent({
       const lsSettings: unknown = JSON.parse(localStorage.settings);
 
       if (lsSettings && this.isWeatherForecastLSSettings(lsSettings)) {
-        const themeSetting = lsSettings.find(setting => setting.name === "theme");
+        const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
         if (themeSetting) {
           this.switchTheme(themeSetting.turnedOn);
         }
 
-        const geoSetting = lsSettings.find(setting => setting.name === "geo");
+        const geoSetting = lsSettings.find(setting => setting.name === SettingNames.Geo);
         if (!geoSetting?.turnedOn) {
           this.geoAccessRequestShowing = false;
           this.geoAccessError = true;
@@ -350,8 +351,8 @@ export default defineComponent({
       }
 
       if (
-        !lsSettings.find(setting => setting.name === "geo") ||
-        !lsSettings.find(setting => setting.name === "theme")
+        !lsSettings.find(setting => setting.name === SettingNames.Geo) ||
+        !lsSettings.find(setting => setting.name === SettingNames.Theme)
       ) {
         return false;
       }

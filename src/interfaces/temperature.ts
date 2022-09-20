@@ -1,4 +1,7 @@
 export interface Temperature {
-  min: number;
-  max: number;
+  date: string,
+  icon: string,
+  max: number,
+  min: number,
+  weekDayNaming: string
 }

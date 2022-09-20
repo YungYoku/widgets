@@ -1,7 +1,4 @@
-export const enum SettingName {
-  Geo = "geo",
-  Theme = "theme",
-}
+import { SettingNames } from "@/enums/settingNames";
 
 interface WeatherForecastLSSetting {
   turnedOn: boolean;
@@ -9,12 +6,12 @@ interface WeatherForecastLSSetting {
 
 export interface WeatherForecastLSGeoSetting
   extends WeatherForecastLSSetting {
-  name: SettingName.Geo;
+  name: SettingNames.Geo;
 }
 
 export interface WeatherForecastLSThemeSetting
   extends WeatherForecastLSSetting {
-  name: SettingName.Theme;
+  name: SettingNames.Theme;
 }
 
 export type WeatherForecastLSSettings = [

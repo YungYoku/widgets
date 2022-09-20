@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import { Temperature } from "@/interfaces/temperature";
 import { GraphItem } from "@/interfaces/graphItem";
@@ -24,9 +24,9 @@ export default defineComponent({
 
   props: {
     temperature: {
-      type: Array,
+      type: Array as PropType<Array<Temperature>>,
       required: true,
-      default: () => {
+      default: (): Array<Temperature> => {
         return [
           {
             date: "1 января",
@@ -233,21 +233,18 @@ export default defineComponent({
 
   computed: {
     series() {
-      const temperature = this.temperature as Array<Temperature>;
-
       const graphTop = {
         name: "",
         data: [] as Array<GraphItem>,
         min: 200
       };
-
       const graphBottom = {
         name: "",
         data: [] as Array<GraphItem>,
         max: -200
       };
 
-      temperature.forEach(el => {
+      this.temperature.forEach(el => {
         if (graphTop.min > el.max) {
           graphTop.min = el.max;
         }
@@ -262,7 +259,7 @@ export default defineComponent({
         graphBottom.max = 0;
       }
 
-      temperature.forEach((el, index) => {
+      this.temperature.forEach((el, index) => {
         graphTop.data.push({
           x: index,
           y: el.max + graphTop.min

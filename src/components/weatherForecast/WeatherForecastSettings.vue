@@ -38,8 +38,9 @@
 import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks.vue";
-import { SettingName, WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
+import { WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 import { WeatherForecastSettings } from "@/interfaces/weatherForecastSetting";
+import { SettingNames } from "@/enums/settingNames";
 
 export default defineComponent({
   name: "WeatherForecastSettings",
@@ -50,14 +51,14 @@ export default defineComponent({
     return {
       settings: [
         {
-          name: SettingName.Geo,
+          name: SettingNames.Geo,
           title: "Использовать местоположение",
           turnedOn: true,
           actionType: "giveGeoAccess"
         },
 
         {
-          name: SettingName.Theme,
+          name: SettingNames.Theme,
           title: "Фиолетовая тема",
           turnedOn: false,
           actionType: "switchTheme"
@@ -71,7 +72,7 @@ export default defineComponent({
   },
 
   methods: {
-    swapSetting(name: SettingName, actionType: string) {
+    swapSetting(name: SettingNames, actionType: string) {
       const setting = this.settings.find(item => item.name === name);
 
       if (setting) {

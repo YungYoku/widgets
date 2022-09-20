@@ -57,9 +57,8 @@ export default defineComponent({
   },
 
   methods: {
-    isNotClickedContext(className: string) {
+    isContextNotClicked(className: string) {
       return (
-        className &&
         className !== "add-widget__button" &&
         className !== "add-widget__button-img" &&
         className !== "add-widget-context"
@@ -68,8 +67,8 @@ export default defineComponent({
 
     handleClick(event: Event) {
       const target = event.target as HTMLElement;
-      if (target) {
-        if (this.isNotClickedContext(target.className)) {
+      if (target && target.className) {
+        if (this.isContextNotClicked(target.className)) {
           this.$emit("hide");
         }
       }

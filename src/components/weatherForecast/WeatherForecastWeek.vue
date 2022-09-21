@@ -1,6 +1,9 @@
 <template>
   <div class="week with-context">
-    <widget-loading v-if="loading" />
+    <widget-loading
+      v-if="loading"
+      :color="themeColor"
+    />
 
     <div
       v-else
@@ -27,7 +30,10 @@
     </div>
 
 
-    <widget-loading v-if="loading" />
+    <widget-loading
+      v-if="loading"
+      :color="themeColor"
+    />
 
     <div
       v-else
@@ -153,6 +159,12 @@ export default defineComponent({
           averageTemperatureNight: 0
         };
       }
+    },
+
+    themeColor: {
+      type: String,
+      required: false,
+      default: "rgb(255, 255, 255)"
     }
   },
 

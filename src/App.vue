@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
-    <widgets-view />
-  </div>
+  <widgets-view />
 </template>
 
 <script lang="ts">
@@ -14,9 +12,3 @@ export default defineComponent({
   components: { WidgetsView }
 });
 </script>
-
-<style lang="scss" scoped>
-#app {
-  isolation: isolate;
-}
-</style>

@@ -66,6 +66,7 @@
       v-if="weatherShowing"
       :city-name="cityName"
       :loading="loading"
+      :theme-color="themeColor"
       :weather="current"
       class="today"
     />
@@ -73,6 +74,7 @@
     <weather-forecast-week
       v-if="weatherShowing"
       :loading="loading"
+      :theme-color="themeColor"
       :weather="daily"
       class="week"
     />
@@ -249,7 +251,7 @@ export default defineComponent({
       geoAccessRequestShowing: true,
       mapsShowing: false,
       searchesAmount: 0,
-      theme: "light"
+      themeColor: "rgb(255, 255, 255)"
     };
   },
 
@@ -367,17 +369,14 @@ export default defineComponent({
     switchTheme(isThemePurple: boolean) {
       const lightThemeColor = "rgb(255, 255, 255)";
       const purpleThemeColor = "rgb(173, 170, 255)";
-      let themeColor;
 
       if (isThemePurple) {
-        themeColor = purpleThemeColor;
-        this.theme = "purple";
+        this.themeColor = purpleThemeColor;
       } else {
-        themeColor = lightThemeColor;
-        this.theme = "light";
+        this.themeColor = lightThemeColor;
       }
 
-      document.documentElement.style.setProperty("--main-background-color", themeColor);
+      document.documentElement.style.setProperty("--main-background-color", this.themeColor);
     },
 
     giveGeoAccess() {

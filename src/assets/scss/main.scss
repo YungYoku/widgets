@@ -98,3 +98,7 @@ html {
     overflow-wrap: break-word;
   }
 }
+
+#app {
+  isolation: isolate;
+}

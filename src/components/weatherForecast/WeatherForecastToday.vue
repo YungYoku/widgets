@@ -1,6 +1,9 @@
 <template>
   <div class="today with-context">
-    <widget-loading v-if="loading" />
+    <widget-loading
+      v-if="loading"
+      :color="themeColor"
+    />
 
     <div v-else>
       <div class="temperature">
@@ -74,6 +77,12 @@ export default defineComponent({
           conditions: "Ветер: 0 м/c, Давление: 0 мм рт. ст"
         };
       }
+    },
+
+    themeColor: {
+      type: String,
+      required: false,
+      default: "rgb(255, 255, 255)"
     }
   }
 });

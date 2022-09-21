@@ -14,15 +14,18 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "WidgetLoading",
 
+  props: {
+    color: {
+      type: String,
+      required: false,
+      default: "rgb(255, 255, 255)"
+    }
+  },
+
   computed: {
     backgroundImage() {
-      const bgColor = document.documentElement.style.cssText;
-      let style = "255, 255, 255";
+      const style = this.color.replace(`rgb`, "");
       const difference = 30;
-
-      if (bgColor) {
-        style = bgColor.replace(`--main-background-color: rgb`, "");
-      }
 
       const digits = style
         .split(/\D/)

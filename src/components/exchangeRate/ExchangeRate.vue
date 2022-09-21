@@ -143,11 +143,11 @@ export default defineComponent({
 
       this.addRubExchangePair();
 
-      const from: { code: string, currency: Currency | undefined } = {
+      const from = {
         code: exchangeRate.from,
         currency: this.currencies.find(currency => currency.code === exchangeRate.from)
       };
-      const to: { code: string, currency: Currency | undefined } = {
+      const to = {
         code: exchangeRate.to,
         currency: this.currencies.find(currency => currency.code === exchangeRate.to)
       };

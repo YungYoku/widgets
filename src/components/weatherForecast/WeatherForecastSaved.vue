@@ -67,8 +67,6 @@ export default defineComponent({
     },
 
     isLSSaved(lsSaved: unknown): lsSaved is Array<string> {
-      let flag = true;
-
       if (!lsSaved) {
         return false;
       }
@@ -78,13 +76,12 @@ export default defineComponent({
       }
 
       lsSaved.forEach(item => {
-        console.log(typeof item);
         if (typeof item !== "string") {
-          flag = false;
+          return false;
         }
       });
 
-      return flag;
+      return true;
     },
 
     getFormattedCityName(city: string) {

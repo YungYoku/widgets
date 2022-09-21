@@ -77,8 +77,8 @@ export default defineComponent({
     onDrop(event: DragEvent) {
       const dataTransfer = event.dataTransfer as DataTransfer;
       const itemID = parseInt(dataTransfer.getData("itemID"));
-      let target = event.target as HTMLElement;
-      let toWidget;
+      let target = event.target as HTMLElement | undefined;
+      let toWidget: WidgetItem | null = null;
       let toWidgetId: number;
       let toWidgetType: string;
 
@@ -98,12 +98,12 @@ export default defineComponent({
               el !== toWidgetType
             );
             toWidgetId = parseInt(classNames[0].replace(toWidgetType, ""));
-            toWidget = this.widgets.find(item => item.id === toWidgetId);
+            toWidget = this.widgets.find(item => item.id === toWidgetId) || null;
           }
         }
 
         if (target.parentNode) {
-          target = target.parentNode as HTMLElement;
+          target = target.parentNode as HTMLElement | undefined;
         }
       }
 

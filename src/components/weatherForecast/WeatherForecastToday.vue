@@ -43,6 +43,7 @@ import { defineComponent, PropType } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
 import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
+import { Color } from "@/types/color";
 
 export default defineComponent({
   name: "WeatherForecastToday",
@@ -80,7 +81,7 @@ export default defineComponent({
     },
 
     themeColor: {
-      type: String,
+      type: String as PropType<Color>,
       required: false,
       default: "rgb(255, 255, 255)"
     }

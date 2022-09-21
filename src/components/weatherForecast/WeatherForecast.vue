@@ -111,6 +111,7 @@ import { SettingNames } from "@/enums/settingNames";
 import { Navigation } from "@/enums/navigation";
 import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
 import { WeatherForecastDaily, WeatherForecastWeekDay } from "@/interfaces/weatherForecastDaily";
+import { Color } from "@/types/color";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -251,7 +252,7 @@ export default defineComponent({
       geoAccessRequestShowing: true,
       mapsShowing: false,
       searchesAmount: 0,
-      themeColor: "rgb(255, 255, 255)"
+      themeColor: "rgb(255, 255, 255)" as Color
     };
   },
 

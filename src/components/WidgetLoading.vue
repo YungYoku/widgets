@@ -9,14 +9,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import { Color } from "@/types/color";
 
 export default defineComponent({
   name: "WidgetLoading",
 
   props: {
     color: {
-      type: String,
+      type: String as PropType<Color>,
       required: false,
       default: "rgb(255, 255, 255)"
     }

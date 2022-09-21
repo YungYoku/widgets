@@ -75,6 +75,7 @@ import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForec
 import { ChartColors } from "@/interfaces/chartColors";
 import { TemperatureColors } from "@/enums/temperatureColors";
 import { WeatherForecastDaily } from "@/interfaces/weatherForecastDaily";
+import { Color } from "@/types/color";
 
 export default defineComponent({
   name: "WeatherForecastWeek",
@@ -162,7 +163,7 @@ export default defineComponent({
     },
 
     themeColor: {
-      type: String,
+      type: String as PropType<Color>,
       required: false,
       default: "rgb(255, 255, 255)"
     }

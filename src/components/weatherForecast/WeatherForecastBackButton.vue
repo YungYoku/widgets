@@ -22,7 +22,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .close {
-  z-index: 10000;
+  z-index: 8;
 
   display: flex;
   justify-content: center;

@@ -213,7 +213,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .context {
   position: absolute;
-  z-index: 10;
+  z-index: 6;
 
   display: flex;
   flex-direction: column;

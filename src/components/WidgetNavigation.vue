@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import close from "@/assets/img/close.svg";
 import arrowUp from "@/assets/img/arrow-up.svg";
 import arrowDown from "@/assets/img/arrow-down.svg";
@@ -32,9 +32,9 @@ export default defineComponent({
 
   props: {
     rules: {
-      type: Array,
+      type: Array as PropType<Array<string>>,
       required: true,
-      default: () => []
+      default: (): Array<string> => []
     }
   },
 

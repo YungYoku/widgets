@@ -23,17 +23,30 @@ export default defineComponent({
   name: "WidgetAddingContext",
 
   props: {
-    widgets: {
-      type: Array,
-      required: true,
-      default: () => []
-    },
-
     x: {
       type: Number,
       required: true,
       default: 0
     }
+  },
+
+  data() {
+    return {
+      widgets: [
+        {
+          name: "Прогноз погоды",
+          type: "weather-forecast"
+        },
+        {
+          name: "Точное время",
+          type: "exact-time"
+        },
+        {
+          name: "Курс валют",
+          type: "exchange-rate"
+        }
+      ]
+    };
   },
 
   computed: {
@@ -87,12 +100,10 @@ export default defineComponent({
   justify-content: flex-start;
   align-items: flex-start;
 
-  padding: 10px;
+  padding: 5px;
 
   background-color: #ffffff;
   border-radius: 15px;
-
-  gap: 10px;
 
   button {
     width: 100%;

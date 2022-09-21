@@ -279,15 +279,15 @@ export default defineComponent({
       `;
     },
 
-    anyGeoError(): boolean {
+    anyGeoError() {
       return this.geoExistError || this.geoAccessError;
     },
 
-    errorShowing(): boolean {
+    errorShowing() {
       return !this.searchesAmount ? this.anyGeoError : false;
     },
 
-    weatherShowing(): boolean {
+    weatherShowing() {
       return !this.errorShowing && !this.geoAccessRequestShowing;
     },
 
@@ -612,14 +612,16 @@ export default defineComponent({
 
     setCurrentWeather(current: WeatherForecastResponseCurrent) {
       const description = current.weather[0].description;
-      this.current.icon = this.getWeatherIconName(current.weather[0].icon);
-      this.current.temperature = `${Math.round(current.temp)}°С`;
-      this.current.feelsLike = `ощущается как ${Math.round(current.feels_like)}°С`;
-      this.current.description = description[0].toUpperCase() + description.slice(1);
-      this.current.conditions = `
-        Ветер: ${Math.round(current.wind_speed)} м/с,
-        Давление: ${Math.round(current.pressure)} мм рт. ст.
-      `;
+      this.current = {
+        icon: this.getWeatherIconName(current.weather[0].icon),
+        temperature: `${Math.round(current.temp)}°С`,
+        feelsLike: `ощущается как ${Math.round(current.feels_like)}°С`,
+        description: description[0].toUpperCase() + description.slice(1),
+        conditions: `
+          Ветер: ${Math.round(current.wind_speed)} м/с,
+          Давление: ${Math.round(current.pressure)} мм рт. ст.
+        `
+      };
     },
 
     updateAverageTemperature() {
@@ -627,9 +629,9 @@ export default defineComponent({
       let averageTempDay = 0;
       let averageTempNight = 0;
 
-      this.daily.week.forEach(t => {
-        averageTempDay += t.max;
-        averageTempNight += t.min;
+      this.daily.week.forEach(dayTemperature => {
+        averageTempDay += dayTemperature.max;
+        averageTempNight += dayTemperature.min;
       });
 
       this.daily.averageTemperatureDay = averageTempDay / days;

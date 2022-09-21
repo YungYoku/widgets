@@ -17,7 +17,6 @@
 
     <widget-adding-context
       v-if="contextShowing"
-      :widgets="widgets"
       :x="contextX"
       @addWidget="addWidget"
       @hide="hideContext"
@@ -36,20 +35,6 @@ export default defineComponent({
 
   data() {
     return {
-      widgets: [
-        {
-          name: "Прогноз погоды",
-          type: "weather-forecast"
-        },
-        {
-          name: "Точное время",
-          type: "exact-time"
-        },
-        {
-          name: "Курс валют",
-          type: "exchange-rate"
-        }
-      ],
       contextShowing: false,
       contextX: 0
     };

@@ -48,7 +48,7 @@ export default defineComponent({
 
   data() {
     return {
-      saved: []
+      saved: [] as Array<string>
     };
   },
 
@@ -58,9 +58,9 @@ export default defineComponent({
 
   methods: {
     loadLSSaved() {
-      const lsSaved = localStorage.saved;
+      const lsSaved = JSON.parse(localStorage.saved);
       if (this.isLSSaved(lsSaved)) {
-        this.saved = JSON.parse(localStorage.saved);
+        this.saved = lsSaved;
       } else {
         this.reset();
       }
@@ -83,7 +83,7 @@ export default defineComponent({
           flag = false;
         }
       });
-      console.log(flag);
+
       return flag;
     },
 

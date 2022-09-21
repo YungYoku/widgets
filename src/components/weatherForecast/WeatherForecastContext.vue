@@ -185,7 +185,7 @@ export default defineComponent({
         return false;
       }
 
-      let domEl = event.target as HTMLElement;
+      let domEl = event.target as HTMLElement | undefined;
       while (domEl) {
         if (this.isContextNotNeeded(domEl)) {
           this.showing = false;
@@ -198,8 +198,9 @@ export default defineComponent({
           break;
         }
 
-        if (domEl.parentNode) {
-          domEl = domEl.parentNode as HTMLElement;
+        const parentNode = domEl.parentNode as HTMLElement | undefined;
+        if (parentNode) {
+          domEl = parentNode;
         }
       }
 

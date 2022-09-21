@@ -17,7 +17,7 @@ module.exports = {
   },
 
   rules: {
-    strict: 0,
+    strict: 1,
     "vue/no-v-html": ["off"],
     "vue/no-template-shadow": ["off"],
     "vue/html-indent": ["error", 2],

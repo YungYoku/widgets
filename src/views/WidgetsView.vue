@@ -117,7 +117,6 @@ export default defineComponent({
     },
 
     closeWidget(id: number) {
-      //Исчезновение
       this.animateDisappearance(id);
     },
 

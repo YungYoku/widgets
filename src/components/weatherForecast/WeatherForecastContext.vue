@@ -201,6 +201,8 @@ export default defineComponent({
         const parentNode = domEl.parentNode as HTMLElement | undefined;
         if (parentNode) {
           domEl = parentNode;
+        } else {
+          return false;
         }
       }
 

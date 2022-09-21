@@ -529,18 +529,20 @@ export default defineComponent({
             }
           })
         .then(response => {
-          const responseData = response.data[0];
-
-          return {
-            lat: responseData.lat,
-            lon: responseData.lon
-          };
+          const coords = response.data[0];
+          if (!coords || !coords.lat || !coords.lon) {
+            throw new Error(`There is no city with ${city} name`);
+          } else {
+            return {
+              lat: coords.lat,
+              lon: coords.lon
+            };
+          }
         })
         .catch(error => {
           console.error(error);
           this.cityExistError = true;
-          this.hideLoading();
-          return undefined;
+          return null;
         });
     },
 

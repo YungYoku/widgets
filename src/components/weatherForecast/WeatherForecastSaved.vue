@@ -57,8 +57,8 @@ export default defineComponent({
   },
 
   methods: {
-    loadLSSaved() {
-      const lsSaved = JSON.parse(localStorage.saved);
+    async loadLSSaved() {
+      const lsSaved = await JSON.parse(localStorage.saved || "[]");
       if (this.isLSSaved(lsSaved)) {
         this.saved = lsSaved;
       } else {

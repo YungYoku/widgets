@@ -72,6 +72,42 @@ export default defineComponent({
   },
 
   methods: {
+    async loadLsSettings() {
+      try {
+        const lsSettings = await JSON.parse(localStorage.settings || "[]");
+
+        if (isWeatherForecastLSSettings(lsSettings)) {
+          this.updateSettingsFromLs();
+        } else {
+          this.resetLsSettings();
+        }
+      } catch (error) {
+        this.resetLsSettings();
+      }
+    },
+
+    updateSettingsFromLs() {
+      const lsSettings = JSON.parse(localStorage.settings);
+      const length = this.settings.length;
+
+      for (let i = 0; i < length; i++) {
+        if (this.settings[i].name === lsSettings[i].name) {
+          this.settings[i].turnedOn = lsSettings[i].turnedOn;
+        }
+      }
+    },
+
+    resetLsSettings() {
+      const settings = this.settings.map(setting => {
+        return {
+          name: setting.name,
+          turnedOn: setting.turnedOn
+        };
+      });
+
+      localStorage.settings = JSON.stringify(settings);
+    },
+
     swapSetting(setting: WeatherForecastSetting) {
       const turnedOn = !setting.turnedOn;
 
@@ -88,38 +124,6 @@ export default defineComponent({
 
           this.$emit(setting.actionType, turnedOn);
         }
-      }
-    },
-
-    resetLsSettings() {
-      const settings = this.settings.map(setting => {
-        return {
-          name: setting.name,
-          turnedOn: setting.turnedOn
-        };
-      });
-
-      localStorage.settings = JSON.stringify(settings);
-    },
-
-    updateSettingsFromLs() {
-      const lsSettings = JSON.parse(localStorage.settings);
-      const length = this.settings.length;
-
-      for (let i = 0; i < length; i++) {
-        if (this.settings[i].name === lsSettings[i].name) {
-          this.settings[i].turnedOn = lsSettings[i].turnedOn;
-        }
-      }
-    },
-
-    loadLsSettings() {
-      const lsSettings = JSON.parse(localStorage.settings);
-
-      if (isWeatherForecastLSSettings(lsSettings)) {
-        this.updateSettingsFromLs();
-      } else {
-        this.resetLsSettings();
       }
     }
   }

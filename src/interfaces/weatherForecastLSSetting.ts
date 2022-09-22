@@ -20,11 +20,17 @@ export type WeatherForecastLSSettings = [
 ]
 
 export const isWeatherForecastLSSettings = (lsSettings: unknown): lsSettings is WeatherForecastLSSettings => {
+  const lsSettingsAmount = 2;
+
   if (!Array.isArray(lsSettings)) {
     return false;
   }
 
-  for (let i = 0; i < 2; i++) {
+  if (lsSettings.length !== lsSettingsAmount) {
+    return false;
+  }
+
+  for (let i = 0; i < lsSettingsAmount; i++) {
     if (
       typeof lsSettings[i].name !== "string" ||
       typeof lsSettings[i].turnedOn !== "boolean"

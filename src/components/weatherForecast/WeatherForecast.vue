@@ -106,7 +106,7 @@ import { WeatherForecastResponseDaily } from "@/interfaces/weatherForecastRespon
 import { WeatherForecastResponse } from "@/interfaces/weatherForecastResponse";
 import { WeatherError } from "@/interfaces/weatherError";
 import axios, { AxiosResponse } from "axios";
-import { isWeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
+import { isWeatherForecastLSSettings, WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
 import { SettingNames } from "@/enums/settingNames";
 import { Navigation } from "@/enums/navigation";
 import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
@@ -314,26 +314,34 @@ export default defineComponent({
 
   methods: {
     async loadLSSettings() {
-      if (await localStorage.settings) {
-        const lsSettings: unknown = await JSON.parse(localStorage.settings);
-
+      try {
+        const lsSettings: unknown = await JSON.parse(localStorage.settings || "[]");
         if (isWeatherForecastLSSettings(lsSettings)) {
-          const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
-          if (themeSetting) {
-            this.switchTheme(themeSetting.turnedOn);
-          }
-
-          const geoSetting = lsSettings.find(setting => setting.name === SettingNames.Geo);
-          if (!geoSetting?.turnedOn) {
-            this.geoAccessRequestShowing = false;
-            this.geoAccessError = true;
-          } else {
-            this.detectGeoPermission();
-          }
+          this.loadLSThemeSetting(lsSettings);
+          this.loadLSGeoSetting(lsSettings);
         }
+      } catch (error) {
+        this.detectGeoPermission();
       }
 
       this.hideLoading();
+    },
+
+    loadLSThemeSetting(lsSettings: WeatherForecastLSSettings) {
+      const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
+      if (themeSetting) {
+        this.switchTheme(themeSetting.turnedOn);
+      }
+    },
+
+    loadLSGeoSetting(lsSettings: WeatherForecastLSSettings) {
+      const geoSetting = lsSettings.find(setting => setting.name === SettingNames.Geo);
+      if (!geoSetting?.turnedOn) {
+        this.geoAccessRequestShowing = false;
+        this.geoAccessError = true;
+      } else {
+        this.detectGeoPermission();
+      }
     },
 
     switchTheme(isThemePurple: boolean) {

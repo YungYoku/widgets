@@ -246,10 +246,10 @@ export default defineComponent({
       cityName: "Город",
       geoExistError: false,
       geoAccessError: false,
+      geoAccessRequestShowing: true,
       cityExistError: false,
       settingsShowing: false,
       savedShowing: false,
-      geoAccessRequestShowing: true,
       mapsShowing: false,
       searchesAmount: 0,
       themeColor: "rgb(255, 255, 255)" as Color
@@ -332,7 +332,7 @@ export default defineComponent({
           }
         }
       }
-      
+
       this.hideLoading();
     },
 

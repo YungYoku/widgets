@@ -309,14 +309,13 @@ export default defineComponent({
   },
 
   mounted() {
-    this.hideLoading();
     this.loadLSSettings();
   },
 
   methods: {
-    loadLSSettings() {
-      if (localStorage.settings) {
-        const lsSettings: unknown = JSON.parse(localStorage.settings);
+    async loadLSSettings() {
+      if (await localStorage.settings) {
+        const lsSettings: unknown = await JSON.parse(localStorage.settings);
 
         if (isWeatherForecastLSSettings(lsSettings)) {
           const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
@@ -333,6 +332,8 @@ export default defineComponent({
           }
         }
       }
+      
+      this.hideLoading();
     },
 
     switchTheme(isThemePurple: boolean) {
@@ -347,7 +348,7 @@ export default defineComponent({
 
       document.documentElement.style.setProperty("--main-background-color", this.themeColor);
     },
-    
+
     async loadWeatherForecast(lat: number, lon: number) {
       await axios
         .get(

@@ -310,49 +310,29 @@ export default defineComponent({
 
   mounted() {
     this.hideLoading();
-
-    if (localStorage.settings) {
-      const lsSettings: unknown = JSON.parse(localStorage.settings);
-
-      if (isWeatherForecastLSSettings(lsSettings)) {
-        const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
-        if (themeSetting) {
-          this.switchTheme(themeSetting.turnedOn);
-        }
-
-        const geoSetting = lsSettings.find(setting => setting.name === SettingNames.Geo);
-        if (!geoSetting?.turnedOn) {
-          this.geoAccessRequestShowing = false;
-          this.geoAccessError = true;
-          return;
-        }
-      }
-    }
-
-    if (navigator.permissions) {
-      navigator.permissions.query({
-        name: "geolocation"
-      }).then(this.handleGeoPermission);
-    }
+    this.loadLSSettings();
   },
 
   methods: {
-    handleGeoPermission(permission: PermissionStatus) {
-      switch (permission.state) {
-        case "granted":
-          this.loadByCoords();
-          break;
-        case "denied":
-          this.geoAccessRequestShowing = false;
-          this.geoAccessError = true;
-          break;
-        case "prompt":
-          break;
-      }
-    },
+    loadLSSettings() {
+      if (localStorage.settings) {
+        const lsSettings: unknown = JSON.parse(localStorage.settings);
 
-    collapseWidget() {
-      this.isCollapsed = !this.isCollapsed;
+        if (isWeatherForecastLSSettings(lsSettings)) {
+          const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
+          if (themeSetting) {
+            this.switchTheme(themeSetting.turnedOn);
+          }
+
+          const geoSetting = lsSettings.find(setting => setting.name === SettingNames.Geo);
+          if (!geoSetting?.turnedOn) {
+            this.geoAccessRequestShowing = false;
+            this.geoAccessError = true;
+          } else {
+            this.detectGeoPermission();
+          }
+        }
+      }
     },
 
     switchTheme(isThemePurple: boolean) {
@@ -367,29 +347,7 @@ export default defineComponent({
 
       document.documentElement.style.setProperty("--main-background-color", this.themeColor);
     },
-
-    handleGeoAccess(access: boolean) {
-      if (this.searchesAmount) {
-        return;
-      }
-
-      if (access) {
-        this.giveGeoAccess();
-      } else {
-        this.blockGeoAccess();
-      }
-    },
-
-    giveGeoAccess() {
-      this.geoAccessError = false;
-      this.geoAccessRequestShowing = true;
-    },
-
-    blockGeoAccess() {
-      this.geoAccessError = true;
-      this.geoAccessRequestShowing = false;
-    },
-
+    
     async loadWeatherForecast(lat: number, lon: number) {
       await axios
         .get(
@@ -425,6 +383,28 @@ export default defineComponent({
     setWeather(weather: WeatherForecastResponse) {
       this.setCurrentWeather(weather.current);
       this.setDailyWeather(weather.daily);
+    },
+
+    detectGeoPermission() {
+      if (navigator.permissions) {
+        navigator.permissions.query({
+          name: "geolocation"
+        }).then(this.handleGeoPermission);
+      }
+    },
+
+    handleGeoPermission(permission: PermissionStatus) {
+      switch (permission.state) {
+        case "granted":
+          this.loadByCoords();
+          break;
+        case "denied":
+          this.geoAccessRequestShowing = false;
+          this.geoAccessError = true;
+          break;
+        case "prompt":
+          break;
+      }
     },
 
     async loadByCoords() {
@@ -640,6 +620,32 @@ export default defineComponent({
 
       this.daily.averageTemperatureDay = averageTempDay / days;
       this.daily.averageTemperatureNight = averageTempNight / days;
+    },
+
+    collapseWidget() {
+      this.isCollapsed = !this.isCollapsed;
+    },
+
+    handleGeoAccess(access: boolean) {
+      if (this.searchesAmount) {
+        return;
+      }
+
+      if (access) {
+        this.giveGeoAccess();
+      } else {
+        this.blockGeoAccess();
+      }
+    },
+
+    giveGeoAccess() {
+      this.geoAccessError = false;
+      this.geoAccessRequestShowing = true;
+    },
+
+    blockGeoAccess() {
+      this.geoAccessError = true;
+      this.geoAccessRequestShowing = false;
     },
 
     openSettings() {

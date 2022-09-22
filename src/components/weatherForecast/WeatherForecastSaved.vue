@@ -13,12 +13,12 @@
         v-for="city in saved"
         :key="city"
         :class="{
-          'saved__list-blocked-city': getFormattedCityName(city) === currentCity
+          'saved__list-blocked-city': isCurrentCity(city)
         }"
         class="saved__list-city"
         @click="loadFromSaved(city)"
       >
-        {{ city }}
+        {{ formatCityName(city) }}
       </button>
 
       <h3
@@ -37,7 +37,7 @@ import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherFore
 
 export default defineComponent({
   name: "WeatherForecastSaved",
-  
+
   components: { WeatherForecastCloseButton },
 
   props: {
@@ -62,7 +62,7 @@ export default defineComponent({
     async loadLSSaved() {
       const lsSaved = await JSON.parse(localStorage.saved || "[]");
       if (this.isLSSaved(lsSaved)) {
-        this.saved = lsSaved;
+        this.saved = lsSaved.map(savedCity => this.formatCityName(savedCity));
       } else {
         this.reset();
       }
@@ -91,13 +91,14 @@ export default defineComponent({
       localStorage.saved = [];
     },
 
-    loadFromSaved(city: string) {
+    loadFromSaved(_city: string) {
+      const city = this.formatCityName(_city);
       if (city !== this.currentCity) {
-        this.$emit("loadFromSaved", this.getFormattedCityName(city));
+        this.$emit("loadFromSaved", city);
       }
     },
 
-    getFormattedCityName(city: string) {
+    formatCityName(city: string) {
       // Оставляет буквы и тире
       city = city.replace(/[^a-zа-яё\s-]/gi, "");
 
@@ -109,6 +110,10 @@ export default defineComponent({
       }
 
       return city;
+    },
+
+    isCurrentCity(city: string) {
+      return this.formatCityName(city) === this.currentCity;
     }
   }
 });

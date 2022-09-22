@@ -279,18 +279,6 @@ export default defineComponent({
       `;
     },
 
-    anyGeoError() {
-      return this.geoExistError || this.geoAccessError;
-    },
-
-    errorShowing() {
-      return !this.searchesAmount ? this.anyGeoError : false;
-    },
-
-    weatherShowing() {
-      return !this.errorShowing && !this.geoAccessRequestShowing;
-    },
-
     minHeight() {
       return ((this.settingsShowing || this.savedShowing) && !this.loading) ? "300px" : "auto";
     },
@@ -305,6 +293,18 @@ export default defineComponent({
       }
 
       return [Navigation.Close, Navigation.Collapse, Navigation.Settings, Navigation.Saved];
+    },
+
+    weatherShowing() {
+      return !this.errorShowing && !this.geoAccessRequestShowing;
+    },
+
+    errorShowing() {
+      return !this.searchesAmount ? this.anyGeoError : false;
+    },
+
+    anyGeoError() {
+      return this.geoExistError || this.geoAccessError;
     }
   },
 
@@ -332,17 +332,13 @@ export default defineComponent({
     if (navigator.permissions) {
       navigator.permissions.query({
         name: "geolocation"
-      })
-        .then(permission => {
-            this.handleGeoPermission(permission.state);
-          }
-        );
+      }).then(this.handleGeoPermission);
     }
   },
 
   methods: {
-    handleGeoPermission(permission: string) {
-      switch (permission) {
+    handleGeoPermission(permission: PermissionStatus) {
+      switch (permission.state) {
         case "granted":
           this.loadByCoords();
           break;
@@ -353,14 +349,6 @@ export default defineComponent({
         case "prompt":
           break;
       }
-    },
-
-    showLoading() {
-      this.loading = true;
-    },
-
-    hideLoading() {
-      this.loading = false;
     },
 
     collapseWidget() {
@@ -380,16 +368,6 @@ export default defineComponent({
       document.documentElement.style.setProperty("--main-background-color", this.themeColor);
     },
 
-    giveGeoAccess() {
-      this.geoAccessError = false;
-      this.geoAccessRequestShowing = true;
-    },
-
-    blockGeoAccess() {
-      this.geoAccessError = true;
-      this.geoAccessRequestShowing = false;
-    },
-
     handleGeoAccess(access: boolean) {
       if (this.searchesAmount) {
         return;
@@ -402,32 +380,19 @@ export default defineComponent({
       }
     },
 
-    handleRequestErrors(error: WeatherError) {
-      const response = error.response;
-      const status = response.status;
-      const statusText = response.statusText;
+    giveGeoAccess() {
+      this.geoAccessError = false;
+      this.geoAccessRequestShowing = true;
+    },
 
-      switch (status) {
-        case 401:
-          console.error(`API key error ${status} (${statusText})`);
-          break;
-        case 404:
-          console.error(`Wrong city name error ${status} (${statusText})`);
-          break;
-        case 429:
-          console.error(`Free plan limit error ${status} (${statusText})`);
-          break;
-      }
+    blockGeoAccess() {
+      this.geoAccessError = true;
+      this.geoAccessRequestShowing = false;
     },
 
     setLatLon(lat: number, lon: number) {
       this.lat = lat;
       this.lon = lon;
-    },
-
-    setWeather(weather: WeatherForecastResponse) {
-      this.setCurrentWeather(weather.current);
-      this.setDailyWeather(weather.daily);
     },
 
     async loadWeatherForecast(lat: number, lon: number) {
@@ -457,6 +422,11 @@ export default defineComponent({
         .catch(this.handleRequestErrors);
     },
 
+    setWeather(weather: WeatherForecastResponse) {
+      this.setCurrentWeather(weather.current);
+      this.setDailyWeather(weather.daily);
+    },
+
     async loadCityName(lat: number, lon: number) {
       await axios
         .get(`${this.baseURL}geo/1.0/reverse?appid=${this.apiKey}`, {
@@ -471,10 +441,21 @@ export default defineComponent({
         .catch(this.handleRequestErrors);
     },
 
-    async loadFromSaved(city: string) {
-      this.closeSaved();
-      if (city !== this.cityName) {
-        await this.loadByCityName(city);
+    handleRequestErrors(error: WeatherError) {
+      const response = error.response;
+      const status = response.status;
+      const statusText = response.statusText;
+
+      switch (status) {
+        case 401:
+          console.error(`API key error ${status} (${statusText})`);
+          break;
+        case 404:
+          console.error(`Wrong city name error ${status} (${statusText})`);
+          break;
+        case 429:
+          console.error(`Free plan limit error ${status} (${statusText})`);
+          break;
       }
     },
 
@@ -508,16 +489,12 @@ export default defineComponent({
       }
     },
 
-    isItSameCity(city: string) {
-      return city.toLowerCase() === this.cityName.toLowerCase();
+    showLoading() {
+      this.loading = true;
     },
 
-    handleSameNameCity() {
-      const activeElement = document.activeElement as HTMLElement;
-      if (activeElement) {
-        activeElement.blur();
-      }
-      this.cityExistError = false;
+    hideLoading() {
+      this.loading = false;
     },
 
     async loadCoordsByCityName(city: string) {
@@ -564,14 +541,16 @@ export default defineComponent({
       this.hideLoading();
     },
 
-    getWeekDayNaming(day: number) {
-      if (day === 0) {
-        return "Сегодня";
+    isItSameCity(city: string) {
+      return city.toLowerCase() === this.cityName.toLowerCase();
+    },
+
+    handleSameNameCity() {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement) {
+        activeElement.blur();
       }
-
-      const index = (day + new Date().getDay() - 1) % dayNamings.length;
-
-      return dayNamings[index];
+      this.cityExistError = false;
     },
 
     getDate(day: number, daysInMonth: number) {
@@ -582,6 +561,35 @@ export default defineComponent({
       }
 
       return day % daysInMonth + " " + monthNamings[monthIndex + 1];
+    },
+
+    setCurrentWeather(current: WeatherForecastResponseCurrent) {
+      const description = current.weather[0].description;
+      this.current = {
+        icon: this.getWeatherIconName(current.weather[0].icon),
+        temperature: `${Math.round(current.temp)}°С`,
+        feelsLike: `ощущается как ${Math.round(current.feels_like)}°С`,
+        description: description[0].toUpperCase() + description.slice(1),
+        conditions: `
+          Ветер: ${Math.round(current.wind_speed)} м/с,
+          Давление: ${Math.round(current.pressure)} мм рт. ст.
+        `
+      };
+    },
+
+    setDailyWeather(daily: Array<WeatherForecastResponseDaily>) {
+      this.daily.week = daily.map(this.getFormattedDay);
+      this.updateAverageTemperature();
+    },
+
+    getFormattedDay(day: WeatherForecastResponseDaily, index: number): WeatherForecastWeekDay {
+      return {
+        date: this.getDate(index + new Date().getDate(), this.daysInMonth),
+        icon: this.getWeatherIconName(day.weather[0].icon),
+        max: Math.round(day.temp.max),
+        min: Math.round(day.temp.min),
+        weekDayNaming: this.getWeekDayNaming(index)
+      };
     },
 
     getWeatherIconName(id: string) {
@@ -610,18 +618,14 @@ export default defineComponent({
       }
     },
 
-    setCurrentWeather(current: WeatherForecastResponseCurrent) {
-      const description = current.weather[0].description;
-      this.current = {
-        icon: this.getWeatherIconName(current.weather[0].icon),
-        temperature: `${Math.round(current.temp)}°С`,
-        feelsLike: `ощущается как ${Math.round(current.feels_like)}°С`,
-        description: description[0].toUpperCase() + description.slice(1),
-        conditions: `
-          Ветер: ${Math.round(current.wind_speed)} м/с,
-          Давление: ${Math.round(current.pressure)} мм рт. ст.
-        `
-      };
+    getWeekDayNaming(day: number) {
+      if (day === 0) {
+        return "Сегодня";
+      }
+
+      const index = (day + new Date().getDay() - 1) % dayNamings.length;
+
+      return dayNamings[index];
     },
 
     updateAverageTemperature() {
@@ -638,21 +642,6 @@ export default defineComponent({
       this.daily.averageTemperatureNight = averageTempNight / days;
     },
 
-    getFormattedDay(day: WeatherForecastResponseDaily, index: number): WeatherForecastWeekDay {
-      return {
-        date: this.getDate(index + new Date().getDate(), this.daysInMonth),
-        icon: this.getWeatherIconName(day.weather[0].icon),
-        max: Math.round(day.temp.max),
-        min: Math.round(day.temp.min),
-        weekDayNaming: this.getWeekDayNaming(index)
-      };
-    },
-
-    setDailyWeather(daily: Array<WeatherForecastResponseDaily>) {
-      this.daily.week = daily.map(this.getFormattedDay);
-      this.updateAverageTemperature();
-    },
-
     openSettings() {
       this.settingsShowing = true;
     },
@@ -663,6 +652,13 @@ export default defineComponent({
 
     openSaved() {
       this.savedShowing = true;
+    },
+
+    async loadFromSaved(city: string) {
+      this.closeSaved();
+      if (city !== this.cityName) {
+        await this.loadByCityName(city);
+      }
     },
 
     closeSaved() {

@@ -390,11 +390,6 @@ export default defineComponent({
       this.geoAccessRequestShowing = false;
     },
 
-    setLatLon(lat: number, lon: number) {
-      this.lat = lat;
-      this.lon = lon;
-    },
-
     async loadWeatherForecast(lat: number, lon: number) {
       await axios
         .get(
@@ -422,41 +417,14 @@ export default defineComponent({
         .catch(this.handleRequestErrors);
     },
 
+    setLatLon(lat: number, lon: number) {
+      this.lat = lat;
+      this.lon = lon;
+    },
+
     setWeather(weather: WeatherForecastResponse) {
       this.setCurrentWeather(weather.current);
       this.setDailyWeather(weather.daily);
-    },
-
-    async loadCityName(lat: number, lon: number) {
-      await axios
-        .get(`${this.baseURL}geo/1.0/reverse?appid=${this.apiKey}`, {
-          params: {
-            lat,
-            lon
-          }
-        })
-        .then(response => {
-          this.cityName = response.data[0].local_names[this.lang];
-        })
-        .catch(this.handleRequestErrors);
-    },
-
-    handleRequestErrors(error: WeatherError) {
-      const response = error.response;
-      const status = response.status;
-      const statusText = response.statusText;
-
-      switch (status) {
-        case 401:
-          console.error(`API key error ${status} (${statusText})`);
-          break;
-        case 404:
-          console.error(`Wrong city name error ${status} (${statusText})`);
-          break;
-        case 429:
-          console.error(`Free plan limit error ${status} (${statusText})`);
-          break;
-      }
     },
 
     async loadByCoords() {
@@ -497,30 +465,36 @@ export default defineComponent({
       this.loading = false;
     },
 
-    async loadCoordsByCityName(city: string) {
-      return await axios
-        .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`,
-          {
-            params: {
-              q: city
-            }
-          })
-        .then(response => {
-          const coords = response.data[0];
-          if (!coords || !coords.lat || !coords.lon) {
-            throw new Error(`There is no city with ${city} name`);
-          } else {
-            return {
-              lat: coords.lat,
-              lon: coords.lon
-            };
+    async loadCityName(lat: number, lon: number) {
+      await axios
+        .get(`${this.baseURL}geo/1.0/reverse?appid=${this.apiKey}`, {
+          params: {
+            lat,
+            lon
           }
         })
-        .catch(error => {
-          console.error(error);
-          this.cityExistError = true;
-          return null;
-        });
+        .then(response => {
+          this.cityName = response.data[0].local_names[this.lang];
+        })
+        .catch(this.handleRequestErrors);
+    },
+
+    handleRequestErrors(error: WeatherError) {
+      const response = error.response;
+      const status = response.status;
+      const statusText = response.statusText;
+
+      switch (status) {
+        case 401:
+          console.error(`API key error ${status} (${statusText})`);
+          break;
+        case 404:
+          console.error(`Wrong city name error ${status} (${statusText})`);
+          break;
+        case 429:
+          console.error(`Free plan limit error ${status} (${statusText})`);
+          break;
+      }
     },
 
     async loadByCityName(cityName: string) {
@@ -553,14 +527,30 @@ export default defineComponent({
       this.cityExistError = false;
     },
 
-    getDate(day: number, daysInMonth: number) {
-      const monthIndex = new Date().getMonth();
-
-      if (day <= daysInMonth) {
-        return day + " " + monthNamings[monthIndex];
-      }
-
-      return day % daysInMonth + " " + monthNamings[monthIndex + 1];
+    async loadCoordsByCityName(city: string) {
+      return await axios
+        .get(`${this.baseURL}geo/1.0/direct?appid=${this.apiKey}`,
+          {
+            params: {
+              q: city
+            }
+          })
+        .then(response => {
+          const coords = response.data[0];
+          if (!coords || !coords.lat || !coords.lon) {
+            throw new Error(`There is no city with ${city} name`);
+          } else {
+            return {
+              lat: coords.lat,
+              lon: coords.lon
+            };
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          this.cityExistError = true;
+          return null;
+        });
     },
 
     setCurrentWeather(current: WeatherForecastResponseCurrent) {
@@ -590,6 +580,16 @@ export default defineComponent({
         min: Math.round(day.temp.min),
         weekDayNaming: this.getWeekDayNaming(index)
       };
+    },
+
+    getDate(day: number, daysInMonth: number) {
+      const monthIndex = new Date().getMonth();
+
+      if (day <= daysInMonth) {
+        return day + " " + monthNamings[monthIndex];
+      }
+
+      return day % daysInMonth + " " + monthNamings[monthIndex + 1];
     },
 
     getWeatherIconName(id: string) {

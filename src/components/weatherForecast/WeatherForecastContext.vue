@@ -227,6 +227,7 @@ export default defineComponent({
   background-color: var(--main-background-color);
   border-radius: 10px;
   box-shadow: 0 3px 9px 1px #6666669c;
+
   @supports (backdrop-filter: blur(20px)) {
     background-color: transparent;
 

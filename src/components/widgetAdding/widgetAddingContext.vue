@@ -103,23 +103,23 @@ export default defineComponent({
   padding: 5px;
 
   background-color: #ffffff;
-  border-radius: 15px;
+  border-radius: 10px;
+  box-shadow: 0 3px 9px 1px #6666669c;
 
   button {
     width: 100%;
-    padding: 10px;
+    padding: 5px;
 
     text-align: left;
     white-space: nowrap;
 
-    background-color: #ffffff;
-    border-radius: 10px;
+    border-radius: 5px;
 
     cursor: pointer;
     transition: all 0.2s;
 
     &:hover {
-      background-color: #999999;
+      background-color: rgba(153, 153, 153, 0.3);
 
       transition: all 0.2s;
     }

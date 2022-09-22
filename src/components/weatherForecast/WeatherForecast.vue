@@ -112,6 +112,7 @@ import { Navigation } from "@/enums/navigation";
 import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
 import { WeatherForecastDaily, WeatherForecastWeekDay } from "@/interfaces/weatherForecastDaily";
 import { Color } from "@/types/color";
+import { isLSSaved } from "@/interfaces/weatherForecastSaved";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -535,9 +536,9 @@ export default defineComponent({
             };
           }
         })
-        .catch(error => {
-          console.error(error);
+        .catch(() => {
           this.cityExistError = true;
+          this.removeCityFromSaved(city);
           return null;
         });
     },
@@ -671,8 +672,21 @@ export default defineComponent({
 
     async loadFromSaved(city: string) {
       this.closeSaved();
-      if (city !== this.cityName) {
-        await this.loadByCityName(city);
+
+      if (city === this.cityName) {
+        return;
+      }
+
+      await this.loadByCityName(city);
+    },
+
+    async removeCityFromSaved(city: string) {
+      let lsSaved = await JSON.parse(localStorage.saved || "[]");
+      if (isLSSaved(lsSaved)) {
+        lsSaved = lsSaved.filter((savedCity: string) => savedCity !== city);
+        localStorage.saved = JSON.stringify(lsSaved);
+      } else {
+        localStorage.saved = JSON.stringify([]);
       }
     },
 

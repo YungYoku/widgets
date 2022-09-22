@@ -18,7 +18,7 @@
         class="saved__list-city"
         @click="loadFromSaved(city)"
       >
-        {{ formatCityName(city) }}
+        {{ city }}
       </button>
 
       <h3
@@ -34,6 +34,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
+import { isLSSaved } from "@/interfaces/weatherForecastSaved";
 
 export default defineComponent({
   name: "WeatherForecastSaved",
@@ -60,30 +61,18 @@ export default defineComponent({
 
   methods: {
     async loadLSSaved() {
-      const lsSaved = await JSON.parse(localStorage.saved || "[]");
-      if (this.isLSSaved(lsSaved)) {
-        this.saved = lsSaved.map(savedCity => this.formatCityName(savedCity));
-      } else {
+      try {
+        let lsSaved = await JSON.parse(localStorage.saved || "[]");
+        if (isLSSaved(lsSaved)) {
+          lsSaved = lsSaved.map(savedCity => this.formatCityName(savedCity));
+          localStorage.saved = JSON.stringify(lsSaved);
+          this.saved = lsSaved;
+        } else {
+          this.reset();
+        }
+      } catch (error) {
         this.reset();
       }
-    },
-
-    isLSSaved(lsSaved: unknown): lsSaved is Array<string> {
-      if (!lsSaved) {
-        return false;
-      }
-
-      if (!Array.isArray(lsSaved)) {
-        return false;
-      }
-
-      lsSaved.forEach(item => {
-        if (typeof item !== "string") {
-          return false;
-        }
-      });
-
-      return true;
     },
 
     reset() {
@@ -91,14 +80,16 @@ export default defineComponent({
       localStorage.saved = [];
     },
 
-    loadFromSaved(_city: string) {
-      const city = this.formatCityName(_city);
+    loadFromSaved(city: string) {
       if (city !== this.currentCity) {
         this.$emit("loadFromSaved", city);
       }
     },
 
     formatCityName(city: string) {
+      // Убирает лишние пробелы
+      city = city.replace(/^ +| +$|( ) +/gi, "$1");
+
       // Оставляет буквы и тире
       city = city.replace(/[^a-zа-яё\s-]/gi, "");
 
@@ -113,7 +104,7 @@ export default defineComponent({
     },
 
     isCurrentCity(city: string) {
-      return this.formatCityName(city) === this.currentCity;
+      return city === this.currentCity;
     }
   }
 });

@@ -69,10 +69,12 @@ export default defineComponent({
 
   select {
     max-width: 150px;
-    padding: 10px;
+    padding: 5px 10px;
+
+    font-size: 14px;
 
     border: 1px solid #999999;
-    border-radius: 15px;
+    border-radius: 10px;
   }
 }
 </style>

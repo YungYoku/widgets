@@ -114,8 +114,9 @@ div {
 
       min-width: 10px;
       min-height: 10px;
-      padding: 10px;
+      padding: 5px 10px;
 
+      font-size: 14px;
       text-align: center;
 
       border: 1px solid #999999;

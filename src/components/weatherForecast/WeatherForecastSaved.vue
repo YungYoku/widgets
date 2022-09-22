@@ -39,7 +39,9 @@ import { isLSSaved } from "@/interfaces/weatherForecastSaved";
 export default defineComponent({
   name: "WeatherForecastSaved",
 
-  components: { WeatherForecastCloseButton },
+  components: {
+    WeatherForecastCloseButton
+  },
 
   props: {
     currentCity: {
@@ -75,17 +77,6 @@ export default defineComponent({
       }
     },
 
-    reset() {
-      this.saved = [];
-      localStorage.saved = [];
-    },
-
-    loadFromSaved(city: string) {
-      if (city !== this.currentCity) {
-        this.$emit("loadFromSaved", city);
-      }
-    },
-
     formatCityName(city: string) {
       // Убирает лишние пробелы
       city = city.replace(/^ +| +$|( ) +/gi, "$1");
@@ -101,6 +92,17 @@ export default defineComponent({
       }
 
       return city;
+    },
+
+    reset() {
+      this.saved = [];
+      localStorage.saved = [];
+    },
+
+    loadFromSaved(city: string) {
+      if (city !== this.currentCity) {
+        this.$emit("loadFromSaved", city);
+      }
     },
 
     isCurrentCity(city: string) {

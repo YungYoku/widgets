@@ -37,7 +37,9 @@ import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherFore
 
 export default defineComponent({
   name: "WeatherForecastSaved",
+  
   components: { WeatherForecastCloseButton },
+
   props: {
     currentCity: {
       type: String,

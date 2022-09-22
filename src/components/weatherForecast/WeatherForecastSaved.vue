@@ -84,6 +84,17 @@ export default defineComponent({
       return true;
     },
 
+    reset() {
+      this.saved = [];
+      localStorage.saved = [];
+    },
+
+    loadFromSaved(city: string) {
+      if (city !== this.currentCity) {
+        this.$emit("loadFromSaved", this.getFormattedCityName(city));
+      }
+    },
+
     getFormattedCityName(city: string) {
       // Оставляет буквы и тире
       city = city.replace(/[^a-zа-яё\s-]/gi, "");
@@ -96,17 +107,6 @@ export default defineComponent({
       }
 
       return city;
-    },
-
-    loadFromSaved(city: string) {
-      if (city !== this.currentCity) {
-        this.$emit("loadFromSaved", this.getFormattedCityName(city));
-      }
-    },
-
-    reset() {
-      this.saved = [];
-      localStorage.saved = [];
     }
   }
 });

@@ -7,6 +7,7 @@
     <select
       id="timezone"
       v-model="timezone"
+      :disabled="loading"
       name="timezone"
       title="Регион"
     >
@@ -36,6 +37,14 @@ import _timezones from "@/assets/js/timezones";
 
 export default defineComponent({
   name: "ExactTimeForm",
+
+  props: {
+    loading: {
+      type: Boolean,
+      required: true,
+      default: true
+    }
+  },
 
   data() {
     return {
@@ -74,6 +83,12 @@ export default defineComponent({
     border-radius: 10px;
 
     cursor: pointer;
+
+    &[disabled] {
+      background: #eeeeee;
+
+      cursor: not-allowed;
+    }
   }
 }
 </style>

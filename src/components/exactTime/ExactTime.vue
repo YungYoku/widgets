@@ -21,7 +21,10 @@
       Точное время
     </h2>
 
-    <exact-time-form @loadTimeByTimezone="loadTimeByTimezone" />
+    <exact-time-form
+      :loading="loading"
+      @loadTimeByTimezone="loadTimeByTimezone"
+    />
 
     <widget-error
       v-if="errorExists"

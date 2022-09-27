@@ -55,9 +55,8 @@ export default defineComponent({
         {
           text: "Сохранить",
           action: () => {
-            if (localStorage.saved) {
-              const saved = JSON.parse(localStorage.saved);
-
+            const saved = JSON.parse(localStorage.saved || "[]");
+            if (saved) {
               if (typeof saved === "object") {
                 if (!saved.includes(this.cityName)) {
                   saved.push(this.cityName);

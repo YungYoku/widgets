@@ -113,7 +113,7 @@ export default defineComponent({
 
       this.resetLsSettings();
 
-      const lsSettings = JSON.parse(localStorage.settings);
+      const lsSettings = JSON.parse(localStorage.settings || "[]");
       if (isWeatherForecastLSSettings(lsSettings)) {
         const storageSetting = lsSettings.find(item => item.name === setting.name);
         if (storageSetting) {

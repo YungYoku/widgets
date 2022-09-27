@@ -151,17 +151,18 @@ export default defineComponent({
         code: exchangeRate.to,
         currency: this.currencies.find(currency => currency.code === exchangeRate.to)
       };
-      let result = 1;
 
       if (from.currency && to.currency) {
+        let result = 1;
+
         if (from.code === to.code) {
           result = 1;
         } else if (from.code === "RUB") {
-          result = parseInt((1 / to.currency.value).toFixed(2));
+          result = parseFloat((1 / to.currency.value).toFixed(2));
         } else if (to.code === "RUB") {
           result = from.currency.value;
         } else {
-          result = parseInt((from.currency.value / to.currency.value).toFixed(2));
+          result = parseFloat((from.currency.value / to.currency.value).toFixed(2));
         }
 
         this.exchangedCurrencies = `1 ${from.code} = ${result} ${to.code}`;

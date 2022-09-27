@@ -143,7 +143,7 @@ export default defineComponent({
       this.city = city;
       this.selectShowing = false;
 
-      const inputCity = this.$refs.inputCity as HTMLElement;
+      const inputCity = this.$refs.inputCity as HTMLElement | undefined;
       if (inputCity) {
         inputCity.focus();
       }
@@ -157,7 +157,10 @@ export default defineComponent({
     },
 
     handleClick(event: Event) {
-      const target = event.target as HTMLElement;
+      const target = event.target as HTMLElement | undefined;
+      if (!target) {
+        return;
+      }
 
       const className = target.className.toString();
 

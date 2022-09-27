@@ -45,10 +45,7 @@ export default defineComponent({
 
   computed: {
     timezones() {
-      if (_timezones) {
-        return _timezones;
-      }
-      return [];
+      return _timezones || [];
     }
   },
 

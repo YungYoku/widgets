@@ -144,7 +144,7 @@ export default defineComponent({
     },
 
     setMenuCoords(event: MouseEvent) {
-      const weatherForecast = document.querySelector(this.uniqueClassName) as HTMLElement;
+      const weatherForecast = document.querySelector(this.uniqueClassName) as HTMLElement | undefined;
 
       if (weatherForecast) {
         const weatherForecastWidth = weatherForecast.clientWidth;

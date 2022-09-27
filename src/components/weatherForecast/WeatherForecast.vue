@@ -262,7 +262,7 @@ export default defineComponent({
       return `weather-forecast${this.id}`;
     },
 
-    cityErrorClassName(): string {
+    cityErrorClassName() {
       return this.errorShowing || this.geoAccessRequestShowing ? "cityError" : "";
     },
 
@@ -510,7 +510,7 @@ export default defineComponent({
     },
 
     handleSameNameCity() {
-      const activeElement = document.activeElement as HTMLElement;
+      const activeElement = document.activeElement as HTMLElement | undefined;
       if (activeElement) {
         activeElement.blur();
       }

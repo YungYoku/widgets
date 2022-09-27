@@ -46,7 +46,7 @@ export default defineComponent({
         return;
       }
 
-      const button = this.$refs.addWidget as HTMLElement;
+      const button = this.$refs.addWidget as HTMLElement | undefined;
       if (button) {
         this.contextShowing = true;
 

@@ -86,7 +86,7 @@ export default defineComponent({
   mounted() {
     document.addEventListener("click", this.handleClick);
 
-    const block = document.querySelector(this.uniqueClassName) as HTMLElement;
+    const block = document.querySelector(this.uniqueClassName) as HTMLElement | undefined;
     if (block) {
       block.oncontextmenu = this.handleContext;
     }

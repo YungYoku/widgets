@@ -149,16 +149,18 @@ export default defineComponent({
       if (weatherForecast) {
         const weatherForecastWidth = weatherForecast.clientWidth;
         const weatherForecastHeight = weatherForecast.clientHeight;
+        const contextWidth = 155;
+        const contextHeight = 70;
 
         const clickX = this.x = this.getMouseX(event) - weatherForecast.offsetLeft;
         const clickY = this.y = this.getMouseY(event) - weatherForecast.offsetTop;
 
-        if (clickX + 155 > weatherForecastWidth) {
-          this.x = clickX - 155;
+        if (clickX + contextWidth > weatherForecastWidth) {
+          this.x = clickX - contextWidth;
         }
 
-        if (clickY + 70 > weatherForecastHeight) {
-          this.y = clickY - 70;
+        if (clickY + contextHeight > weatherForecastHeight) {
+          this.y = clickY - contextHeight;
         }
       }
     },

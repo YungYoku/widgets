@@ -166,7 +166,7 @@ export default defineComponent({
       const time = fullTime[1]
         .split(".")[0]
         .split(":")
-        .map(digit => parseInt(digit)) as Array<number>;
+        .map(digit => parseInt(digit));
 
       return {
         date,

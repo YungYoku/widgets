@@ -83,7 +83,7 @@ export default defineComponent({
     themeColor: {
       type: String as PropType<Color>,
       required: false,
-      default: "rgb(255, 255, 255)"
+      default: "rgb(255, 255, 255)" as Color
     }
   }
 });

@@ -143,29 +143,23 @@ export default defineComponent({
 
       this.addRubExchangePair();
 
-      const from = {
-        code: exchangeRate.from,
-        currency: this.currencies.find(currency => currency.code === exchangeRate.from)
-      };
-      const to = {
-        code: exchangeRate.to,
-        currency: this.currencies.find(currency => currency.code === exchangeRate.to)
-      };
+      const currencyFrom = this.currencies.find(currency => currency.code === exchangeRate.from);
+      const currencyTo = this.currencies.find(currency => currency.code === exchangeRate.to);
 
-      if (from.currency && to.currency) {
+      if (currencyFrom && currencyTo) {
         let result = 1;
 
-        if (from.code === to.code) {
+        if (currencyFrom.code === currencyTo.code) {
           result = 1;
-        } else if (from.code === "RUB") {
-          result = parseFloat((1 / to.currency.value).toFixed(2));
-        } else if (to.code === "RUB") {
-          result = from.currency.value;
+        } else if (currencyFrom.code === "RUB") {
+          result = parseFloat((1 / currencyTo.value).toFixed(3));
+        } else if (currencyTo.code === "RUB") {
+          result = currencyFrom.value;
         } else {
-          result = parseFloat((from.currency.value / to.currency.value).toFixed(2));
+          result = parseFloat((currencyFrom.value / currencyTo.value).toFixed(3));
         }
 
-        this.exchangedCurrencies = `1 ${from.code} = ${result} ${to.code}`;
+        this.exchangedCurrencies = `1 ${currencyFrom.code} = ${result} ${currencyTo.code}`;
       }
     },
 

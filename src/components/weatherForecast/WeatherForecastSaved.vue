@@ -64,17 +64,23 @@ export default defineComponent({
   methods: {
     async loadLSSaved() {
       try {
-        let lsSaved = await JSON.parse(localStorage.saved || "[]");
+        const lsSaved = await JSON.parse(localStorage.saved || "[]");
         if (isLSSaved(lsSaved)) {
-          lsSaved = lsSaved.map(savedCity => this.formatCityName(savedCity));
-          localStorage.saved = JSON.stringify(lsSaved);
-          this.saved = lsSaved;
+          let saved = lsSaved;
+          saved = saved.map(savedCity => this.formatCityName(savedCity));
+          saved = this.removeDuplicates(saved);
+          localStorage.saved = JSON.stringify(saved);
+          this.saved = saved;
         } else {
           this.reset();
         }
       } catch (error) {
         this.reset();
       }
+    },
+
+    removeDuplicates(lsSaved: Array<string>) {
+      return [...new Set(lsSaved)];
     },
 
     formatCityName(city: string) {

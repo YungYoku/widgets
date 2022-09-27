@@ -87,7 +87,7 @@ export default defineComponent({
     },
 
     updateSettingsFromLs() {
-      const lsSettings = JSON.parse(localStorage.settings);
+      const lsSettings = JSON.parse(localStorage.settings || "[]");
       const length = this.settings.length;
 
       for (let i = 0; i < length; i++) {

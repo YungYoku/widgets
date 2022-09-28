@@ -122,20 +122,6 @@ export default defineComponent({
       this.loading = false;
     },
 
-    collapseWidget() {
-      this.isCollapsed = !this.isCollapsed;
-    },
-
-    addRubExchangePair() {
-      this.currencies.push({
-        code: "RUB",
-        name: "Рубль РФ",
-        nominal: 1,
-        numCode: "0",
-        value: 1
-      });
-    },
-
     async updateExchangeRate(exchangeRate: ExchangeRate) {
       if (!this.currencies.length) {
         await this.loadExchangeRate();
@@ -163,8 +149,30 @@ export default defineComponent({
       }
     },
 
-    stringToXML(xmlString: string) {
-      return (new DOMParser()).parseFromString(xmlString, "text/xml");
+    async loadExchangeRate() {
+      this.showLoading();
+
+      await axios
+        .get(`${this.baseURL}scripts/XML_daily.asp`)
+        .then((response: AxiosResponse<string>) => {
+          this.resetError();
+
+          const json = this.xmlToJson(response.data);
+
+          this.currencies = this.formatCurrencies(json);
+        })
+        .catch(this.handleRequestErrors)
+        .finally(this.hideLoading);
+    },
+
+    addRubExchangePair() {
+      this.currencies.push({
+        code: "RUB",
+        name: "Рубль РФ",
+        nominal: 1,
+        numCode: "0",
+        value: 1
+      });
     },
 
     xmlToJson(xmlString: string) {
@@ -186,6 +194,10 @@ export default defineComponent({
       });
 
       return currencies as Array<UnformattedCurrency>;
+    },
+
+    stringToXML(xmlString: string) {
+      return (new DOMParser()).parseFromString(xmlString, "text/xml");
     },
 
     formatCurrencies(currencies: Array<UnformattedCurrency>) {
@@ -225,20 +237,8 @@ export default defineComponent({
       }
     },
 
-    async loadExchangeRate() {
-      this.showLoading();
-
-      await axios
-        .get(`${this.baseURL}scripts/XML_daily.asp`)
-        .then((response: AxiosResponse<string>) => {
-          this.resetError();
-
-          const json = this.xmlToJson(response.data);
-
-          this.currencies = this.formatCurrencies(json);
-        })
-        .catch(this.handleRequestErrors)
-        .finally(this.hideLoading);
+    collapseWidget() {
+      this.isCollapsed = !this.isCollapsed;
     },
 
     closeWidget() {

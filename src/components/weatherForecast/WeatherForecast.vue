@@ -347,7 +347,7 @@ export default defineComponent({
 
     switchTheme(isThemePurple: boolean) {
       const lightThemeColor = "rgb(255, 255, 255)";
-      const purpleThemeColor = "rgb(173, 170, 255)";
+      const purpleThemeColor = "rgb(214, 214, 255)";
 
       if (isThemePurple) {
         this.themeColor = purpleThemeColor;
@@ -395,6 +395,31 @@ export default defineComponent({
       this.setDailyWeather(weather.daily);
     },
 
+    setCurrentWeather(current: WeatherForecastResponseCurrent) {
+      const icon = current.weather[0].icon;
+      const temperature = Math.round(current.temp);
+      const feelsLike = Math.round(current.feels_like);
+      const description = current.weather[0].description;
+      const windSpeed = Math.round(current.wind_speed);
+      const pressure = Math.round(current.pressure);
+
+      this.current = {
+        icon: this.getWeatherIconName(icon),
+        temperature: `${temperature}°С`,
+        feelsLike: `ощущается как ${feelsLike}°С`,
+        description: description[0].toUpperCase() + description.slice(1),
+        conditions: `
+          Ветер: ${windSpeed} м/с,
+          Давление: ${pressure} мм рт. ст.
+        `
+      };
+    },
+
+    setDailyWeather(daily: Array<WeatherForecastResponseDaily>) {
+      this.daily.week = daily.map(this.getFormattedDay);
+      this.updateAverageTemperature();
+    },
+
     detectGeoPermission() {
       if (navigator.permissions) {
         navigator.permissions.query({
@@ -417,9 +442,9 @@ export default defineComponent({
       }
     },
 
-    async loadByCoords() {
+    loadByCoords() {
       if (navigator.geolocation) {
-        await navigator.geolocation.getCurrentPosition(
+        navigator.geolocation.getCurrentPosition(
           position => {
             this.showLoading();
 
@@ -541,25 +566,6 @@ export default defineComponent({
           this.removeCityFromSaved(city);
           return null;
         });
-    },
-
-    setCurrentWeather(current: WeatherForecastResponseCurrent) {
-      const description = current.weather[0].description;
-      this.current = {
-        icon: this.getWeatherIconName(current.weather[0].icon),
-        temperature: `${Math.round(current.temp)}°С`,
-        feelsLike: `ощущается как ${Math.round(current.feels_like)}°С`,
-        description: description[0].toUpperCase() + description.slice(1),
-        conditions: `
-          Ветер: ${Math.round(current.wind_speed)} м/с,
-          Давление: ${Math.round(current.pressure)} мм рт. ст.
-        `
-      };
-    },
-
-    setDailyWeather(daily: Array<WeatherForecastResponseDaily>) {
-      this.daily.week = daily.map(this.getFormattedDay);
-      this.updateAverageTemperature();
     },
 
     getFormattedDay(day: WeatherForecastResponseDaily, index: number): WeatherForecastWeekDay {

@@ -127,16 +127,16 @@ export default defineComponent({
       return `exact-time${this.id}`;
     },
 
+    navigationRules() {
+      return [Navigation.Close, Navigation.Collapse];
+    },
+
     time() {
       const hours = this.hours < 10 ? "0" + this.hours : this.hours;
       const minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;
       const seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
 
       return `${hours}:${minutes}:${seconds}`;
-    },
-
-    navigationRules() {
-      return [Navigation.Close, Navigation.Collapse];
     }
   },
 
@@ -149,16 +149,42 @@ export default defineComponent({
   },
 
   methods: {
+    async loadTimeByIp() {
+      await this.request("ip");
+    },
+
+    async loadTimeByTimezone(timezone: string) {
+      await this.request("timezone/" + timezone);
+    },
+
+    async request(path: string) {
+      this.showLoading();
+
+      await axios
+        .get(`${this.baseURL}${path}`)
+        .then((response: AxiosResponse<TimeResponse>) => {
+          this.resetError();
+
+          const datetime = response.data.datetime;
+          const time = this.getFormattedTime(datetime);
+
+          this.setTime(time);
+        })
+        .catch(this.handleRequestErrors)
+        .finally(this.hideLoading);
+    },
+
+    resetError() {
+      this.errorExists = false;
+      this.errorText = "";
+    },
+
     showLoading() {
       this.loading = true;
     },
 
     hideLoading() {
       this.loading = false;
-    },
-
-    collapseWidget() {
-      this.isCollapsed = !this.isCollapsed;
     },
 
     getFormattedTime(unformattedTime: string) {
@@ -196,11 +222,6 @@ export default defineComponent({
       this.interval = setInterval(this.increaseSeconds, 1000);
     },
 
-    resetError() {
-      this.errorExists = false;
-      this.errorText = "";
-    },
-
     handleRequestErrors(error: TimeError) {
       this.errorExists = true;
 
@@ -216,36 +237,13 @@ export default defineComponent({
       }
     },
 
-    async request(path: string) {
-      this.showLoading();
-
-      await axios
-        .get(`${this.baseURL}${path}`)
-        .then((response: AxiosResponse<TimeResponse>) => {
-          this.resetError();
-
-          const datetime = response.data.datetime;
-          const time = this.getFormattedTime(datetime);
-
-          this.setTime(time);
-        })
-        .catch(this.handleRequestErrors)
-        .finally(this.hideLoading);
-    },
-
-    async loadTimeByIp() {
-      await this.request("ip");
-    },
-
-    async loadTimeByTimezone(timezone: string) {
-      await this.request("timezone/" + timezone);
-    },
-
-    increaseHours() {
-      if (this.hours < 23) {
-        this.hours++;
+    increaseSeconds() {
+      if (this.seconds < 59) {
+        this.seconds++;
       } else {
-        this.hours = 0;
+        this.seconds = 0;
+
+        this.increaseMinutes();
       }
     },
 
@@ -259,14 +257,16 @@ export default defineComponent({
       }
     },
 
-    increaseSeconds() {
-      if (this.seconds < 59) {
-        this.seconds++;
+    increaseHours() {
+      if (this.hours < 23) {
+        this.hours++;
       } else {
-        this.seconds = 0;
-
-        this.increaseMinutes();
+        this.hours = 0;
       }
+    },
+
+    collapseWidget() {
+      this.isCollapsed = !this.isCollapsed;
     },
 
     closeWidget() {

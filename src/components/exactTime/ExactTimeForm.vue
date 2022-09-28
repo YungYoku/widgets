@@ -84,6 +84,10 @@ export default defineComponent({
 
     cursor: pointer;
 
+    &:focus {
+      border: 1px solid #fb8e00;
+    }
+
     &[disabled] {
       background: #eeeeee;
 

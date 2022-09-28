@@ -224,9 +224,10 @@ export default defineComponent({
         .then((response: AxiosResponse<TimeResponse>) => {
           this.resetError();
 
-          const time = response.data.datetime;
+          const datetime = response.data.datetime;
+          const time = this.getFormattedTime(datetime);
 
-          this.setTime(this.getFormattedTime(time));
+          this.setTime(time);
         })
         .catch(this.handleRequestErrors)
         .finally(this.hideLoading);

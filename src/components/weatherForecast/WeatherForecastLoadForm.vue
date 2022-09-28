@@ -103,7 +103,7 @@ export default defineComponent({
     optionCities() {
       const firstLetter = this.city[0].toLowerCase();
 
-      let _cities = this.cities[firstLetter] as Array<string> || [];
+      let _cities = this.cities[firstLetter] || [];
       _cities = _cities.filter(city => city.startsWith(this.city));
       _cities = _cities.filter(city => city !== this.city);
 
@@ -139,23 +139,6 @@ export default defineComponent({
   },
 
   methods: {
-    setCity(city: string) {
-      this.city = city;
-      this.selectShowing = false;
-
-      const inputCity = this.$refs.inputCity as HTMLElement | undefined;
-      if (inputCity) {
-        inputCity.focus();
-      }
-    },
-
-    load() {
-      if (this.city && !this.loading) {
-        this.$emit("formSubmit", this.city);
-        this.city = "";
-      }
-    },
-
     handleClick(event: Event) {
       const target = event.target as HTMLElement | undefined;
       if (!target) {
@@ -175,6 +158,23 @@ export default defineComponent({
         }
       } else {
         this.selectShowing = false;
+      }
+    },
+
+    load() {
+      if (this.city && !this.loading) {
+        this.$emit("formSubmit", this.city);
+        this.city = "";
+      }
+    },
+
+    setCity(city: string) {
+      this.city = city;
+      this.selectShowing = false;
+
+      const inputCity = this.$refs.inputCity as HTMLElement | undefined;
+      if (inputCity) {
+        inputCity.focus();
       }
     }
   }

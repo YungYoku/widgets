@@ -100,6 +100,28 @@ export default defineComponent({
       this.showing = false;
     },
 
+    setMenuCoords(event: MouseEvent) {
+      const weatherForecast = document.querySelector(this.uniqueClassName) as HTMLElement | undefined;
+
+      if (weatherForecast) {
+        const weatherForecastWidth = weatherForecast.clientWidth;
+        const weatherForecastHeight = weatherForecast.clientHeight;
+        const contextWidth = 155;
+        const contextHeight = 70;
+
+        const clickX = this.x = this.getMouseX(event) - weatherForecast.offsetLeft;
+        const clickY = this.y = this.getMouseY(event) - weatherForecast.offsetTop;
+
+        if (clickX + contextWidth > weatherForecastWidth) {
+          this.x = clickX - contextWidth;
+        }
+
+        if (clickY + contextHeight > weatherForecastHeight) {
+          this.y = clickY - contextHeight;
+        }
+      }
+    },
+
     getMouseX(event: MouseEvent) {
       const pageX = event.pageX;
       if (pageX) {
@@ -142,43 +164,6 @@ export default defineComponent({
       return 0;
     },
 
-    setMenuCoords(event: MouseEvent) {
-      const weatherForecast = document.querySelector(this.uniqueClassName) as HTMLElement | undefined;
-
-      if (weatherForecast) {
-        const weatherForecastWidth = weatherForecast.clientWidth;
-        const weatherForecastHeight = weatherForecast.clientHeight;
-        const contextWidth = 155;
-        const contextHeight = 70;
-
-        const clickX = this.x = this.getMouseX(event) - weatherForecast.offsetLeft;
-        const clickY = this.y = this.getMouseY(event) - weatherForecast.offsetTop;
-
-        if (clickX + contextWidth > weatherForecastWidth) {
-          this.x = clickX - contextWidth;
-        }
-
-        if (clickY + contextHeight > weatherForecastHeight) {
-          this.y = clickY - contextHeight;
-        }
-      }
-    },
-
-    isItMobileDevice() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    },
-
-    isContextNotNeeded(domEl: HTMLElement) {
-      return (
-        domEl.nodeName.toLowerCase() === "body" ||
-        domEl.classList.contains("without-context")
-      );
-    },
-
-    isContextNeeded(domEl: HTMLElement) {
-      return domEl.classList.contains("with-context");
-    },
-
     handleContext(event: MouseEvent) {
       this.showing = false;
 
@@ -208,6 +193,21 @@ export default defineComponent({
       }
 
       return false;
+    },
+
+    isItMobileDevice() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    },
+
+    isContextNotNeeded(domEl: HTMLElement) {
+      return (
+        domEl.nodeName.toLowerCase() === "body" ||
+        domEl.classList.contains("without-context")
+      );
+    },
+
+    isContextNeeded(domEl: HTMLElement) {
+      return domEl.classList.contains("with-context");
     }
   }
 });

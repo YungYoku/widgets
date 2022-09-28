@@ -166,7 +166,7 @@ export default defineComponent({
           this.resetError();
 
           const datetime = response.data.datetime;
-          const time = this.getFormattedTime(datetime);
+          const time = this.formatTime(datetime);
 
           this.setTime(time);
         })
@@ -187,7 +187,7 @@ export default defineComponent({
       this.loading = false;
     },
 
-    getFormattedTime(unformattedTime: string) {
+    formatTime(unformattedTime: string) {
       const fullTime = unformattedTime.split("T");
 
       const date = fullTime[0];

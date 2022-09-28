@@ -2,7 +2,7 @@
   <div class="chart without-context">
     <vue-apex-charts
       :options="chartOptions"
-      :series="[graphTop, graphBottom]"
+      :series="graph"
       height="80"
       type="area"
     />
@@ -232,6 +232,10 @@ export default defineComponent({
   },
 
   computed: {
+    graph() {
+      return [this.graphTop, this.graphBottom];
+    },
+
     graphTop() {
       const data = [] as Array<GraphItem>;
       let min = 200;

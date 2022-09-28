@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
@@ -34,9 +34,9 @@ export default defineComponent({
 
   props: {
     coords: {
-      type: Array,
+      type: Array as PropType<Array<number>>,
       required: true,
-      default: () => [0, 0]
+      default: (): Array<number> => [0, 0]
     }
   },
 

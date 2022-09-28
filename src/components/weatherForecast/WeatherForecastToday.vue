@@ -5,7 +5,7 @@
       :color="themeColor"
     />
 
-    <div v-else>
+    <template v-else>
       <div class="temperature">
         <h3 class="temperature__city-name">
           {{ cityName }}
@@ -34,7 +34,7 @@
           {{ weather.conditions }}
         </h4>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 

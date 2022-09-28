@@ -25,16 +25,17 @@ export default defineComponent({
 
   computed: {
     backgroundImage() {
-      const style = this.color.replace(`rgb`, "");
-      const difference = 30;
+      const firstColor = this.color;
 
+      const style = this.color.replace("rgb", "");
+      const difference = 30;
       const digits = style
         .split(/\D/)
-        .filter(dig => dig !== "")
-        .map(dig => parseInt(dig));
+        .filter(digit => digit !== "")
+        .map(digit => parseInt(digit))
+        .map(digit => digit - difference);
 
-      const firstColor = `rgb(${digits[0]}, ${digits[1]}, ${digits[2]})`;
-      const secondColor = `rgb(${digits[0] - difference}, ${digits[1] - difference}, ${digits[2] - difference})`;
+      const secondColor = `rgb(${digits[0]}, ${digits[1]}, ${digits[2]})`;
 
       return `linear-gradient(90deg, ${firstColor}, ${secondColor}, ${firstColor}, ${secondColor})`;
     }

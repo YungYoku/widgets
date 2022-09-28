@@ -123,6 +123,13 @@ div {
       border-radius: 10px;
 
       cursor: pointer;
+      transition: all 0.1s;
+
+      &:focus {
+        border: 1px solid #fb8e00;
+
+        transition: all 0.1s;
+      }
     }
   }
 }

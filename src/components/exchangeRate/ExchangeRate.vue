@@ -138,11 +138,13 @@ export default defineComponent({
         if (currencyFrom.code === currencyTo.code) {
           result = 1;
         } else if (currencyFrom.code === "RUB") {
-          result = parseFloat((1 / currencyTo.value).toFixed(3));
+          const value = 1 / currencyTo.value;
+          result = parseFloat(value.toFixed(3)) || 0;
         } else if (currencyTo.code === "RUB") {
           result = currencyFrom.value;
         } else {
-          result = parseFloat((currencyFrom.value / currencyTo.value).toFixed(3));
+          const value = currencyFrom.value / currencyTo.value;
+          result = parseFloat(value.toFixed(3)) || 0;
         }
 
         this.exchangedCurrencies = `1 ${currencyFrom.code} = ${result} ${currencyTo.code}`;

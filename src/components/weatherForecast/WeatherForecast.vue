@@ -552,14 +552,14 @@ export default defineComponent({
           })
         .then(response => {
           const coords = response.data[0];
-          if (!coords || !coords.lat || !coords.lon) {
-            throw new Error(`There is no city with ${city} name`);
-          } else {
+          if (coords && coords.lat && coords.lon) {
             return {
               lat: coords.lat,
               lon: coords.lon
             };
           }
+
+          throw new Error(`There is no city with ${city} name`);
         })
         .catch(() => {
           this.cityExistError = true;

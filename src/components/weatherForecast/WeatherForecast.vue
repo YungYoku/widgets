@@ -723,9 +723,9 @@ export default defineComponent({
 
   grid-template: repeat(3, auto) / 2fr 3fr;
   grid-template-areas:
-      'nav week'
-      'today week'
-      'form form';
+    'nav week'
+    'today week'
+    'form form';
 
   width: 100%;
   max-width: 1150px;

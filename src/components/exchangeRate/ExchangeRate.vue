@@ -208,7 +208,7 @@ export default defineComponent({
       return currencies.map(currency => {
         const code = currency.CharCode;
         const nominal = parseInt(currency.Nominal);
-        const value = parseInt(currency.Value);
+        const value = parseFloat(currency.Value);
 
         this.currenciesList.push(code);
 

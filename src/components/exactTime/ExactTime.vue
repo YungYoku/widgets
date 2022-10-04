@@ -187,8 +187,8 @@ export default defineComponent({
       this.loading = false;
     },
 
-    formatTime(unformattedTime: string) {
-      const fullTime = unformattedTime.split("T");
+    formatTime(unformatedTime: string) {
+      const fullTime = unformatedTime.split("T");
 
       const date = fullTime[0];
 

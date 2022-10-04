@@ -78,9 +78,14 @@ export default defineComponent({
       );
     },
 
-    handleClick(event: Event) {
+    handleClick(event: MouseEvent) {
       const target = event.target as HTMLElement | undefined;
-      if (target && target.className && this.isContextNotClicked(target.className)) {
+      if (!target) {
+        return;
+      }
+      
+      const className = target.className;
+      if (className && this.isContextNotClicked(className)) {
         this.$emit("hide");
       }
     }

@@ -330,7 +330,7 @@ export default defineComponent({
 
     loadLSThemeSetting(lsSettings: WeatherForecastLSSettings) {
       const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
-      if (themeSetting) {
+      if (themeSetting?.enabled) {
         this.switchTheme(themeSetting.enabled);
       }
     },

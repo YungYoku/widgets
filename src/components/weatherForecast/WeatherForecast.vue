@@ -337,11 +337,11 @@ export default defineComponent({
 
     loadLSGeoSetting(lsSettings: WeatherForecastLSSettings) {
       const geoSetting = lsSettings.find(setting => setting.name === SettingNames.Geo);
-      if (!geoSetting?.enabled) {
+      if (geoSetting?.enabled) {
+        this.detectGeoPermission();
+      } else {
         this.geoAccessRequestShowing = false;
         this.geoAccessError = true;
-      } else {
-        this.detectGeoPermission();
       }
     },
 

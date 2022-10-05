@@ -340,8 +340,7 @@ export default defineComponent({
       if (geoSetting?.enabled) {
         this.detectGeoPermission();
       } else {
-        this.geoAccessRequestShowing = false;
-        this.geoAccessError = true;
+        this.blockGeoAccess();
       }
     },
 
@@ -373,9 +372,9 @@ export default defineComponent({
           }
         )
         .then((response: AxiosResponse<WeatherForecastResponse>) => {
-          this.searchesAmount++;
+          this.increaseSearches();
 
-          this.setLatLon(lat, lon);
+          this.setCoordinates(lat, lon);
 
           this.setWeather(response.data);
 
@@ -385,7 +384,11 @@ export default defineComponent({
         .catch(this.handleRequestErrors);
     },
 
-    setLatLon(lat: number, lon: number) {
+    increaseSearches() {
+      this.searchesAmount++;
+    },
+
+    setCoordinates(lat: number, lon: number) {
       this.lat = lat;
       this.lon = lon;
     },
@@ -434,8 +437,7 @@ export default defineComponent({
           this.loadByCoords();
           break;
         case "denied":
-          this.geoAccessRequestShowing = false;
-          this.geoAccessError = true;
+          this.blockGeoAccess();
           break;
         case "prompt":
           break;
@@ -459,8 +461,7 @@ export default defineComponent({
             ]).then(this.hideLoading);
           },
           () => {
-            this.geoAccessRequestShowing = false;
-            this.geoAccessError = true;
+            this.blockGeoAccess();
           },
           {
             enableHighAccuracy: true

@@ -145,7 +145,9 @@ export default defineComponent({
   },
 
   destroyed() {
-    clearInterval(this.interval);
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   },
 
   methods: {
@@ -212,14 +214,14 @@ export default defineComponent({
         this.minutes = time.minutes;
         this.seconds = time.seconds;
 
-        if (!this.interval) {
-          this.startClocks();
-        }
+        this.startClocks();
       }
     },
 
     startClocks() {
-      this.interval = setInterval(this.increaseSeconds, 1000);
+      if (!this.interval) {
+        this.interval = setInterval(this.increaseSeconds, 1000);
+      }
     },
 
     handleRequestErrors(error: TimeError) {

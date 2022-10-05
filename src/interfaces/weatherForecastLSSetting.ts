@@ -1,7 +1,7 @@
 import { SettingNames } from "@/enums/settingNames";
 
 interface WeatherForecastLSSetting {
-  turnedOn: boolean;
+  enabled: boolean;
 }
 
 export interface WeatherForecastLSGeoSetting
@@ -33,7 +33,7 @@ export const isWeatherForecastLSSettings = (lsSettings: unknown): lsSettings is 
   for (let i = 0; i < lsSettingsAmount; i++) {
     if (
       typeof lsSettings[i].name !== "string" ||
-      typeof lsSettings[i].turnedOn !== "boolean"
+      typeof lsSettings[i].enabled !== "boolean"
     ) {
       return false;
     }

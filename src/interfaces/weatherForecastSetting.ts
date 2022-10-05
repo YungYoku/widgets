@@ -3,7 +3,7 @@ import { SettingNames } from "@/enums/settingNames";
 
 interface WeatherForecastSettingBase {
   title: string;
-  turnedOn: boolean;
+  enabled: boolean;
   actionType: string;
 }
 

@@ -17,7 +17,7 @@
         {{ setting.title }}
         <button
           :class="{
-            'turned-on': setting.turnedOn
+            'enabled': setting.enabled
           }"
           class="settings__list-item-button"
           @click="swapSetting(setting)"
@@ -53,14 +53,14 @@ export default defineComponent({
         {
           name: SettingNames.Geo,
           title: "Использовать местоположение",
-          turnedOn: true,
+          enabled: true,
           actionType: "giveGeoAccess"
         },
 
         {
           name: SettingNames.Theme,
           title: "Фиолетовая тема",
-          turnedOn: false,
+          enabled: false,
           actionType: "switchTheme"
         }
       ] as WeatherForecastSettings
@@ -92,7 +92,7 @@ export default defineComponent({
 
       for (let i = 0; i < length; i++) {
         if (this.settings[i].name === lsSettings[i].name) {
-          this.settings[i].turnedOn = lsSettings[i].turnedOn;
+          this.settings[i].enabled = lsSettings[i].enabled;
         }
       }
     },
@@ -101,7 +101,7 @@ export default defineComponent({
       const settings = this.settings.map(setting => {
         return {
           name: setting.name,
-          turnedOn: setting.turnedOn
+          enabled: setting.enabled
         };
       });
 
@@ -109,7 +109,7 @@ export default defineComponent({
     },
 
     swapSetting(setting: WeatherForecastSetting) {
-      const turnedOn = !setting.turnedOn;
+      const enabled = !setting.enabled;
 
       this.resetLsSettings();
 
@@ -117,12 +117,12 @@ export default defineComponent({
       if (isWeatherForecastLSSettings(lsSettings)) {
         const storageSetting = lsSettings.find(item => item.name === setting.name);
         if (storageSetting) {
-          setting.turnedOn = turnedOn;
+          setting.enabled = enabled;
 
-          storageSetting.turnedOn = turnedOn;
+          storageSetting.enabled = enabled;
           localStorage.settings = JSON.stringify(lsSettings);
 
-          this.$emit(setting.actionType, turnedOn);
+          this.$emit(setting.actionType, enabled);
         }
       }
     }
@@ -219,7 +219,7 @@ export default defineComponent({
           box-shadow: 0 1px 20px 1px #999999;
         }
 
-        &.turned-on {
+        &.enabled {
           padding: 2px 2px 2px 18px;
 
           background-color: #4bff46;

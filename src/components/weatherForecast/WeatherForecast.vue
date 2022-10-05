@@ -331,13 +331,13 @@ export default defineComponent({
     loadLSThemeSetting(lsSettings: WeatherForecastLSSettings) {
       const themeSetting = lsSettings.find(setting => setting.name === SettingNames.Theme);
       if (themeSetting) {
-        this.switchTheme(themeSetting.turnedOn);
+        this.switchTheme(themeSetting.enabled);
       }
     },
 
     loadLSGeoSetting(lsSettings: WeatherForecastLSSettings) {
       const geoSetting = lsSettings.find(setting => setting.name === SettingNames.Geo);
-      if (!geoSetting?.turnedOn) {
+      if (!geoSetting?.enabled) {
         this.geoAccessRequestShowing = false;
         this.geoAccessError = true;
       } else {

@@ -190,21 +190,28 @@ export default defineComponent({
     },
 
     formatTime(unformatedTime: string) {
-      const fullTime = unformatedTime.split("T");
+      try {
+        const time = new Date(unformatedTime);
 
-      const date = fullTime[0];
+        const date = `${time.getDate()}-${time.getMonth() + 1}-${time.getFullYear()}`;
+        const hours = time.getHours();
+        const minutes = time.getMinutes();
+        const seconds = time.getSeconds();
 
-      const time = fullTime[1]
-        .split(".")[0]
-        .split(":")
-        .map(digit => parseInt(digit));
-
-      return {
-        date,
-        hours: time[0],
-        minutes: time[1],
-        seconds: time[2]
-      } as Time;
+        return {
+          date,
+          hours,
+          minutes,
+          seconds
+        } as Time;
+      } catch (error) {
+        return {
+          date: "0-0-0000",
+          hours: 0,
+          minutes: 0,
+          seconds: 0
+        } as Time;
+      }
     },
 
     setTime(time: Time) {

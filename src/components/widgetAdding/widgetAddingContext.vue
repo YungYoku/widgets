@@ -83,7 +83,7 @@ export default defineComponent({
       if (!target) {
         return;
       }
-      
+
       const className = target.className;
       if (className && this.isContextNotClicked(className)) {
         this.$emit("hide");
@@ -109,7 +109,7 @@ export default defineComponent({
 
   background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 3px 9px 1px #6666669c;
+  box-shadow: 0 3px 9px 1px rgba(102, 102, 102, 0.425);
 
   button {
     width: 100%;

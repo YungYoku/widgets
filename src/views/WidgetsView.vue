@@ -77,7 +77,19 @@ export default defineComponent({
     onDrop(event: DragEvent) {
       const dataTransfer = event.dataTransfer as DataTransfer;
       const itemID = parseInt(dataTransfer.getData("itemID"));
-      let target = event.target as HTMLElement | undefined;
+      const target = event.target as HTMLElement | undefined;
+      const toWidget: WidgetItem | null = this.getDropToWidget(target);
+
+      const fromWidget = this.widgets.find(item => item.id === itemID);
+
+      if (toWidget && fromWidget) {
+        const tempOrder = fromWidget.order;
+        fromWidget.order = toWidget.order;
+        toWidget.order = tempOrder;
+      }
+    },
+
+    getDropToWidget(target: HTMLElement | undefined) {
       let toWidget: WidgetItem | null = null;
       let toWidgetId: number;
       let toWidgetType: string;
@@ -107,13 +119,7 @@ export default defineComponent({
         }
       }
 
-      const fromWidget = this.widgets.find(item => item.id === itemID);
-
-      if (toWidget && fromWidget) {
-        const tempOrder = fromWidget.order;
-        fromWidget.order = toWidget.order;
-        toWidget.order = tempOrder;
-      }
+      return toWidget || null;
     },
 
     closeWidget(id: number) {

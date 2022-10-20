@@ -305,6 +305,8 @@ export default defineComponent({
 
     grid-gap: 10px;
 
+    padding-top: 10px;
+
     .text {
       text-align: center;
     }

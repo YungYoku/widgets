@@ -83,7 +83,6 @@ export default defineComponent({
 
   width: 100%;
   height: 100px;
-  margin-top: 10px;
   overflow: hidden;
 
   &__circle {

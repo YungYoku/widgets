@@ -180,8 +180,8 @@ export default defineComponent({
     padding: 5px;
   }
 
-  @media (max-width: 600px) {
-    padding: 0;
+  @media (max-width: 320px) {
+    justify-content: center;
   }
 
   &__title {
@@ -190,8 +190,13 @@ export default defineComponent({
 
     font-size: 60px;
     font-weight: 700;
+    text-align: center;
     color: #ffffff;
     overflow-wrap: break-word;
+
+    @media (max-width: 768px) {
+      font-size: 48px;
+    }
   }
 }
 </style>

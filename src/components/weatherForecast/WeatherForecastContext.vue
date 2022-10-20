@@ -225,7 +225,7 @@ export default defineComponent({
 
   padding: 5px;
 
-  background-color: var(--main-background-color);
+  background-color: var(--widget-background-color);
   border-radius: 10px;
   box-shadow: 0 3px 9px 1px rgba(102, 102, 102, 0.425);
 

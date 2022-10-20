@@ -262,7 +262,7 @@ export default defineComponent({
     padding: 10px;
     overflow: auto;
 
-    background-color: var(--main-background-color);
+    background-color: var(--widget-background-color);
     border: none;
     border-radius: 10px;
     outline: none;

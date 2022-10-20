@@ -134,7 +134,7 @@ export default defineComponent({
   height: 100%;
   padding: 30px 20px 20px 20px;
 
-  background-color: var(--main-background-color);
+  background-color: var(--widget-background-color);
 
   @supports (backdrop-filter: blur(20px)) {
     background-color: transparent;

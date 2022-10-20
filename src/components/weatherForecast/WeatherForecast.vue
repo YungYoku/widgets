@@ -354,7 +354,7 @@ export default defineComponent({
         this.themeColor = lightThemeColor;
       }
 
-      document.documentElement.style.setProperty("--main-background-color", this.themeColor);
+      document.documentElement.style.setProperty("--widget-background-color", this.themeColor);
     },
 
     async loadWeatherForecast(lat: number, lon: number) {
@@ -732,7 +732,7 @@ export default defineComponent({
   max-width: 1150px;
   height: 100%;
 
-  background-color: var(--main-background-color);
+  background-color: var(--widget-background-color);
 
   @media (max-width: 1000px) {
     grid-template: repeat(4, auto) / 1fr;

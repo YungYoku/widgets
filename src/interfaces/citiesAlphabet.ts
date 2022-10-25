@@ -1,3 +1,9 @@
+export const russianAlphabet = ["а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "э", "ю", "я"] as const;
+
+export const isLetterOfRussianAlphabet = (letter: string): letter is typeof russianAlphabet[number] => {
+  return !!russianAlphabet.find(item => item === letter);
+};
+
 export interface CitiesAlphabet {
   "а": Array<string>;
   "б": Array<string>;

@@ -384,5 +384,5 @@ export default [
   "Pacific/Tongatapu",
   "Pacific/Wake",
   "Pacific/Wallis",
-  "WET",
-];
+  "WET"
+] as const;

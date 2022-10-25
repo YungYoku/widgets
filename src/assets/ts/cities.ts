@@ -1,3 +1,5 @@
+import { CitiesAlphabet } from "@/interfaces/citiesAlphabet";
+
 export default {
   а: [
     "А-ен-Провенс",
@@ -10144,4 +10146,4 @@ export default {
     "Яшкуль",
     "Яя"
   ]
-};
+} as CitiesAlphabet;

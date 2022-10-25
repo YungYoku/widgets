@@ -57,8 +57,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import cities from "@/assets/js/cities";
-import { CitiesAlphabet } from "@/interfaces/citiesAlphabet";
+import cities from "@/assets/ts/cities";
+import { isLetterOfRussianAlphabet } from "@/interfaces/citiesAlphabet";
 
 export default defineComponent({
   name: "WeatherForecastLoadForm",
@@ -87,7 +87,7 @@ export default defineComponent({
     return {
       city: "",
       selectShowing: false,
-      cities: cities as CitiesAlphabet
+      cities: cities
     };
   },
 
@@ -102,12 +102,14 @@ export default defineComponent({
 
     optionCities() {
       const firstLetter = this.city[0].toLowerCase();
+      if (isLetterOfRussianAlphabet(firstLetter)) {
+        let _cities = this.cities[firstLetter];
+        _cities = _cities.filter(city => city.startsWith(this.city));
+        _cities = _cities.filter(city => city !== this.city);
+        return _cities.slice(0, 20);
+      }
 
-      let _cities = this.cities[firstLetter] || [];
-      _cities = _cities.filter(city => city.startsWith(this.city));
-      _cities = _cities.filter(city => city !== this.city);
-
-      return _cities.slice(0, 20);
+      return [];
     }
   },
 

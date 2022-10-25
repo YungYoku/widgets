@@ -51,7 +51,7 @@ export default defineComponent({
 
   width: 100%;
   height: 100%;
-  padding: 30px;
+  min-height: 60px;
 
   background-size: 300% 100%;
   border-radius: 10px;

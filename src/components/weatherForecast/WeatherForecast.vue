@@ -285,15 +285,17 @@ export default defineComponent({
     },
 
     navigationRules() {
+      const defaultNavigation = [Navigation.Close, Navigation.Collapse];
+
       if (this.isCollapsed) {
-        return [Navigation.Close, Navigation.Collapse];
+        return defaultNavigation;
       }
 
       if (this.weatherShowing) {
-        return [Navigation.Close, Navigation.Collapse, Navigation.Settings, Navigation.Saved, Navigation.Map];
+        return [...defaultNavigation, Navigation.Settings, Navigation.Saved, Navigation.Map];
       }
 
-      return [Navigation.Close, Navigation.Collapse, Navigation.Settings, Navigation.Saved];
+      return [...defaultNavigation, Navigation.Settings, Navigation.Saved];
     },
 
     weatherShowing() {

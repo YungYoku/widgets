@@ -12,8 +12,8 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import VueApexCharts from "vue3-apexcharts";
-import { Temperature } from "@/interfaces/temperature";
-import { GraphItem } from "@/interfaces/graphItem";
+import { Temperature } from "@/components/weatherForecast/interfaces/temperature";
+import { GraphItem } from "@/components/weatherForecast/interfaces/graphItem";
 
 export default defineComponent({
   name: "WeatherForecastChart",

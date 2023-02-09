@@ -34,7 +34,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
-import { isLSSaved } from "@/interfaces/weatherForecastSaved";
+import { isLSSaved } from "@/components/weatherForecast/interfaces/weatherForecastSaved";
 
 export default defineComponent({
   name: "WeatherForecastSaved",

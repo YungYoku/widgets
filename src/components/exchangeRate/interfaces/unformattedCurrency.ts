@@ -1,9 +1,8 @@
 export interface UnformattedCurrency {
   CharCode: string;
   Name: string;
-  Nominal: string;
+  Nominal: number;
   NumCode: string;
-  Value: string;
-
-  [key: string]: string;
+  Previous: number;
+  Value: number;
 }

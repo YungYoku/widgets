@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!hidden"
+    v-if="!closed"
     :class="[
       uniqueClassName,
       isCollapsed ? 'collapsed' : '',
@@ -29,7 +29,7 @@
       class="exchange-rate__content"
     >
       <exchange-rate-form
-        :currencies-list="currenciesList"
+        :currencies-codes="currenciesCodes"
         :loading="loading"
         @updateExchangeRate="updateExchangeRate"
       />
@@ -52,13 +52,13 @@ import WidgetNavigation from "@/components/WidgetNavigation.vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import ExchangeRateForm from "@/components/exchangeRate/ExchangeRateForm.vue";
 import WidgetError from "@/components/WidgetError.vue";
-import { UnformattedCurrency } from "@/interfaces/unformattedCurrency";
-import { Currency } from "@/interfaces/currency";
-import { ExchangeRate } from "@/interfaces/exchangeRate";
-import { ExchangeError } from "@/interfaces/exchangeError";
+import { UnformattedCurrency } from "@/components/exchangeRate/interfaces/unformattedCurrency";
+import { Currency } from "@/components/exchangeRate/interfaces/currency";
+import { ExchangeRate } from "@/components/exchangeRate/interfaces/exchangeRate";
+import { ExchangeError } from "@/components/exchangeRate/interfaces/exchangeError";
 import axios, { AxiosResponse } from "axios";
-import { UnformattedCurrencyAttribute } from "@/interfaces/unformattedCurrencyAttribute";
 import { Navigation } from "@/enums/navigation";
+import { ExchangeRateResponse } from "@/components/exchangeRate/interfaces/exchangeRateResponse";
 
 export default defineComponent({
   name: "ExchangeRate",
@@ -83,7 +83,7 @@ export default defineComponent({
       default: 0
     },
 
-    hidden: {
+    closed: {
       type: Boolean,
       required: true,
       default: false
@@ -92,11 +92,11 @@ export default defineComponent({
 
   data() {
     return {
-      baseURL: process.env.VUE_APP_EXCHANGE_BASE_URL,
+      baseURL: import.meta.env.VITE_EXCHANGE_BASE_URL,
       loading: true,
       isCollapsed: false,
       currencies: [] as Array<Currency>,
-      currenciesList: [] as Array<string>,
+      currenciesCodes: [] as Array<string>,
       exchangedCurrencies: "",
       errorExists: false,
       errorText: ""
@@ -127,8 +127,6 @@ export default defineComponent({
         await this.loadExchangeRate();
       }
 
-      this.addRubExchangePair();
-
       const currencyFrom = this.currencies.find(currency => currency.code === exchangeRate.from);
       const currencyTo = this.currencies.find(currency => currency.code === exchangeRate.to);
 
@@ -155,76 +153,47 @@ export default defineComponent({
       this.showLoading();
 
       await axios
-        .get(`${this.baseURL}scripts/XML_daily.asp`)
-        .then((response: AxiosResponse<string>) => {
+        .get(`${this.baseURL}daily_json.js`)
+        .then((response: AxiosResponse<ExchangeRateResponse>) => {
           this.resetError();
 
-          const json = this.xmlToJson(response.data);
+          const currencies = Object.values(response.data.Valute);
 
-          this.currencies = this.formatCurrencies(json);
+          this.currencies = this.formatCurrencies(currencies);
+
+          this.addRubExchangePair();
         })
         .catch(this.handleRequestErrors)
         .finally(this.hideLoading);
     },
 
-    addRubExchangePair() {
-      this.currencies.push({
-        code: "RUB",
-        name: "Рубль РФ",
-        nominal: 1,
-        numCode: "0",
-        value: 1
-      });
-    },
-
-    xmlToJson(xmlString: string) {
-      const xml = this.stringToXML(xmlString);
-      const nodes = [...xml.childNodes[0].childNodes] || [];
-
-      const currencies = nodes.map(_currency => {
-        const childNodes = _currency.childNodes;
-        const attrs = [...childNodes] as Array<UnformattedCurrencyAttribute>;
-
-        const currency = {} as UnformattedCurrency;
-        attrs.forEach((attr: UnformattedCurrencyAttribute) => {
-          const attrName = attr.localName;
-
-          currency[attrName] = attr.textContent;
-        });
-
-        return currency;
-      });
-
-      return currencies as Array<UnformattedCurrency>;
-    },
-
-    stringToXML(xmlString: string) {
-      return (new DOMParser()).parseFromString(xmlString, "text/xml");
+    resetError() {
+      this.errorExists = false;
+      this.errorText = "";
     },
 
     formatCurrencies(currencies: Array<UnformattedCurrency>) {
-      this.currenciesList.push("RUB");
-
       return currencies.map(currency => {
         const code = currency.CharCode;
-        const nominal = parseInt(currency.Nominal);
-        const value = parseFloat(currency.Value);
+        const nominal = currency.Nominal;
+        const value = currency.Value;
 
-        this.currenciesList.push(code);
+        this.currenciesCodes.push(code);
 
         return {
           code,
-          name: currency.Name,
-          nominal: nominal / nominal,
-          numCode: currency.NumCode,
           value: value / nominal
         } as Currency;
       });
     },
 
-    resetError() {
-      this.errorExists = false;
-      this.errorText = "";
+    addRubExchangePair() {
+      this.currenciesCodes.push("RUB");
+
+      this.currencies.push({
+        code: "RUB",
+        value: 1
+      });
     },
 
     handleRequestErrors(error: ExchangeError) {

@@ -12,8 +12,8 @@ module.exports = {
   ],
 
   env: {
-    node: true,
-    commonjs: true
+    browser: true,
+    node: true
   },
 
   rules: {

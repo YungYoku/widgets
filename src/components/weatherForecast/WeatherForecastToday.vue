@@ -42,7 +42,7 @@
 import { defineComponent, PropType } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
-import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
+import { WeatherForecastCurrent } from "@/components/weatherForecast/interfaces/weatherForecastCurrent";
 import { Color } from "@/types/color";
 
 export default defineComponent({

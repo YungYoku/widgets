@@ -14,8 +14,8 @@
       v-for="(widget, i) in widgets"
       :id="widget.id"
       :key="widget.type + widget.id + i"
+      :closed="widget.closed"
       :draggable="true"
-      :hidden="widget.hidden"
       :order="widget.order"
       @closeWidget="closeWidget"
       @dragstart="startDrag($event, widget.id)"
@@ -136,7 +136,7 @@ export default defineComponent({
           target.classList.add("closed");
 
           setTimeout(() => {
-            targetWidget.hidden = true;
+            targetWidget.closed = true;
           }, 500);
         }
       }
@@ -147,7 +147,7 @@ export default defineComponent({
         type,
         id: this.newId,
         order: this.newId,
-        hidden: false
+        closed: false
       });
 
       this.newId++;

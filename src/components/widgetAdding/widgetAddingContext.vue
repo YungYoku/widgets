@@ -65,7 +65,7 @@ export default defineComponent({
     document.addEventListener("click", this.handleClick);
   },
 
-  destroyed() {
+  unmounted() {
     document.removeEventListener("click", this.handleClick);
   },
 

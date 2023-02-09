@@ -91,7 +91,7 @@ export default defineComponent({
     }
   },
 
-  destroyed() {
+  unmounted() {
     document.removeEventListener("click", this.handleClick);
   },
 

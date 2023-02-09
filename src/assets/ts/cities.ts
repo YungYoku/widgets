@@ -1,4 +1,4 @@
-import { CitiesAlphabet } from "@/interfaces/citiesAlphabet";
+import { CitiesAlphabet } from "@/components/weatherForecast/interfaces/citiesAlphabet";
 
 export default {
   а: [

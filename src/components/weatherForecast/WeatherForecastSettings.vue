@@ -38,8 +38,11 @@
 import { defineComponent } from "vue";
 import WeatherForecastCloseButton from "@/components/weatherForecast/WeatherForecastBackButton.vue";
 import WidgetDeveloperLinks from "@/components/WidgetDeveloperLinks.vue";
-import { isWeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
-import { WeatherForecastSetting, WeatherForecastSettings } from "@/interfaces/weatherForecastSetting";
+import { isWeatherForecastLSSettings } from "@/components/weatherForecast/interfaces/weatherForecastLSSetting";
+import {
+  WeatherForecastSetting,
+  WeatherForecastSettings
+} from "@/components/weatherForecast/interfaces/weatherForecastSetting";
 import { SettingNames } from "@/enums/settingNames";
 
 export default defineComponent({

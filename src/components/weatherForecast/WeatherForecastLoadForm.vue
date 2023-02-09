@@ -58,7 +58,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import citiesTree from "@/assets/ts/cities";
-import { isLetterOfRussianAlphabet } from "@/interfaces/citiesAlphabet";
+import { isLetterOfRussianAlphabet } from "@/components/weatherForecast/interfaces/citiesAlphabet";
 
 export default defineComponent({
   name: "WeatherForecastLoadForm",
@@ -137,7 +137,7 @@ export default defineComponent({
     document.addEventListener("click", this.handleClick);
   },
 
-  destroyed() {
+  unmounted() {
     document.removeEventListener("click", this.handleClick);
   },
 

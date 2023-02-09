@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!hidden"
+    v-if="!closed"
     :class="[
       'widget',
       'weather-forecast',
@@ -101,18 +101,24 @@ import WidgetGeoAccess from "@/components/WidgetGeoAccess.vue";
 import WeatherForecastSaved from "@/components/weatherForecast/WeatherForecastSaved.vue";
 import WeatherForecastMaps from "@/components/weatherForecast/WeatherForecastMaps.vue";
 import WidgetNavigation from "@/components/WidgetNavigation.vue";
-import { WeatherForecastResponseCurrent } from "@/interfaces/weatherForecastResponseCurrent";
-import { WeatherForecastResponseDaily } from "@/interfaces/weatherForecastResponseDaily";
-import { WeatherForecastResponse } from "@/interfaces/weatherForecastResponse";
-import { WeatherError } from "@/interfaces/weatherError";
+import { WeatherForecastResponseCurrent } from "@/components/weatherForecast/interfaces/weatherForecastResponseCurrent";
+import { WeatherForecastResponseDaily } from "@/components/weatherForecast/interfaces/weatherForecastResponseDaily";
+import { WeatherForecastResponse } from "@/components/weatherForecast/interfaces/weatherForecastResponse";
+import { WeatherError } from "@/components/weatherForecast/interfaces/weatherError";
 import axios, { AxiosResponse } from "axios";
-import { isWeatherForecastLSSettings, WeatherForecastLSSettings } from "@/interfaces/weatherForecastLSSetting";
+import {
+  isWeatherForecastLSSettings,
+  WeatherForecastLSSettings
+} from "@/components/weatherForecast/interfaces/weatherForecastLSSetting";
 import { SettingNames } from "@/enums/settingNames";
 import { Navigation } from "@/enums/navigation";
-import { WeatherForecastCurrent } from "@/interfaces/weatherForecastCurrent";
-import { WeatherForecastDaily, WeatherForecastWeekDay } from "@/interfaces/weatherForecastDaily";
+import { WeatherForecastCurrent } from "@/components/weatherForecast/interfaces/weatherForecastCurrent";
+import {
+  WeatherForecastDaily,
+  WeatherForecastWeekDay
+} from "@/components/weatherForecast/interfaces/weatherForecastDaily";
 import { Color } from "@/types/color";
-import { isLSSaved } from "@/interfaces/weatherForecastSaved";
+import { isLSSaved } from "@/components/weatherForecast/interfaces/weatherForecastSaved";
 
 const dayNamings = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const monthNamings = [
@@ -159,7 +165,7 @@ export default defineComponent({
       default: 0
     },
 
-    hidden: {
+    closed: {
       type: Boolean,
       required: true,
       default: false
@@ -168,8 +174,8 @@ export default defineComponent({
 
   data() {
     return {
-      baseURL: process.env.VUE_APP_WEATHER_BASE_URL,
-      apiKey: process.env.VUE_APP_WEATHER_API_KEY,
+      baseURL: import.meta.env.VITE_WEATHER_BASE_URL,
+      apiKey: import.meta.env.VITE_WEATHER_API_KEY,
       loading: true,
       lang: window.navigator.language.slice(0, 2),
       isCollapsed: false,
@@ -454,13 +460,14 @@ export default defineComponent({
 
             this.geoAccessRequestShowing = false;
 
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+            const { latitude, longitude } = position.coords;
 
-            Promise.all([
-              this.loadCityName(lat, lon),
-              this.loadWeatherForecast(lat, lon)
-            ]).then(this.hideLoading);
+            Promise
+              .all([
+                this.loadCityName(latitude, longitude),
+                this.loadWeatherForecast(latitude, longitude)
+              ])
+              .finally(this.hideLoading);
           },
           () => {
             this.blockGeoAccess();
@@ -588,7 +595,7 @@ export default defineComponent({
         return day + " " + monthNamings[monthIndex];
       }
 
-      return day % daysInMonth + " " + monthNamings[monthIndex + 1];
+      return day % daysInMonth + " " + monthNamings[(monthIndex + 1) % monthNamings.length];
     },
 
     getWeatherIconName(id: string) {

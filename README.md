@@ -71,8 +71,8 @@ ___
 
 ## Exchange Rate
 
-This widget uses [CBR xml requests](https://www.cbr.ru/development/sxml/),
-and it doesn't need any api key.
+This widget uses [CBR requests](https://www.cbr-xml-daily.ru/),
+and it doesn't require any api key.
 
 <br>
 
@@ -82,14 +82,16 @@ Function that loads currencies data.
 async loadExchangeRate() {
   this.showLoading();
 
-  await this.$http
-    .get(`${this.baseURL}scripts/XML_daily.asp`)
-    .then((response: AxiosResponse<string>) => {
+  await axios
+    .get(`${this.baseURL}daily_json.js`)
+    .then((response: AxiosResponse<ExchangeRateResponse>) => {
       this.resetError();
 
-      const json = this.xmlToJson(response.data);
+      const currencies = Object.values(response.data.Valute);
 
-      this.currencies = this.formatCurrencies(json);
+      this.currencies = this.formatCurrencies(currencies);
+
+      this.addRubExchangePair();
     })
     .catch(this.handleRequestErrors)
     .finally(this.hideLoading);
@@ -105,7 +107,7 @@ ___
 ## Exact Time
 
 This widget uses [WorldTimeApi](https://worldtimeapi.org/),
-and it doesn't need any api key.
+and it doesn't require any api key.
 
 <br>
 

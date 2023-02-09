@@ -14,11 +14,11 @@
         title="Сконвертировать из"
       >
         <option
-          v-for="currency in currenciesList"
-          :key="currency"
-          :value="currency"
+          v-for="code in currenciesCodes"
+          :key="code"
+          :value="code"
         >
-          {{ currency }}
+          {{ code }}
         </option>
       </select>
 
@@ -32,11 +32,11 @@
         title="Сконвертировать в"
       >
         <option
-          v-for="currency in currenciesList"
-          :key="currency"
-          :value="currency"
+          v-for="code in currenciesCodes"
+          :key="code"
+          :value="code"
         >
-          {{ currency }}
+          {{ code }}
         </option>
       </select>
     </div>
@@ -59,7 +59,7 @@ export default defineComponent({
       default: true
     },
 
-    currenciesList: {
+    currenciesCodes: {
       type: Array as PropType<Array<string>>,
       required: true,
       default: (): Array<string> => []

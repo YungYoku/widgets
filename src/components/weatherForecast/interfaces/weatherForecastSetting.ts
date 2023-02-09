@@ -1,4 +1,7 @@
-import { WeatherForecastLSGeoSetting, WeatherForecastLSThemeSetting } from "@/interfaces/weatherForecastLSSetting";
+import {
+  WeatherForecastLSGeoSetting,
+  WeatherForecastLSThemeSetting
+} from "@/components/weatherForecast/interfaces/weatherForecastLSSetting";
 import { SettingNames } from "@/enums/settingNames";
 
 interface WeatherForecastSettingBase {

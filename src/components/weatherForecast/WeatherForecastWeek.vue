@@ -72,9 +72,9 @@ import { defineComponent, PropType } from "vue";
 import WidgetLoading from "@/components/WidgetLoading.vue";
 import WeatherForecastChart from "@/components/weatherForecast/WeatherForecastChart.vue";
 import WeatherForecastIcon from "@/components/weatherForecast/icons/WeatherForecastIcon.vue";
-import { ChartColors } from "@/interfaces/chartColors";
+import { ChartColors } from "@/components/weatherForecast/interfaces/chartColors";
 import { TemperatureColors } from "@/enums/temperatureColors";
-import { WeatherForecastDaily } from "@/interfaces/weatherForecastDaily";
+import { WeatherForecastDaily } from "@/components/weatherForecast/interfaces/weatherForecastDaily";
 import { Color } from "@/types/color";
 
 export default defineComponent({

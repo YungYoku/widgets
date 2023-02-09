@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!hidden"
+    v-if="!closed"
     :class="[
       uniqueClassName,
       isCollapsed ? 'collapsed' : ''
@@ -70,9 +70,9 @@ import WidgetLoading from "@/components/WidgetLoading.vue";
 import ExactTimeClocks from "@/components/exactTime/ExactTimeClocks.vue";
 import ExactTimeForm from "@/components/exactTime/ExactTimeForm.vue";
 import WidgetError from "@/components/WidgetError.vue";
-import { Time } from "@/interfaces/time";
-import { TimeResponse } from "@/interfaces/timeResponse";
-import { TimeError } from "@/interfaces/timeError";
+import { Time } from "@/components/exactTime/interfaces/time";
+import { TimeResponse } from "@/components/exactTime/interfaces/timeResponse";
+import { TimeError } from "@/components/exactTime/interfaces/timeError";
 import axios, { AxiosResponse } from "axios";
 import { Navigation } from "@/enums/navigation";
 
@@ -100,7 +100,7 @@ export default defineComponent({
       default: 0
     },
 
-    hidden: {
+    closed: {
       type: Boolean,
       required: true,
       default: false
@@ -109,7 +109,7 @@ export default defineComponent({
 
   data() {
     return {
-      baseURL: process.env.VUE_APP_TIME_BASE_URL,
+      baseURL: import.meta.env.VITE_TIME_BASE_URL,
       loading: true,
       isCollapsed: false,
       interval: null as unknown as ReturnType<typeof setInterval>,
@@ -144,7 +144,7 @@ export default defineComponent({
     this.loadTimeByIp();
   },
 
-  destroyed() {
+  unmounted() {
     if (this.interval) {
       clearInterval(this.interval);
     }
